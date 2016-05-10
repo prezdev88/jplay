@@ -1,0 +1,23 @@
+b1: cuando intento cargar un tema desde el arbol y este se encuentra en la raiz, arroja
+    un null pointe exception
+b2[FIXED]: Al intentar cargar muchas cacnciones desde el arbol, se queda pegado GUI
+b3: Lograr cargar los temas en GUI cuando el hilo cargar este activo
+b4[FIXED]: No se puede adelantar con slide o atrasar
+b5[FIXED]: Cuando no tiene nombre, sería ideal que por lo menos se le de un nombre a la canción
+         que puede ser el nombre del archivo.
+b6[FIXED]: Al momento de buscar en la biblioteca, es demasiado lento. No logro discriminar si se
+    demora en colocar los aspectos gráficos en la tabla o si el algoritmo de busqueda es demasiado
+    lento.
+b7: El parametro microseconds del metodo progress se resetea cuando seek
+b8[FIXED]: el agregar a biblioteca no funciona cuando quiero agregar una carpeta con mas carpetas dentro
+b9[FIXED]: Cuando abra por primera vez, debe salir algo menos algo por defecto
+b10[FIXED]: Cuando hay muchas canciones en la bibliotecas y busco, es demasiado lento 
+(Mejoré los métodos de la clase Cancion!!!! :D)
+b11: Ver el largo de los nombres, para que no joda el GUI
+b12: En shuffle cuando vuelvo atras, debería tocar la canción anterior, no una aleatoria (pensar bien eso)
+b13: Cuando pongo el vol en off, pongo un tema y todo ok, le pongo stop y despues lo pongo de nuevo
+y esta con volumen
+b14: Al momento de pinchar un "boton" (jlabel como boton) y si me arrepiento, igual se pincha
+
+Ideas:
+- Guardar el arbol de alguna manera
