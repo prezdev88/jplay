@@ -11,3 +11,9 @@
     - Se quita el botón de limpiar la lista de canciones
     - Se coloca una especie de hint en el textfield buscar canciones en biblioteca
     - Mejoras pequeñas al entorno gráfico
+
+0.3a:
+    - Se agrega la opción de cargar automáticamente el cover del album
+      (Se buscan imagenes en la raiz de la canción (jpg, png))
+    - Se mejoran algunos algoritmos internos del programa. Además de 
+    mejorar el código

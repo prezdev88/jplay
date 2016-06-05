@@ -5,12 +5,12 @@
             <url>src/jplay/main/JPlay.java</url>
             <bookmark id="8">
                 <name/>
-                <line>1263</line>
+                <line>1298</line>
                 <key/>
             </bookmark>
             <bookmark id="9">
                 <name/>
-                <line>1457</line>
+                <line>1492</line>
                 <key/>
             </bookmark>
         </file>
@@ -22,5 +22,13 @@
             <file>file:/home/pperezp/Dropbox/Programación/JAVA/Java%20SE/~PROYECTOS%20JAVA%20~/_JPLAY/jplay/src/jplay/test/Test.java</file>
         </group>
         <group name="clases"/>
+        <group>
+            <file>file:/home/pperezp/Dropbox/Programación/JAVA/Java%20SE/~PROYECTOS%20JAVA%20~/jplay/jplay/src/jplay/model/Recurso.java</file>
+            <file>file:/home/pperezp/Dropbox/Programación/JAVA/Java%20SE/~PROYECTOS%20JAVA%20~/jplay/jplay/src/jplay/model/Guardar.java</file>
+            <file>file:/home/pperezp/Dropbox/Programación/JAVA/Java%20SE/~PROYECTOS%20JAVA%20~/jplay/jplay/bugs.txt</file>
+            <file>file:/home/pperezp/Dropbox/Programación/JAVA/Java%20SE/~PROYECTOS%20JAVA%20~/jplay/jplay/versiones.txt</file>
+            <file>file:/home/pperezp/Dropbox/Programación/JAVA/Java%20SE/~PROYECTOS%20JAVA%20~/jplay/jplay/src/jplay/model/Cancion.java</file>
+            <file>file:/home/pperezp/Dropbox/Programación/JAVA/Java%20SE/~PROYECTOS%20JAVA%20~/jplay/jplay/src/jplay/main/JPlay.java</file>
+        </group>
     </open-files>
 </project-private>

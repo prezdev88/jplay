@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -16,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
+import jplay.model.Recurso;
 
 /**
  *
@@ -36,20 +39,9 @@ public class CellRender extends JLabel implements TreeCellRenderer{
         try {
             this.setOpaque(true);
             
-             Font fuente = null; 
-            InputStream myStream = null;
-            String font1 = "HighVoltage Rough.ttf";
-            String font2 = "Roboto-Regular.ttf";
+            Font fuente = Font.createFont(Font.TRUETYPE_FONT, Recurso.FUENTE_ROBOTO);
+            fuente = fuente.deriveFont(Font.PLAIN, 14);
             
-            
-            //"src/jplay/font/Roboto-Regular.ttf"
-            
-            myStream = new BufferedInputStream(new FileInputStream("src/jplay/font/"+font2));
-            fuente = Font.createFont(Font.TRUETYPE_FONT, myStream);
-            fuente = fuente.deriveFont(Font.PLAIN, 12);
-            
-            
-//            this.setFont(new Font("Roboto-Regulars", Font.PLAIN, 12));
             
             DefaultMutableTreeNode v = (DefaultMutableTreeNode)value;
             Object ob = v.getUserObject();
@@ -77,7 +69,7 @@ public class CellRender extends JLabel implements TreeCellRenderer{
             Logger.getLogger(CellRender.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(CellRender.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
         
         return this;
     }

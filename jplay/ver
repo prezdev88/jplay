@@ -37,3 +37,21 @@ mp3.header.pos=25053,
 comment=usicMatch_Preference, 
 mp3.mode=1}
 
+/*Borré este botón, asi que estos eran los eventos*/
+
+private void btnCargarBibliotecaMouseEntered(java.awt.event.MouseEvent evt) {                                                 
+        btnCargarBiblioteca.setBackground(new java.awt.Color(92, 107, 192));
+    }                                                
+
+    private void btnCargarBibliotecaMouseExited(java.awt.event.MouseEvent evt) {                                                
+        btnCargarBiblioteca.setBackground(new java.awt.Color(63, 81, 181));
+    }                                               
+
+    private void btnCargarBibliotecaMousePressed(java.awt.event.MouseEvent evt) {                                                 
+        btnCargarBiblioteca.setBackground(new java.awt.Color(26, 35, 126));
+    }                                                
+
+    private void btnCargarBibliotecaMouseReleased(java.awt.event.MouseEvent evt) {                                                  
+        btnCargarBiblioteca.setBackground(new java.awt.Color(63, 81, 181));
+        cargarCancionesABiblioteca(biblioteca);
+    }     

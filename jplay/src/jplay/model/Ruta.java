@@ -15,4 +15,5 @@ public class Ruta {
     public final static String EXAMINAR = RECURSOS+"1443343078_folder-close.png";
     public final static String VOL = RECURSOS_MATERIAL+"ic_volume_up_white_24dp_1x.png";
     public final static String VOL_OFF = RECURSOS_MATERIAL+"ic_volume_off_white_24dp_1x.png";
+    public final static String ICONO_JPLAY = RECURSOS+"jplay.png";
 }

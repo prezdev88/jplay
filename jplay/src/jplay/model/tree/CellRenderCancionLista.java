@@ -18,6 +18,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import jplay.main.JPlay;
 import jplay.model.Cancion;
+import jplay.model.Recurso;
 
 /**
  *
@@ -39,17 +40,11 @@ public class CellRenderCancionLista extends JLabel implements TreeCellRenderer {
             this.setOpaque(true);
 
             Font fuente;
-            InputStream myStream ;
-            String font = "Roboto-Regular.ttf";
-
-            //"src/jplay/font/Roboto-Regular.ttf"
-            myStream = new BufferedInputStream(new FileInputStream("src/jplay/font/" + font));
-            fuente = Font.createFont(Font.TRUETYPE_FONT, myStream);
+            fuente = Font.createFont(Font.TRUETYPE_FONT, Recurso.FUENTE_ROBOTO);
             fuente = fuente.deriveFont(Font.PLAIN, 14);
 
             
             this.setFont(fuente);
-//            this.setFont(new Font("Roboto-Regulars", Font.PLAIN, 12));
             DefaultMutableTreeNode v = (DefaultMutableTreeNode) value;
             Object ob = v.getUserObject();
             

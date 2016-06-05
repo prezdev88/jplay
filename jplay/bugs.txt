@@ -1,5 +1,5 @@
 b1: cuando intento cargar un tema desde el arbol y este se encuentra en la raiz, arroja
-    un null pointe exception
+    un null pointer exception
 b2[FIXED]: Al intentar cargar muchas cacnciones desde el arbol, se queda pegado GUI
 b3: Lograr cargar los temas en GUI cuando el hilo cargar este activo
 b4[FIXED]: No se puede adelantar con slide o atrasar
