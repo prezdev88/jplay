@@ -21,3 +21,6 @@ b14: Al momento de pinchar un "boton" (jlabel como boton) y si me arrepiento, ig
 
 Ideas:
 - Guardar el arbol de alguna manera
+- Fondo difuminado según carátula
+- Crear listas de reproducción
+- 

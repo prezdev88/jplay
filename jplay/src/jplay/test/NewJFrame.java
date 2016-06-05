@@ -5,9 +5,18 @@
  */
 package jplay.test;
 
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Rectangle;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
 import jplay.model.Cancion;
 import jplay.model.tree.CellRender;
@@ -38,6 +47,10 @@ public class NewJFrame extends javax.swing.JFrame {
         jSlider1 = new javax.swing.JSlider();
         jToggleButton1 = new javax.swing.JToggleButton();
         jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        lbl2 = new javax.swing.JLabel();
+        lbl1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -57,18 +70,42 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jLabel1.setText("jLabel1");
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lbl2.setText("jLabel3");
+        jPanel1.add(lbl2, new org.netbeans.lib.awtextra.AbsoluteConstraints(138, 2, 130, 130));
+
+        lbl1.setText("jLabel2");
+        jPanel1.add(lbl1, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 2, 130, 130));
+
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(140, 140, 140)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(140, 140, 140)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(56, 56, 56)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(173, 173, 173)
+                        .addComponent(jButton1)))
                 .addContainerGap(206, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -78,9 +115,16 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jToggleButton1)
                     .addComponent(jLabel1))
-                .addGap(6, 6, 6)
-                .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(37, 37, 37))
         );
 
         pack();
@@ -111,6 +155,91 @@ public class NewJFrame extends javax.swing.JFrame {
 //        cLabel1.setBackground(new java.awt.Color(233, 30, 99));
     }//GEN-LAST:event_cLabel1MouseReleased
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Image im1 = new ImageIcon("test/01.jpg").getImage();
+        Image im2 = new ImageIcon("test/02.jpg").getImage();
+        Image im3 = new ImageIcon("test/03.jpg").getImage();
+        Image im4 = new ImageIcon("test/04.jpg").getImage();
+        Image im5 = new ImageIcon("test/05.png").getImage();
+
+        ImageIcon ii1 = new ImageIcon(im1.getScaledInstance(130, 130, Image.SCALE_SMOOTH));
+        ImageIcon ii2 = new ImageIcon(im2.getScaledInstance(130, 130, Image.SCALE_SMOOTH));
+        ImageIcon ii3 = new ImageIcon(im3.getScaledInstance(130, 130, Image.SCALE_SMOOTH));
+        ImageIcon ii4 = new ImageIcon(im4.getScaledInstance(130, 130, Image.SCALE_SMOOTH));
+        ImageIcon ii5 = new ImageIcon(im5.getScaledInstance(130, 130, Image.SCALE_SMOOTH));
+
+//        lbl1.setIcon(ii1);
+//        lbl2.setIcon(ii2);
+        final List<ImageIcon> imagenes = new ArrayList<>();
+        imagenes.add(ii1);
+        imagenes.add(ii2);
+        imagenes.add(ii3);
+        imagenes.add(ii4);
+        imagenes.add(ii5);
+        
+        
+
+        Thread h = new Thread(new Runnable() {
+            
+            /*
+            Son solo dos labels que se van cambiando segun la lista
+            de imágenes
+            */
+            @Override
+            public void run() {
+                int pauseMover = 5;// el pause para mover la x de la foto
+                int pauseEntreFotos = 1000; // pause entre cada fotos
+                int cont; // contador de ciclo para mover la foto
+                int x;// variable para mover el segundo label
+                int x2; // variable para poder mover el primer label (esta comentado)
+                int anchoFoto = 130;
+                
+                try {
+                    lbl1.setIcon(imagenes.get(0));
+                    while (true) {
+                        for (int i = 0; i < imagenes.size(); i++) {
+                            Thread.sleep(pauseEntreFotos);
+                            
+                            lbl1.setIcon(imagenes.get(i));
+                            
+                            // si eñ siguiente es mayor o igual al limite
+                            // quiere decir que me salgo del rango
+                            // por ende, dejo la primera foto
+                            if((i+1) >= imagenes.size()){
+                                lbl2.setIcon(imagenes.get(0));
+                            }else{
+                                // de lo contrario, dejo la foto siguiente en 
+                                // el label 2
+                                lbl2.setIcon(imagenes.get(i+1));
+                            }
+                            
+                            x = anchoFoto; 
+                            x2 = 0;
+                            cont = 0;
+                            
+                            while (cont < x) {
+
+                                // descomentar para ver el efecto
+//                                lbl1.setBounds(x2--, lbl1.getY(), 130, 130);
+//                                lbl2.setBounds(x--, lbl2.getY(), 130, 130);
+                                lbl2.setLocation(x--, lbl2.getY());
+//                                NewJFrame.this.repaint();
+                                Thread.sleep(pauseMover);
+                            }
+
+                            
+                        }
+                    }
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        
+//        h.setPriority(Thread.MAX_PRIORITY);
+        h.start();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -124,8 +253,12 @@ public class NewJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JSlider jSlider1;
     private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JLabel lbl1;
+    private javax.swing.JLabel lbl2;
     // End of variables declaration//GEN-END:variables
 }

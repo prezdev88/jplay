@@ -22,13 +22,15 @@
             <file>file:/home/pperezp/Dropbox/Programación/JAVA/Java%20SE/~PROYECTOS%20JAVA%20~/_JPLAY/jplay/src/jplay/test/Test.java</file>
         </group>
         <group name="clases"/>
+        <group name="JShared">
+            <file>file:/home/pperezp/Escritorio/jplay/jplay/bugs.txt</file>
+            <file>file:/home/pperezp/Escritorio/jplay/jplay/versiones.txt</file>
+            <file>file:/home/pperezp/Escritorio/jplay/jplay/ver</file>
+        </group>
         <group>
-            <file>file:/home/pperezp/Dropbox/Programación/JAVA/Java%20SE/~PROYECTOS%20JAVA%20~/jplay/jplay/src/jplay/model/Recurso.java</file>
-            <file>file:/home/pperezp/Dropbox/Programación/JAVA/Java%20SE/~PROYECTOS%20JAVA%20~/jplay/jplay/src/jplay/model/Guardar.java</file>
-            <file>file:/home/pperezp/Dropbox/Programación/JAVA/Java%20SE/~PROYECTOS%20JAVA%20~/jplay/jplay/bugs.txt</file>
-            <file>file:/home/pperezp/Dropbox/Programación/JAVA/Java%20SE/~PROYECTOS%20JAVA%20~/jplay/jplay/versiones.txt</file>
-            <file>file:/home/pperezp/Dropbox/Programación/JAVA/Java%20SE/~PROYECTOS%20JAVA%20~/jplay/jplay/src/jplay/model/Cancion.java</file>
-            <file>file:/home/pperezp/Dropbox/Programación/JAVA/Java%20SE/~PROYECTOS%20JAVA%20~/jplay/jplay/src/jplay/main/JPlay.java</file>
+            <file>file:/home/pperezp/Escritorio/jplay/jplay/src/jplay/main/JPlay.java</file>
+            <file>file:/home/pperezp/Escritorio/jplay/jplay/src/jplay/model/Cancion.java</file>
+            <file>file:/home/pperezp/Escritorio/jplay/jplay/src/jplay/test/NewJFrame.java</file>
         </group>
     </open-files>
 </project-private>
