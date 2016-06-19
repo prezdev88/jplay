@@ -5,32 +5,27 @@
             <url>src/jplay/main/JPlay.java</url>
             <bookmark id="8">
                 <name/>
-                <line>1298</line>
+                <line>1295</line>
                 <key/>
             </bookmark>
             <bookmark id="9">
                 <name/>
-                <line>1492</line>
+                <line>1489</line>
                 <key/>
             </bookmark>
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="mio"/>
-        <group name="MIO">
-            <file>file:/home/pperezp/Dropbox/Programación/JAVA/Java%20SE/~PROYECTOS%20JAVA%20~/_JPLAY/jplay/src/jplay/test/NewJFrame.java</file>
-            <file>file:/home/pperezp/Dropbox/Programación/JAVA/Java%20SE/~PROYECTOS%20JAVA%20~/_JPLAY/jplay/src/jplay/test/Test.java</file>
-        </group>
         <group name="clases"/>
         <group name="JShared">
             <file>file:/home/pperezp/Escritorio/jplay/jplay/bugs.txt</file>
             <file>file:/home/pperezp/Escritorio/jplay/jplay/versiones.txt</file>
             <file>file:/home/pperezp/Escritorio/jplay/jplay/ver</file>
         </group>
+        <group name="MIO"/>
         <group>
             <file>file:/home/pperezp/Escritorio/jplay/jplay/src/jplay/main/JPlay.java</file>
-            <file>file:/home/pperezp/Escritorio/jplay/jplay/src/jplay/model/Cancion.java</file>
-            <file>file:/home/pperezp/Escritorio/jplay/jplay/src/jplay/test/NewJFrame.java</file>
         </group>
     </open-files>
 </project-private>

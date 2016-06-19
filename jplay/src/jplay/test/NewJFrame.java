@@ -5,21 +5,12 @@
  */
 package jplay.test;
 
-import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.Rectangle;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
-import javax.swing.tree.DefaultMutableTreeNode;
-import jplay.model.Cancion;
-import jplay.model.tree.CellRender;
 
 /**
  *
@@ -177,67 +168,11 @@ public class NewJFrame extends javax.swing.JFrame {
         imagenes.add(ii4);
         imagenes.add(ii5);
         
+        int pauseMover = 3;// el pause para mover la x de la foto
+        int pauseEntreFotos = 1000; // pause entre cada fotos
         
-
-        Thread h = new Thread(new Runnable() {
-            
-            /*
-            Son solo dos labels que se van cambiando segun la lista
-            de imágenes
-            */
-            @Override
-            public void run() {
-                int pauseMover = 5;// el pause para mover la x de la foto
-                int pauseEntreFotos = 1000; // pause entre cada fotos
-                int cont; // contador de ciclo para mover la foto
-                int x;// variable para mover el segundo label
-                int x2; // variable para poder mover el primer label (esta comentado)
-                int anchoFoto = 130;
-                
-                try {
-                    lbl1.setIcon(imagenes.get(0));
-                    while (true) {
-                        for (int i = 0; i < imagenes.size(); i++) {
-                            Thread.sleep(pauseEntreFotos);
-                            
-                            lbl1.setIcon(imagenes.get(i));
-                            
-                            // si eñ siguiente es mayor o igual al limite
-                            // quiere decir que me salgo del rango
-                            // por ende, dejo la primera foto
-                            if((i+1) >= imagenes.size()){
-                                lbl2.setIcon(imagenes.get(0));
-                            }else{
-                                // de lo contrario, dejo la foto siguiente en 
-                                // el label 2
-                                lbl2.setIcon(imagenes.get(i+1));
-                            }
-                            
-                            x = anchoFoto; 
-                            x2 = 0;
-                            cont = 0;
-                            
-                            while (cont < x) {
-
-                                // descomentar para ver el efecto
-//                                lbl1.setBounds(x2--, lbl1.getY(), 130, 130);
-//                                lbl2.setBounds(x--, lbl2.getY(), 130, 130);
-                                lbl2.setLocation(x--, lbl2.getY());
-//                                NewJFrame.this.repaint();
-                                Thread.sleep(pauseMover);
-                            }
-
-                            
-                        }
-                    }
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        
-//        h.setPriority(Thread.MAX_PRIORITY);
-        h.start();
+        HiloCoverArt hca = new HiloCoverArt(lbl1, lbl2, imagenes, pauseMover,pauseEntreFotos);
+        hca.start();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

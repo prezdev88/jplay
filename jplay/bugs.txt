@@ -18,6 +18,8 @@ b12: En shuffle cuando vuelvo atras, debería tocar la canción anterior, no una
 b13: Cuando pongo el vol en off, pongo un tema y todo ok, le pongo stop y despues lo pongo de nuevo
 y esta con volumen
 b14: Al momento de pinchar un "boton" (jlabel como boton) y si me arrepiento, igual se pincha
+b15[FIXED]: Habia un error al momento de mostrar las caratulas en linux. El brigido del estay lo investigo, y llegó
+a esto: -Dsun.java2d.opengl=true (Parametros de la máquina virtual)
 
 Ideas:
 - Guardar el arbol de alguna manera

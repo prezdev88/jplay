@@ -84,7 +84,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         if (save) {
             cargarSave();
         }
-        
+
         setTitle(NOMBRE + " - " + VERSION);
         isPlay = false;
         isStop = true;
@@ -99,15 +99,14 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         tablaBiblioteca.getTableHeader().setReorderingAllowed(false);
 
         cargarArbolConCanciones();
-        
+
         /*Se hace inisible la tabla antigua de temas y el boton limpiar*/
         jScrollPane2.setVisible(false);
         jLabel2.setVisible(false);
         /*Se hace inisible la tabla antigua de temas y el boton limpiar*/
-    
-        
+
         this.setIconImage(icono);
-        
+
         /*VALIDAR SI ESTAS TODAS LAS COSAS NECESARIAS*/
 //        File f = new File("res");
 //        
@@ -116,16 +115,14 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 //            
 //            
 //        }
-        
-        
         icono = Recurso.ICONO_JPLAY;
-        
+
         icono = icono.getScaledInstance(
-                (int)Recurso.CARATULA.getWidth(), 
-                (int)Recurso.CARATULA.getHeight(), 
+                (int) Recurso.CARATULA.getWidth(),
+                (int) Recurso.CARATULA.getHeight(),
                 Image.SCALE_SMOOTH);
         lblCaratula.setIcon(new ImageIcon(icono));
-        
+
         this.setBounds(0, 0, 1024, 600);
         this.setLocationRelativeTo(null);
     }
@@ -1003,7 +1000,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
             if (node != null) {
                 Object o = node.getUserObject();
                 if (o instanceof Cancion) {
-                    Cancion c = (Cancion)o;
+                    Cancion c = (Cancion) o;
                     indiceActual = canciones.indexOf(c);
                     reproducir(c);
                 }
@@ -1317,7 +1314,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         treeSong.setRootVisible(false);
 //        treeSong.expandRow(0);
 
-            treeSong.setCellRenderer(
+        treeSong.setCellRenderer(
                 new CellRenderCancionLista(
                         CellRender.crearIcono("/jplay/recursos/iconos/1453631419_icon-play.png"),
                         CellRender.crearIcono("/jplay/recursos/iconos/1453541047_emblem-cd.png")
@@ -1539,44 +1536,44 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         try {
 //            Cancion c = new Cancion(f.getPath());
 
-            if(!cancion.hasCover()){
+            if (!cancion.hasCover()) {
                 System.out.println("La cación no tiene caratula!");
                 List<File> fotos = Recurso.getFotos(cancion);
-                System.out.println("Se han encontrado "+fotos.size()+" foto");
-                
+                System.out.println("Se han encontrado " + fotos.size() + " foto");
+
                 Collections.sort(fotos, new Comparator<File>() {
 
                     @Override
                     public int compare(File o1, File o2) {
-                        if(o1.length() < o2.length()){
+                        if (o1.length() < o2.length()) {
                             return 1;
-                        }else if(o1.length() > o2.length()){
+                        } else if (o1.length() > o2.length()) {
                             return -1;
-                        }else{
+                        } else {
                             return 0;
                         }
                     }
-                } );
-            
-                if(!fotos.isEmpty()){
+                });
+
+                if (!fotos.isEmpty()) {
                     File arPrimeraFoto = fotos.get(0);
                     cancion.setCoverFile(arPrimeraFoto);
                     System.out.println("Se añadió una caratula desde la ruta de la canción");
-                }else{
+                } else {
                     icono = icono.getScaledInstance(
-                                (int)Recurso.CARATULA.getWidth(), 
-                                (int)Recurso.CARATULA.getHeight(), 
-                                Image.SCALE_SMOOTH);
+                            (int) Recurso.CARATULA.getWidth(),
+                            (int) Recurso.CARATULA.getHeight(),
+                            Image.SCALE_SMOOTH);
                     cancion.setCaratulaIcon(icono);
                     System.out.println("Se añadió una caratula POR DEFECTO");
                 }
-            }else{
+            } else {
                 System.out.println("La canción tiene caratula!");
             }
-            
+
             lblCaratula.setIcon(cancion.getCoverImage());
 //            lblCaratula.setIcon(new ImageIcon(icono)); 
-            
+
             if (reproductor != null) {
                 reproductor.stop();
             }
@@ -1592,16 +1589,15 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
             btnPause.setIcon(new javax.swing.ImageIcon(getClass().getResource(Ruta.PAUSE)));
             isPlay = true;
             isStop = false;
-            
+
 //            treeSong.setCellRenderer(
 //                new CellRenderCancionLista(
 //                        CellRender.crearIcono("/jplay/recursos/iconos/1443349568_music.png"),
 //                        CellRender.crearIcono("/jplay/recursos/iconos/1453541047_emblem-cd.png")
 //                )
 //            );
-            
             treeSong.updateUI();
-                    
+
         } catch (BasicPlayerException ex) {
             Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
         }
