@@ -2,6 +2,7 @@ package jplay.main;
 
 //iconos https://www.iconfinder.com/iconsets/snipicons
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import jplay.model.tableModel.TMCancion;
@@ -44,12 +45,13 @@ import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
 import jplay.model.tree.CellRender;
 import jplay.model.tree.CellRenderCancionLista;
+import nicon.notify.core.Notification;
 
 public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 
     public static Reproductor reproductor;
+    private Biblioteca biblioteca;
     private List<Cancion> canciones;
-    private List<Cancion> biblioteca;
     private int indiceActual;
     private Thread hiloRep;
     private Thread hiloCargar;
@@ -70,7 +72,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
     public JPlay() {
         initComponents();
         canciones = new ArrayList<>();
-        biblioteca = new ArrayList<>();
+        biblioteca = new Biblioteca();
 
         isRandom = false;
 
@@ -85,7 +87,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
             cargarSave();
         }
 
-        setTitle(NOMBRE + " - " + VERSION);
+        this.setTitle(NOMBRE + " - " + VERSION);
         isPlay = false;
         isStop = true;
         repetirCancion = opRepetirCancion.isSelected();
@@ -125,6 +127,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 
         this.setBounds(0, 0, 1024, 600);
         this.setLocationRelativeTo(null);
+
     }
 
     // http://stackoverflow.com/questions/13516730/disable-enter-key-from-moving-down-a-row-in-jtable
@@ -863,7 +866,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         lFiltrada = new ArrayList<>();
 
         int i = 1;
-        for (Cancion c : biblioteca) {
+        for (Cancion c : biblioteca.getCanciones()) {
             if (c.getAutor().toLowerCase().contains(filtro)
                     || c.getAlbum().toLowerCase().contains(filtro)
                     || c.getNombre().toLowerCase().contains(filtro)) {
@@ -1001,6 +1004,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 Object o = node.getUserObject();
                 if (o instanceof Cancion) {
                     Cancion c = (Cancion) o;
+
                     indiceActual = canciones.indexOf(c);
                     reproducir(c);
                 }
@@ -1025,8 +1029,8 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 cargarCancionesAListaGrafica();
                 imprimirTemaActual(0);
 
-                biblioteca = (List<Cancion>) IO.leerObjetoDesde(Ruta.BIBLIOTECA);
-                cargarCancionesABiblioteca(biblioteca);
+                biblioteca = (Biblioteca) IO.leerObjetoDesde(Ruta.BIBLIOTECA);
+                cargarCancionesABiblioteca(biblioteca.getCanciones());
 
             } catch (IOException ex) {
                 Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
@@ -1096,7 +1100,9 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 //                    cargarCancionesEnLista(ar.listFiles(), lista);
                     cargarCanciones(a, lista);
                 } else if (Validar.isCancion(a)) {
-                    agregarCancion(new Cancion(a.getPath()), lista);
+                    Cancion c = new Cancion(a.getPath());
+
+                    agregarCancion(c, lista);
                 }
             }
         }
@@ -1419,11 +1425,11 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                         try {
                             File f = getSelectedTreeFile();
                             try {
-                                cargarCanciones(f, biblioteca);
+                                cargarCanciones(f, biblioteca.getCanciones());
                             } catch (InterruptedException ex) {
                                 Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                            cargarCancionesABiblioteca(biblioteca);
+                            cargarCancionesABiblioteca(biblioteca.getCanciones());
                         } catch (IOException ex) {
                             Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -1453,10 +1459,10 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 }
 
                 for (Cancion c : canciones) {
-                    biblioteca.remove(c);
+                    biblioteca.remover(c);
                 }
 
-                cargarCancionesABiblioteca(biblioteca);
+                cargarCancionesABiblioteca(biblioteca.getCanciones());
             }
         });
 
@@ -1581,7 +1587,10 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
             reproductor = new Reproductor(cancion, this);
 
             reproductor.play();
-            setTitle(NOMBRE + " - " + VERSION + " [" + cancion.getAutor() + " - " + cancion.getNombre() + "]");
+
+            cancion.aumentarContadorReproducciones();
+
+            setTitle(NOMBRE + " - " + VERSION + " [" + cancion.getAutor() + " - " + cancion.getNombre() + " (" + cancion.getCantidadReproducciones() + ")]");
             setVolumen(slideVol.getValue());
 //            lblTemaActual.setText(c.getAutor()+" / "+c.getNombre() + " ("+c.getDuracionAsString()+")");
 
@@ -1598,6 +1607,26 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 //            );
             treeSong.updateUI();
 
+            boolean soloUno = true;
+            Notification.show(
+                    cancion.getAutor(),
+                    cancion.getNombre(),
+                    cancion.getCoverImage(),
+                    8000, // Segundos en milis
+                    new Dimension(100, 100),
+                    soloUno);
+
+//            System.out.println("Esta en biblioteca: "+biblioteca.estaCancion(cancion));
+
+            
+//            System.out.println("-----------------------------------------");
+//            System.out.println("LISTADO DE MÁS REPRODUCCIONES");
+//            System.out.println("-----------------------------------------");
+//            List<Cancion> lista = biblioteca.getCancionesMasReproducidas();
+//            for (Cancion c : lista) {
+//                System.out.println("[" + c.getCantidadReproducciones() + "]" + c.getNombre());
+//            }
+//            System.out.println("-----------------------------------------");
         } catch (BasicPlayerException ex) {
             Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1644,7 +1673,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
     }
 
     private void cargarDefault() {
-        cargarCancionesABiblioteca(biblioteca);
+        cargarCancionesABiblioteca(biblioteca.getCanciones());
         cargarCancionesAListaGrafica();
     }
 

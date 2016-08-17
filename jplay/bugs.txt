@@ -20,6 +20,8 @@ y esta con volumen
 b14: Al momento de pinchar un "boton" (jlabel como boton) y si me arrepiento, igual se pincha
 b15[FIXED]: Habia un error al momento de mostrar las caratulas en linux. El brigido del estay lo investigo, y llegó
 a esto: -Dsun.java2d.opengl=true (Parametros de la máquina virtual)
+b16: Cuando esta el proceso de cargar canciones a la biblioteca, y apreto en la tabla de la biblioteca
+para reproducir una canción, envia una excepción (java.util.ConcurrentModificationException)
 
 Ideas:
 - Guardar el arbol de alguna manera

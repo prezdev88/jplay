@@ -19,6 +19,7 @@ public class Cancion extends File {
     private long microseconds;
     private File coverFile;
     private ImageIcon coverImage;
+    private int cantidadReproducciones;
 
     public Cancion(String pathname) {
         super(pathname);
@@ -29,7 +30,21 @@ public class Cancion extends File {
         cargar();
         coverFile = null;
         coverImage = null;
+        cantidadReproducciones = 0;
     }
+    
+    /**
+     * Aumenta el contador de reproducciones en uno
+     */
+    public void aumentarContadorReproducciones(){
+        cantidadReproducciones++;
+    }
+
+    public int getCantidadReproducciones() {
+        return cantidadReproducciones;
+    }
+    
+    
 
     public File getCoverFile() {
         return coverFile;

@@ -36,8 +36,12 @@ public class PruebaNotify {
 
         
         Notification.show("Criminal", "Rise and fall", new File("01.jpg"), 10000, new Dimension(100 ,100));
-
-        
+        Notification.show("Criminal", "Rise and fall", new File("01.jpg"), 10000, new Dimension(100 ,100));
+        Notification.show("Criminal", "Rise and fall", new File("01.jpg"), 10000, new Dimension(100 ,100));
+        Notification.show("Criminal", "Rise and fall", new File("01.jpg"), 10000, new Dimension(100 ,100));
+        Notification.show("Criminal", "Rise and fall", new File("01.jpg"), 10000, new Dimension(100 ,100));
+        Notification.show("Criminal", "Rise and fall", new File("01.jpg"), 10000, new Dimension(100 ,100));
+        Notification.show("Criminal", "Rise and fall", new File("01.jpg"), 10000, new Dimension(100 ,100));
 //        Notification.show("Titulo", "Mensaje", Notification.NICON_LIGHT_THEME, Notification.IMAGE_ICON, 2000);
         
 //            if (respuesta == 1) {
