@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import jplay.model.HiloCoverArt;
 
 /**
  *
@@ -169,7 +170,7 @@ public class NewJFrame extends javax.swing.JFrame {
         imagenes.add(ii5);
         
         int pauseMover = 3;// el pause para mover la x de la foto
-        int pauseEntreFotos = 1000; // pause entre cada fotos
+        int pauseEntreFotos = 5000; // pause entre cada fotos
         
         HiloCoverArt hca = new HiloCoverArt(lbl1, lbl2, imagenes, pauseMover,pauseEntreFotos);
         hca.start();

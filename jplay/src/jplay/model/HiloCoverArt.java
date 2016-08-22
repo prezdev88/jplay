@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jplay.test;
+package jplay.model;
 
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import jplay.test.NewJFrame;
 
 /**
  *
@@ -64,8 +65,8 @@ public class HiloCoverArt extends Thread {
                     while (cont < x) {
 
                         // descomentar para ver el efecto
-//                                lbl1.setBounds(x2--, lbl1.getY(), 130, 130);
-//                                lbl2.setBounds(x--, lbl2.getY(), 130, 130);
+                                lbl1.setBounds(x2--, lbl1.getY(), 168, 168);
+                                lbl2.setBounds(x--, lbl2.getY(), 168, 168);
                         lbl2.setLocation(x--, lbl2.getY());
 //                                NewJFrame.this.repaint();
                         Thread.sleep(pauseMover);
@@ -74,7 +75,7 @@ public class HiloCoverArt extends Thread {
                 }
             }
         } catch (InterruptedException ex) {
-            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Hilo covert art interrumpido");
         }
     }
 }

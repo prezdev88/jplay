@@ -3,6 +3,8 @@ package jplay.model;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioSystem;
@@ -17,8 +19,9 @@ public class Cancion extends File {
     private String album;
     private int track;
     private long microseconds;
-    private File coverFile;
-    private ImageIcon coverImage;
+//    private File coverFile;
+    private List<ImageIcon> imagenes;
+    private ImageIcon defaultCover;
     private int cantidadReproducciones;
 
     public Cancion(String pathname) {
@@ -28,60 +31,74 @@ public class Cancion extends File {
         album = "Sin album";
         track = -1;
         cargar();
-        coverFile = null;
-        coverImage = null;
+//        coverFile = null;
+        imagenes = new ArrayList<>();
+        defaultCover = null;
         cantidadReproducciones = 0;
     }
-    
+
     /**
      * Aumenta el contador de reproducciones en uno
      */
-    public void aumentarContadorReproducciones(){
+    public void aumentarContadorReproducciones() {
         cantidadReproducciones++;
     }
 
     public int getCantidadReproducciones() {
         return cantidadReproducciones;
     }
+
+//    public File getCoverFile() {
+//        return coverFile;
+//    }
+//
+    public boolean hasImagenes() {
+        return !imagenes.isEmpty();
+    }
+
+    public void setImagenes(List<ImageIcon> imagenes) {
+        this.imagenes = imagenes;
+    }
+
+    public List<ImageIcon> getImagenes() {
+        return imagenes;
+    }
     
     
+    
+//
+//    public void setCoverFile(File caratula) {
+//        this.coverFile = caratula;
+//        this.coverImage = null;
+//    }
+//
+//    public ImageIcon getCoverImage() {
+//        if (this.coverFile != null) { // si el archivo de la caratula tiene algo, 
+//            //quiere decir que existe una caratula en la ruta de la canción
+//            Image image = new ImageIcon(coverFile.getPath()).getImage();
+//
+//            return new ImageIcon(
+//                    image.getScaledInstance(
+//                            (int) Recurso.CARATULA.getWidth(),
+//                            (int) Recurso.CARATULA.getHeight(),
+//                            Image.SCALE_SMOOTH)
+//            );
+//        } else { // si no, quiere decir que debo cargar la caratula por defecto
+//
+//            return new ImageIcon(this.coverImage.getImage().getScaledInstance(
+//                    (int) Recurso.CARATULA.getWidth(),
+//                    (int) Recurso.CARATULA.getHeight(),
+//                    Image.SCALE_SMOOTH));
+//        }
+//    }
+//
 
-    public File getCoverFile() {
-        return coverFile;
+    public ImageIcon getDefaultCover(){
+        return this.defaultCover;
     }
-
-    public boolean hasCover() {
-        return coverFile != null;
-    }
-
-    public void setCoverFile(File caratula) {
-        this.coverFile = caratula;
-        this.coverImage = null;
-    }
-
-    public ImageIcon getCoverImage() {
-        if (this.coverFile != null) { // si el archivo de la caratula tiene algo, 
-            //quiere decir que existe una caratula en la ruta de la canción
-            Image image = new ImageIcon(coverFile.getPath()).getImage();
-
-            return new ImageIcon(
-                    image.getScaledInstance(
-                            (int) Recurso.CARATULA.getWidth(),
-                            (int) Recurso.CARATULA.getHeight(),
-                            Image.SCALE_SMOOTH)
-            );
-        } else { // si no, quiere decir que debo cargar la caratula por defecto
-
-            return new ImageIcon(this.coverImage.getImage().getScaledInstance(
-                    (int) Recurso.CARATULA.getWidth(),
-                    (int) Recurso.CARATULA.getHeight(),
-                    Image.SCALE_SMOOTH));
-        }
-    }
-
-    public void setCaratulaIcon(Image image) {
-        this.coverImage = new ImageIcon(image);
-        this.coverFile = null;
+    
+    public void setDefaultCover(Image image) {
+        this.defaultCover = new ImageIcon(image);
     }
 
     private void cargar() {

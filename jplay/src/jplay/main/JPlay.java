@@ -25,7 +25,6 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -35,6 +34,8 @@ import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -59,7 +60,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
     private JPopupMenu popUpBiblio;
     private final String NOMBRE = "JPlay";
     private final String VERSION = "0.2a";
-    private final boolean save = true;
+    private final boolean SAVE = false; // ESTO ES SOLO PARA DEBUGGING
     private List<Cancion> lFiltrada;
     private boolean isPlay;
     private boolean isStop;
@@ -68,7 +69,12 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
     private long bytesActual;
     private int nextRandom;
     private Image icono;
+    private HiloCoverArt hiloCovertArt; // hilo para animación de caratulas
+    /*por ahora, pensar bien donde colocar esto*/
+    private int pauseMover = 3;// el pause para mover la x de la foto
+    private int pauseEntreFotos = 3000; // pause entre cada fotos
 
+    /*por ahora, pensar bien donde colocar esto*/
     public JPlay() {
         initComponents();
         canciones = new ArrayList<>();
@@ -83,7 +89,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 
         btnCancelarCarga.setEnabled(false);
         indiceActual = -1;
-        if (save) {
+        if (SAVE) {
             cargarSave();
         }
 
@@ -123,11 +129,12 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 (int) Recurso.CARATULA.getWidth(),
                 (int) Recurso.CARATULA.getHeight(),
                 Image.SCALE_SMOOTH);
-        lblCaratula.setIcon(new ImageIcon(icono));
+//        lblCaratula.setIcon(new ImageIcon(icono));
+        lbl1.setIcon(new ImageIcon(icono));
 
         this.setBounds(0, 0, 1024, 600);
         this.setLocationRelativeTo(null);
-
+        hiloCovertArt = null;
     }
 
     // http://stackoverflow.com/questions/13516730/disable-enter-key-from-moving-down-a-row-in-jtable
@@ -167,7 +174,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         togVol = new javax.swing.JToggleButton();
         lblInfoCarga = new javax.swing.JLabel();
         btnCancelarCarga = new javax.swing.JButton();
-        lblCaratula = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         btnPause = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -179,6 +185,9 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         jPanel5 = new javax.swing.JPanel();
         lblTema = new javax.swing.JLabel();
         lblArtista = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        lbl2 = new javax.swing.JLabel();
+        lbl1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(254, 254, 254));
@@ -401,8 +410,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
             }
         });
 
-        lblCaratula.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-
         jPanel4.setBackground(new java.awt.Color(254, 254, 254));
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -483,7 +490,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                         .addComponent(opAleatorio)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(opRepetirCancion)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(85, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -532,6 +539,15 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jPanel6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lbl2.setText("jLabel3");
+        jPanel6.add(lbl2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 0, 168, 168));
+
+        lbl1.setText("jLabel2");
+        jPanel6.add(lbl1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 168, 168));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -546,8 +562,8 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                         .addComponent(btnCancelarCarga, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(txtBuscar)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblCaratula, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(13, 13, 13)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -562,22 +578,23 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(slideVol, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(togVol, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(8, 8, 8)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblCaratula, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(slideVol, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(togVol, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(8, 8, 8)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(slideTime, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblInfoCarga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -835,7 +852,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        if (save) {
+        if (SAVE) {
             try {
                 Guardar g = new Guardar();
 
@@ -1143,14 +1160,16 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
+    private javax.swing.JLabel lbl1;
+    private javax.swing.JLabel lbl2;
     private javax.swing.JLabel lblArtista;
-    private javax.swing.JLabel lblCaratula;
     private javax.swing.JLabel lblInfoCarga;
     private javax.swing.JLabel lblTema;
     private javax.swing.JCheckBox opAleatorio;
@@ -1542,42 +1561,56 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         try {
 //            Cancion c = new Cancion(f.getPath());
 
-            if (!cancion.hasCover()) {
-                System.out.println("La cación no tiene caratula!");
-                List<File> fotos = Recurso.getFotos(cancion);
+            if (!cancion.hasImagenes()) {
+                /*la cancion que quiere reproducir no tiene una lista de fotos*/
+                System.out.println("La canción no tiene imágenes asociadas!");
+                List<ImageIcon> fotos = Recurso.getFotos(cancion);
                 System.out.println("Se han encontrado " + fotos.size() + " foto");
 
-                Collections.sort(fotos, new Comparator<File>() {
-
-                    @Override
-                    public int compare(File o1, File o2) {
-                        if (o1.length() < o2.length()) {
-                            return 1;
-                        } else if (o1.length() > o2.length()) {
-                            return -1;
-                        } else {
-                            return 0;
-                        }
-                    }
-                });
-
                 if (!fotos.isEmpty()) {
-                    File arPrimeraFoto = fotos.get(0);
-                    cancion.setCoverFile(arPrimeraFoto);
-                    System.out.println("Se añadió una caratula desde la ruta de la canción");
+                    /*
+                    si la lista de fotos no esta vacía por lo menos hay una
+                    para poder comenzar el hilo de las caratulas
+                     */
+                    cancion.setImagenes(fotos);
+                    System.out.println("Se añadió una lista de fotos a la cancion [" + fotos.size() + " fotos]");
                 } else {
+                    /*Establezco la caratula por defecto (el disco)*/
                     icono = icono.getScaledInstance(
                             (int) Recurso.CARATULA.getWidth(),
                             (int) Recurso.CARATULA.getHeight(),
                             Image.SCALE_SMOOTH);
-                    cancion.setCaratulaIcon(icono);
+                    cancion.setDefaultCover(icono);
                     System.out.println("Se añadió una caratula POR DEFECTO");
                 }
             } else {
                 System.out.println("La canción tiene caratula!");
             }
 
-            lblCaratula.setIcon(cancion.getCoverImage());
+            if (cancion.getDefaultCover() != null) {
+//                lblCaratula.setIcon(cancion.getDefaultCover());
+                if (hiloCovertArt != null) {
+                    hiloCovertArt.interrupt();
+                }
+                lbl2.setIcon(cancion.getDefaultCover());
+                lbl1.setIcon(cancion.getDefaultCover());
+            } else {
+                //quiere decir que la cancion tiene una lista de fotos
+
+                //por ahora sólo cargo la primera foto
+//                lblCaratula.setIcon(cancion.getImagenes().get(0));
+                if (hiloCovertArt != null) {
+                    hiloCovertArt.interrupt();
+                }
+
+                hiloCovertArt = new HiloCoverArt(
+                        lbl1, lbl2,
+                        cancion.getImagenes(),
+                        pauseMover,
+                        pauseEntreFotos);
+
+                hiloCovertArt.start();
+            }
 //            lblCaratula.setIcon(new ImageIcon(icono)); 
 
             if (reproductor != null) {
@@ -1608,17 +1641,24 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
             treeSong.updateUI();
 
             boolean soloUno = true;
+            ImageIcon caratula;
+            if (cancion.getDefaultCover() != null) // si la cancion tiene un default cover
+            {
+                caratula = cancion.getDefaultCover();
+            } else // si no, pongo la primera imagen que encontro
+            {
+                caratula = cancion.getImagenes().get(0);
+            }
+
             Notification.show(
                     cancion.getAutor(),
                     cancion.getNombre(),
-                    cancion.getCoverImage(),
+                    caratula,
                     8000, // Segundos en milis
                     new Dimension(100, 100),
                     soloUno);
 
 //            System.out.println("Esta en biblioteca: "+biblioteca.estaCancion(cancion));
-
-            
 //            System.out.println("-----------------------------------------");
 //            System.out.println("LISTADO DE MÁS REPRODUCCIONES");
 //            System.out.println("-----------------------------------------");
