@@ -26,7 +26,7 @@ public class Cancion extends File {
 
     public Cancion(String pathname) {
         super(pathname);
-        nombre = this.getName();
+        nombre = getName();
         autor = "Sin autor";
         album = "Sin album";
         track = -1;

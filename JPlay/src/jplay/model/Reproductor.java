@@ -6,9 +6,9 @@ import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
 
 public class Reproductor {
-    private BasicPlayer player;
-    private BasicController control;
-    private Cancion actual;
+    private final BasicPlayer player;
+    private final BasicController control;
+    private final Cancion actual;
     
     public Reproductor(Cancion c, BasicPlayerListener... listeners) throws BasicPlayerException{
         actual = c;
