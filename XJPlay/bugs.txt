@@ -51,4 +51,6 @@ Ideas:
 - Guardar el arbol de alguna manera
 - Fondo difuminado según carátula
 - Crear listas de reproducción
-- 
+- Pensar en como solucionar el tema de los iconos. Mi idea es cargar los iconos
+una vez abierto el sistema. Esto lo haré para que pase nada cuando le cambie 
+el nombre a un paquete que afecte a los iconos.

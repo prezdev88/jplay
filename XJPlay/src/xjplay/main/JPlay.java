@@ -93,7 +93,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 
         isRandom = false;
 
-        crearArbol();
+        crearArbolExplorer();
         listenerClickDerechoSobreArbol();
         crearPopUpTree();
         crearPopUpBiblioteca();
@@ -391,7 +391,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         });
 
         togVol.setBackground(new java.awt.Color(255, 152, 0));
-        togVol.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jplay/recursos/iconos/material/ic_volume_up_white_24dp_1x.png"))); // NOI18N
+        togVol.setIcon(new javax.swing.ImageIcon(getClass().getResource("/xjplay/recursos/iconos/material/ic_volume_up_white_24dp_1x.png"))); // NOI18N
         togVol.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 togVolActionPerformed(evt);
@@ -414,7 +414,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         btnPause.setBackground(new java.awt.Color(76, 175, 80));
-        btnPause.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jplay/recursos/iconos/material/ic_play_arrow_white_24dp_1x.png"))); // NOI18N
+        btnPause.setIcon(new javax.swing.ImageIcon(getClass().getResource("/xjplay/recursos/iconos/material/ic_play_arrow_white_24dp_1x.png"))); // NOI18N
         btnPause.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPauseActionPerformed(evt);
@@ -422,7 +422,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         });
 
         jButton2.setBackground(new java.awt.Color(63, 81, 181));
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jplay/recursos/iconos/material/ic_skip_previous_white_24dp_1x.png"))); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/xjplay/recursos/iconos/material/ic_skip_previous_white_24dp_1x.png"))); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -430,7 +430,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         });
 
         jButton3.setBackground(new java.awt.Color(63, 81, 181));
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jplay/recursos/iconos/material/ic_skip_next_white_24dp_1x.png"))); // NOI18N
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/xjplay/recursos/iconos/material/ic_skip_next_white_24dp_1x.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -438,7 +438,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         });
 
         btnPause1.setBackground(new java.awt.Color(244, 67, 54));
-        btnPause1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jplay/recursos/iconos/material/ic_stop_white_24dp_1x.png"))); // NOI18N
+        btnPause1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/xjplay/recursos/iconos/material/ic_stop_white_24dp_1x.png"))); // NOI18N
         btnPause1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPause1ActionPerformed(evt);
@@ -446,7 +446,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         });
 
         btnExaminar.setBackground(new java.awt.Color(63, 81, 181));
-        btnExaminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jplay/recursos/iconos/material/ic_folder_open_white_24dp_1x.png"))); // NOI18N
+        btnExaminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/xjplay/recursos/iconos/material/ic_folder_open_white_24dp_1x.png"))); // NOI18N
         btnExaminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExaminarActionPerformed(evt);
@@ -1314,7 +1314,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         }
     }
 
-    private void crearArbol() {
+    private void crearArbolExplorer() {
         DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("raiz");
         File[] discos = File.listRoots();
 
@@ -1326,8 +1326,8 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         tree.setRootVisible(false);
 
         tree.setCellRenderer(new CellRenderExplorer(
-                        CellRenderExplorer.crearIcono("/jplay/recursos/iconos/1443349568_music.png"),
-                        CellRenderExplorer.crearIcono("/jplay/recursos/iconos/1443349768_folder.png")
+                        CellRenderExplorer.crearIcono(Ruta.ICONO_MUSIC),
+                        CellRenderExplorer.crearIcono(Ruta.ICONO_FOLDER)
                 )
         );
     }
@@ -1354,8 +1354,8 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 //        treeSong.expandRow(0);
 
         treeSong.setCellRenderer(new CellRenderCancionLista(
-                        CellRenderExplorer.crearIcono("/jplay/recursos/iconos/1453631419_icon-play.png"),
-                        CellRenderExplorer.crearIcono("/jplay/recursos/iconos/1453541047_emblem-cd.png")
+                        CellRenderExplorer.crearIcono(Ruta.ICONO_PLAY_ARBOL),
+                        CellRenderExplorer.crearIcono(Ruta.ICONO_CD_ARBOL)
                 )
         );
     }

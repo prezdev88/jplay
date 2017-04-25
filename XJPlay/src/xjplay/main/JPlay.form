@@ -336,7 +336,7 @@
                           <Color blue="0" green="98" red="ff" type="rgb"/>
                         </Property>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/jplay/recursos/iconos/material/ic_volume_up_white_24dp_1x.png"/>
+                          <Image iconType="3" name="/xjplay/recursos/iconos/material/ic_volume_up_white_24dp_1x.png"/>
                         </Property>
                       </Properties>
                       <Events>
@@ -436,7 +436,7 @@
                               <Color blue="50" green="af" red="4c" type="rgb"/>
                             </Property>
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                              <Image iconType="3" name="/jplay/recursos/iconos/material/ic_play_arrow_white_24dp_1x.png"/>
+                              <Image iconType="3" name="/xjplay/recursos/iconos/material/ic_play_arrow_white_24dp_1x.png"/>
                             </Property>
                           </Properties>
                           <Events>
@@ -449,7 +449,7 @@
                               <Color blue="b5" green="51" red="3f" type="rgb"/>
                             </Property>
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                              <Image iconType="3" name="/jplay/recursos/iconos/material/ic_skip_previous_white_24dp_1x.png"/>
+                              <Image iconType="3" name="/xjplay/recursos/iconos/material/ic_skip_previous_white_24dp_1x.png"/>
                             </Property>
                           </Properties>
                           <Events>
@@ -462,7 +462,7 @@
                               <Color blue="b5" green="51" red="3f" type="rgb"/>
                             </Property>
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                              <Image iconType="3" name="/jplay/recursos/iconos/material/ic_skip_next_white_24dp_1x.png"/>
+                              <Image iconType="3" name="/xjplay/recursos/iconos/material/ic_skip_next_white_24dp_1x.png"/>
                             </Property>
                           </Properties>
                           <Events>
@@ -475,7 +475,7 @@
                               <Color blue="36" green="43" red="f4" type="rgb"/>
                             </Property>
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                              <Image iconType="3" name="/jplay/recursos/iconos/material/ic_stop_white_24dp_1x.png"/>
+                              <Image iconType="3" name="/xjplay/recursos/iconos/material/ic_stop_white_24dp_1x.png"/>
                             </Property>
                           </Properties>
                           <Events>
@@ -488,7 +488,7 @@
                               <Color blue="b5" green="51" red="3f" type="rgb"/>
                             </Property>
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                              <Image iconType="3" name="/jplay/recursos/iconos/material/ic_folder_open_white_24dp_1x.png"/>
+                              <Image iconType="3" name="/xjplay/recursos/iconos/material/ic_folder_open_white_24dp_1x.png"/>
                             </Property>
                           </Properties>
                           <Events>
