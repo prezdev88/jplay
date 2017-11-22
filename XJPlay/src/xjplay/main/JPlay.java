@@ -50,6 +50,7 @@ import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
+import xjplay.model.rules.Rules;
 import xjplay.model.tree.CellRenderExplorer;
 import xjplay.model.tree.CellRenderCancionLista;
 import xjplay.recursos.Recurso;
@@ -76,10 +77,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
     private int nextRandom;
     private Image icono;
     private HiloCoverArt hiloCovertArt; // hilo para animación de caratulas
-    /*por ahora, pensar bien donde colocar esto*/
-    private int pauseMover = 3;// el pause para mover la x de la foto
-    private int pauseEntreFotos = 3000; // pause entre cada fotos
-    /*por ahora, pensar bien donde colocar esto*/
 
     private int totalBytes; // GUARDA EL TOTAL DE DURACIÓN DE LA CANCION EN MILIS
 
@@ -1019,8 +1016,9 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 Object o = node.getUserObject();
                 if (o instanceof Cancion) {
                     Cancion c = (Cancion) o;
-
+                    
                     indiceActual = canciones.indexOf(c);
+                    System.out.println("Índice actual: "+indiceActual);
                     reproducir(c);
                 }
             }
@@ -1050,7 +1048,11 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 Guardar g = (Guardar) IO.leerObjetoDesde(Ruta.SAVE);
 
                 canciones = g.canciones;
+                
+                System.out.println("Cantidad de canciones cargadas del save: "+canciones.size());
+                
                 indiceActual = g.indiceActual;
+                System.out.println("Índice actual: "+indiceActual);
                 cargarCancionesAListaGrafica();
                 imprimirTemaActual(0);
 
@@ -1619,8 +1621,8 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 hiloCovertArt = new HiloCoverArt(
                         lbl1, lbl2,
                         cancion.getImagenes(),
-                        pauseMover,
-                        pauseEntreFotos);
+                        Rules.PAUSE_MOVER,
+                        Rules.PAUSE_ENTRE_FOTOS);
 
                 hiloCovertArt.start();
             }
