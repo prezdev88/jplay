@@ -21,10 +21,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -35,6 +37,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
@@ -1016,9 +1019,9 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 Object o = node.getUserObject();
                 if (o instanceof Cancion) {
                     Cancion c = (Cancion) o;
-                    
+
                     indiceActual = canciones.indexOf(c);
-                    System.out.println("Índice actual: "+indiceActual);
+                    System.out.println("Índice actual: " + indiceActual);
                     reproducir(c);
                 }
             }
@@ -1048,16 +1051,42 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 Guardar g = (Guardar) IO.leerObjetoDesde(Ruta.SAVE);
 
                 canciones = g.canciones;
-                
-                System.out.println("Cantidad de canciones cargadas del save: "+canciones.size());
-                
+                biblioteca = (Biblioteca) IO.leerObjetoDesde(Ruta.BIBLIOTECA);
+
+                boolean e = true;
+
+                for (Cancion c : biblioteca.getCanciones()) {
+                    if (!c.exists()) {
+                        e = false;
+                        break;
+                    }
+                }
+
+                if (!e) {
+                    int cont = 0;
+                    if (JOptionPane.showConfirmDialog(this, "Se ha encontrado por lo menos 1 canción que no existe en la biblioteca. ¿Desea analizar la biblioteca completa?") == JOptionPane.YES_OPTION) {
+
+                        List<Cancion> cancBiblio = biblioteca.getCanciones();
+                        cargarCancionesABiblioteca(cancBiblio);
+                        for (Cancion c : cancBiblio) {
+                            if (!c.exists()) {
+                                cont++;
+                            }
+                        }
+
+                        int cant = biblioteca.removerNoExistentes();
+
+                        if (JOptionPane.showConfirmDialog(this, "Se han encontrado " + cont + " canciones que no existen. ¿Desea eliminarlas?") == JOptionPane.YES_OPTION) {
+                            JOptionPane.showMessageDialog(this, "Se han eliminado " + cant + " canciones de la biblioteca!", "Info", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+                }
+
+                System.out.println("Cantidad de canciones cargadas del save: " + canciones.size());
                 indiceActual = g.indiceActual;
-                System.out.println("Índice actual: "+indiceActual);
+                System.out.println("Índice actual: " + indiceActual);
                 cargarCancionesAListaGrafica();
                 imprimirTemaActual(0);
-
-                biblioteca = (Biblioteca) IO.leerObjetoDesde(Ruta.BIBLIOTECA);
-                cargarCancionesABiblioteca(biblioteca.getCanciones());
 
             } catch (IOException ex) {
                 Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
@@ -1328,9 +1357,9 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         tree.setRootVisible(false);
 
         tree.setCellRenderer(new CellRenderExplorer(
-                        CellRenderExplorer.crearIcono(Ruta.ICONO_MUSIC),
-                        CellRenderExplorer.crearIcono(Ruta.ICONO_FOLDER)
-                )
+                CellRenderExplorer.crearIcono(Ruta.ICONO_MUSIC),
+                CellRenderExplorer.crearIcono(Ruta.ICONO_FOLDER)
+        )
         );
     }
 
@@ -1356,9 +1385,9 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 //        treeSong.expandRow(0);
 
         treeSong.setCellRenderer(new CellRenderCancionLista(
-                        CellRenderExplorer.crearIcono(Ruta.ICONO_PLAY_ARBOL),
-                        CellRenderExplorer.crearIcono(Ruta.ICONO_CD_ARBOL)
-                )
+                CellRenderExplorer.crearIcono(Ruta.ICONO_PLAY_ARBOL),
+                CellRenderExplorer.crearIcono(Ruta.ICONO_CD_ARBOL)
+        )
         );
     }
 
@@ -1575,8 +1604,28 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
     private void reproducir(Cancion cancion) {
         try {
 //            Cancion c = new Cancion(f.getPath());
-
-            if (!cancion.hasImagenes()) {
+            if (!cancion.exists()) {
+                if (JOptionPane.showConfirmDialog(
+                        this,
+                        cancion.exists() + "[" + cancion.getNombre() + "] no encontrada. "
+                        + "¿Desea analizar la lista completa para eliminar los no encontrados?", "Error",
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    Iterator<Cancion> iterator = canciones.iterator();
+                    
+                    Cancion c;
+                    int cont = 0;
+                    while(iterator.hasNext()){
+                        c = iterator.next();
+                        
+                        if(!c.exists()){
+                            canciones.remove(c);
+                            cont++;
+                        }
+                    }
+                    
+                    JOptionPane.showMessageDialog(this, "Se han eliminado "+cont+" canciones de la lista.", "Info", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } else if (!cancion.hasImagenes()) {
                 /*la cancion que quiere reproducir no tiene una lista de fotos*/
                 System.out.println("La canción no tiene imágenes asociadas!");
                 List<ImageIcon> fotos = Recurso.getFotos(cancion);
@@ -1657,11 +1706,9 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 
             boolean soloUno = true;
             ImageIcon caratula;
-            if (cancion.getDefaultCover() != null) // si la cancion tiene un default cover
-            {
+            if (cancion.getDefaultCover() != null) { // si la cancion tiene un default cover
                 caratula = cancion.getDefaultCover();
-            } else // si no, pongo la primera imagen que encontro
-            {
+            } else {// si no, pongo la primera imagen que encontro
                 caratula = cancion.getImagenes().get(0);
             }
 
@@ -1672,7 +1719,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 //                    8000, // Segundos en milis
 //                    new Dimension(100, 100),
 //                    soloUno);
-
 //            System.out.println("Esta en biblioteca: "+biblioteca.estaCancion(cancion));
 //            System.out.println("-----------------------------------------");
 //            System.out.println("LISTADO DE MÁS REPRODUCCIONES");
@@ -1683,7 +1729,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 //            }
 //            System.out.println("-----------------------------------------");
         } catch (BasicPlayerException ex) {
-            Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Error al reproducir: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }

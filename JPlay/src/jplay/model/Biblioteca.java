@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -27,6 +28,22 @@ public class Biblioteca implements Serializable{
     
     public void remover(Cancion c){
         CANCIONES.remove(c);
+    }
+    
+    public int removerNoExistentes(){
+        Iterator<Cancion> iterator = CANCIONES.iterator();
+        Cancion c;
+        int cont = 0;
+        while(iterator.hasNext()){
+            c = iterator.next();
+            
+            if(!c.exists()){
+                this.remover(c);
+                cont++;
+            }
+        }
+        
+        return cont;
     }
     
     public boolean estaCancion(Cancion c){
