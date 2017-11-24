@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import xjplay.model.rules.Rules;
 
 public class Recurso {
 
@@ -14,8 +15,7 @@ public class Recurso {
 
     public static final Image ICONO_JPLAY = new ImageIcon(Recurso.class.getResource(Ruta.ICONO_JPLAY)).getImage();
 
-    public static final Dimension CARATULA = new Dimension(168, 168);
-    public static final Dimension MINI_CARATULA = new Dimension(24, 24);
+    
 
     public static List<ImageIcon> getFotos(File f) {
         List<ImageIcon> fotos = new ArrayList<>();
@@ -29,8 +29,8 @@ public class Recurso {
                 System.out.println("RUTA FOTO: "+archivo.getPath());
                 imageIcon = new ImageIcon(
                         image.getScaledInstance(
-                                (int)Recurso.CARATULA.getWidth(),
-                                (int)Recurso.CARATULA.getHeight(),
+                                (int)Rules.CARATULA.getWidth(),
+                                (int)Rules.CARATULA.getHeight(),
                                 Image.SCALE_SMOOTH)
                 );
                 fotos.add(imageIcon);

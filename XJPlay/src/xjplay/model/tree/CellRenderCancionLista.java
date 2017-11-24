@@ -16,6 +16,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import xjplay.main.JPlay;
 import jplay.model.Cancion;
+import xjplay.model.rules.Rules;
 import xjplay.recursos.Recurso;
 
 /**
@@ -42,52 +43,50 @@ public class CellRenderCancionLista extends JLabel implements TreeCellRenderer {
             fuente = Font.createFont(Font.TRUETYPE_FONT, Recurso.FUENTE_ROBOTO);
             fuente = fuente.deriveFont(Font.PLAIN, 14);
 
-            
             this.setFont(fuente);
             DefaultMutableTreeNode v = (DefaultMutableTreeNode) value;
             Object ob = v.getUserObject();
-            
+
             boolean isDiscoActual = false;
-            
+
             if (ob instanceof Cancion) {
 //                File f = (File) ob;
-                Cancion c = (Cancion)ob;
+                Cancion c = (Cancion) ob;
                 this.setText("       " + ob.toString());
-                if(c.hasImagenes()){
+                if (c.hasImagenes()) {
                     Image im = c.getImagenes().get(0).getImage().getScaledInstance(
-                            (int) Recurso.MINI_CARATULA.getWidth(),
-                            (int) Recurso.MINI_CARATULA.getHeight(),
+                            (int) Rules.MINI_CARATULA.getWidth(),
+                            (int) Rules.MINI_CARATULA.getHeight(),
                             Image.SCALE_SMOOTH);
-                    actualDiscIcon =new ImageIcon(im);
+                    actualDiscIcon = new ImageIcon(im);
                     setIcon(actualDiscIcon);
-                }else{
+                } else {
                     setIcon(null);
                 }
             } else if (ob instanceof String) {
                 this.setText(ob.toString());
                 setIcon(this.discIcon);
-                
+
                 if (JPlay.reproductor != null) {
                     Cancion actual = JPlay.reproductor.getCancion();
                     String disco = ob.toString();
-                    
-                    if (disco.equalsIgnoreCase(actual.getAutor()+" - "+actual.getAlbum())) {
+
+                    if (disco.equalsIgnoreCase(actual.getAutor() + " - " + actual.getAlbum())) {
                         isDiscoActual = true;
-                    } 
+                    }
                 }
             }
-            
-            
+
             boolean isCancionActual = false;
 
             if (JPlay.reproductor != null) {
                 if (ob instanceof Cancion) {
                     Cancion c = (Cancion) ob;
                     if (JPlay.reproductor.getCancion().equals(c)) {
-                        System.out.println("igual a "+c.getNombre());
+                        System.out.println("igual a " + c.getNombre());
                         isCancionActual = true;
                     }
-                } 
+                }
             }
 
             if (selected) {
@@ -97,25 +96,24 @@ public class CellRenderCancionLista extends JLabel implements TreeCellRenderer {
                 this.setForeground(Color.black);
                 this.setBackground(Color.white);
             }
-            
-            if(isCancionActual){
+
+            if (isCancionActual) {
 //                this.setForeground(Color.red);
 //                
-                if(actualDiscIcon != null){
-                    setIcon(actualDiscIcon);
-                }else{
-                    setIcon(playIcon);
-                }
+//                if(actualDiscIcon != null){
+//                    setIcon(actualDiscIcon);
+//                }else{
+//                    setIcon(playIcon);
+//                }
+                setIcon(playIcon);
                 
-                this.setText(">> "+this.getText().trim()+"");
+                this.setText(">> " + this.getText().trim() + "");
                 this.setFont(fuente.deriveFont(Font.BOLD, 14));
             }
-            
-            if(isDiscoActual){
+
+            if (isDiscoActual) {
                 this.setFont(fuente.deriveFont(Font.BOLD, 14));
             }
-            
-            
 
         } catch (FontFormatException ex) {
             Logger.getLogger(CellRenderCancionLista.class.getName()).log(Level.SEVERE, null, ex);

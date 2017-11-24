@@ -21,6 +21,7 @@ public class Cancion extends File {
     private long microseconds;
 //    private File coverFile;
     private List<ImageIcon> imagenes;
+    private ImageIcon lastFMImageCover;
     private ImageIcon defaultCover;
     private int cantidadReproducciones;
 
@@ -63,9 +64,26 @@ public class Cancion extends File {
     public List<ImageIcon> getImagenes() {
         return imagenes;
     }
+
+    public long getMicroseconds() {
+        return microseconds;
+    }
+
+    public void setMicroseconds(long microseconds) {
+        this.microseconds = microseconds;
+    }
+
+    public ImageIcon getLastFMImageCover() {
+        return lastFMImageCover;
+    }
+
+    public void setLastFMImageCover(ImageIcon lastFMImageCover) {
+        this.lastFMImageCover = lastFMImageCover;
+    }
     
-    
-    
+    public boolean hasLastFMImage(){
+        return lastFMImageCover != null;
+    }
 //
 //    public void setCoverFile(File caratula) {
 //        this.coverFile = caratula;
