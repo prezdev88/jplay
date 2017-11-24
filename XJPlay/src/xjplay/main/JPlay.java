@@ -21,7 +21,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,8 +42,6 @@ import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -307,7 +304,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 
         jPanel1.setBackground(new java.awt.Color(254, 254, 254));
 
-        txtBuscar.setFont(new java.awt.Font("Tahoma", 2, 12)); // NOI18N
+        txtBuscar.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
         txtBuscar.setForeground(new java.awt.Color(153, 153, 153));
         txtBuscar.setText("Buscar aquí tus canciones");
         txtBuscar.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -490,7 +487,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                         .addComponent(opAleatorio)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(opRepetirCancion)))
-                .addContainerGap(85, Short.MAX_VALUE))
+                .addContainerGap(469, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -567,12 +564,11 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(progress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 681, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 926, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(lblInfoCarga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCancelarCarga, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtBuscar)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(13, 13, 13)
@@ -584,11 +580,13 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                             .addComponent(slideVol, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addComponent(togVol, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
+            .addComponent(txtBuscar)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -603,9 +601,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(progress, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblInfoCarga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -994,14 +990,14 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 
     private void txtBuscarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBuscarFocusLost
         if (txtBuscar.getText().trim().equals("")) {
-            txtBuscar.setFont(new java.awt.Font("Tahoma", Font.ITALIC, 12)); // NOI18N
+            txtBuscar.setFont(new java.awt.Font("Tahoma", Font.ITALIC, Rules.FONT_SIZE_SEARCH)); // NOI18N
             txtBuscar.setForeground(new java.awt.Color(153, 153, 153));
             txtBuscar.setText("Buscar aquí tus canciones");
         }
     }//GEN-LAST:event_txtBuscarFocusLost
 
     private void txtBuscarFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBuscarFocusGained
-        txtBuscar.setFont(new java.awt.Font("Tahoma", Font.PLAIN, 12)); // NOI18N
+        txtBuscar.setFont(new java.awt.Font("Tahoma", Font.PLAIN, Rules.FONT_SIZE_SEARCH)); // NOI18N
         txtBuscar.setForeground(Color.black);
         txtBuscar.setText("");
 //        txtBuscar.setSelectionStart(0);
@@ -1086,6 +1082,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 indiceActual = g.indiceActual;
                 System.out.println("Índice actual: " + indiceActual);
                 cargarCancionesAListaGrafica();
+                cargarCancionesABiblioteca(biblioteca.getCanciones());
                 imprimirTemaActual(0);
 
             } catch (IOException ex) {

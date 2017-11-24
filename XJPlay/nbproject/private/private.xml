@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="9">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="10">
         <file>
             <url>src/jplay/main/JPlay.java</url>
             <bookmark id="8">
@@ -11,6 +11,14 @@
             <bookmark id="9">
                 <name/>
                 <line>1544</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/xjplay/main/JPlay.java</url>
+            <bookmark id="10">
+                <name/>
+                <line>1086</line>
                 <key/>
             </bookmark>
         </file>
@@ -25,5 +33,10 @@
         </group>
         <group name="MIO"/>
         <group/>
+        <group name="POO_1">
+            <file>file:/home/prez/Escritorio/GIT/jplay/XJPlay/lastFM_API</file>
+            <file>file:/home/prez/Escritorio/GIT/jplay/XJPlay/src/xjplay/main/JPlay.java</file>
+            <file>file:/home/prez/Escritorio/GIT/jplay/XJPlay/src/xjplay/model/lastFM/LastFM.java</file>
+        </group>
     </open-files>
 </project-private>
