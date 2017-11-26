@@ -10,6 +10,7 @@ import jplay.model.Cancion;
 import xjplay.utils.Validar;
 import xjplay.save.IO;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import xjplay.model.tableModel.TMCancion;
@@ -50,6 +51,7 @@ import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
+import nicon.notify.core.Notification;
 import xjplay.model.lastFM.LastFM;
 import xjplay.model.rules.Rules;
 import xjplay.model.tree.CellRenderExplorer;
@@ -140,10 +142,17 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 Image.SCALE_SMOOTH);
 //        lblCaratula.setIcon(new ImageIcon(icono));
         lbl1.setIcon(new ImageIcon(icono));
+        lbl1.setText(null);
+        lbl2.setText(null);
 
-        this.setBounds(0, 0, 1024, 600);
-        this.setLocationRelativeTo(null);
+        setBounds(0, 0, 1024, 600);
+        setLocationRelativeTo(null);
         hiloCovertArt = null;
+        
+        progress.setStringPainted(true);
+        
+//        jSplitPane1.setDividerLocation(0.0);
+//        jSplitPane2.setDividerLocation(1);
 
 //        inicializarBarraProgreso();
     }
@@ -288,7 +297,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
             .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanel3Layout.setVerticalGroup(
@@ -1233,7 +1242,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         if (imprimirBarraDeProgreso) {
 //            progress.setStringPainted(true);
             progress.setValue(readedBytes);
-//            progress.setString(readedBytes + " bytes / " + totalBytes + " bytes");
+            progress.setString(readedBytes + " bytes / " + totalBytes + " bytes");
         }
 
     }
@@ -1647,10 +1656,10 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                         System.out.println("Se añadió una image desde LastFM!");
                     } catch (Exception ex) {
                         /*Establezco la caratula por defecto (el disco)*/
-                        icono = icono.getScaledInstance(
-                                (int) Rules.CARATULA.getWidth(),
-                                (int) Rules.CARATULA.getHeight(),
-                                Image.SCALE_SMOOTH);
+//                        icono = icono.getScaledInstance(
+//                                (int) Rules.CARATULA.getWidth(),
+//                                (int) Rules.CARATULA.getHeight(),
+//                                Image.SCALE_SMOOTH);
                         cancion.setDefaultCover(icono);
                         System.out.println("Se añadió una caratula POR DEFECTO --> " + ex.getMessage());
                     }
@@ -1672,8 +1681,8 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                     hiloCovertArt.interrupt();
                 }
                 ImageIcon image = cancion.getLastFMImageCover();
-                lbl2.setIcon(image);
-                lbl1.setIcon(image);
+//                lbl2.setIcon(image);
+//                lbl1.setIcon(image);
             } else {
                 //quiere decir que la cancion tiene una lista de fotos
 
@@ -1685,9 +1694,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 
                 hiloCovertArt = new HiloCoverArt(
                         lbl1, lbl2,
-                        cancion.getImagenes(),
-                        Rules.PAUSE_MOVER,
-                        Rules.PAUSE_ENTRE_FOTOS);
+                        cancion.getImagenes());
 
                 hiloCovertArt.start();
             }
@@ -1722,22 +1729,23 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 //            );
             treeSong.updateUI();
 
-//            boolean soloUno = true;
-//            ImageIcon caratula;
-//            if (cancion.getDefaultCover() != null) { // si la cancion tiene un default cover
-//                caratula = cancion.getDefaultCover();
-//            } else if(cancion.hasLastFMImage()){
-//                caratula = cancion.getLastFMImageCover();
-//            } else{// si no, pongo la primera imagen que encontro
-//                caratula = cancion.getImagenes().get(0);
-//            }
-//            Notification.show(
-//                    cancion.getAutor(),
-//                    cancion.getNombre(),
-//                    caratula,
-//                    8000, // Segundos en milis
-//                    new Dimension(100, 100),
-//                    soloUno);
+            boolean soloUno = true;
+            ImageIcon caratula;
+            if (cancion.getDefaultCover() != null) { // si la cancion tiene un default cover
+                caratula = cancion.getDefaultCover();
+            } else if(cancion.hasLastFMImage()){
+                caratula = cancion.getLastFMImageCover();
+            } else{// si no, pongo la primera imagen que encontro
+                caratula = cancion.getImagenes().get(0);
+            }
+            Notification.show(
+                cancion.getAutor(),
+                cancion.getNombre(),
+                caratula,
+                8000, // Segundos en milis
+                new Dimension(100, 100),
+                soloUno
+            );
 //            System.out.println("Esta en biblioteca: "+biblioteca.estaCancion(cancion));
 //            System.out.println("-----------------------------------------");
 //            System.out.println("LISTADO DE MÁS REPRODUCCIONES");
@@ -1899,7 +1907,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 
         final float value = totalBytes * ((float) porc / (float) 100);
         progress.setValue((int) value);
-//            progress.setString(value + " bytes");
+        progress.setString(value + " bytes");
 //        progress.setString(porc + "%");
 
         if (seek) {

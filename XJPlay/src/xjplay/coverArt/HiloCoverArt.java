@@ -8,6 +8,7 @@ package xjplay.coverArt;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import xjplay.model.rules.Rules;
 /**
  *
  * @author pperezp
@@ -16,15 +17,11 @@ public class HiloCoverArt extends Thread {
     private JLabel lbl1;
     private JLabel lbl2;
     private List<ImageIcon> imagenes;
-    private int pauseMover;// el pause para mover la x de la foto
-    private int pauseEntreFotos; // pause entre cada fotos
 
-    public HiloCoverArt(JLabel lbl1, JLabel lbl2, List<ImageIcon> imagenes, int pauseMover, int pauseEntreFotos) {
+    public HiloCoverArt(JLabel lbl1, JLabel lbl2, List<ImageIcon> imagenes) {
         this.lbl1 = lbl1;
         this.lbl2 = lbl2;
         this.imagenes = imagenes;
-        this.pauseMover = pauseMover;
-        this.pauseEntreFotos = pauseEntreFotos;
     }
     
     @Override
@@ -36,13 +33,11 @@ public class HiloCoverArt extends Thread {
         int anchoFoto = 130;
 
         try {
-            lbl1.setIcon(imagenes.get(0));
+//            lbl1.setIcon(imagenes.get(0));
             while (true) {
                 for (int i = 0; i < imagenes.size(); i++) {
-                    Thread.sleep(pauseEntreFotos);
-
                     lbl1.setIcon(imagenes.get(i));
-
+                    Thread.sleep(Rules.PAUSE_ENTRE_FOTOS);
                     // si eñ siguiente es mayor o igual al limite
                     // quiere decir que me salgo del rango
                     // por ende, dejo la primera foto
@@ -50,7 +45,7 @@ public class HiloCoverArt extends Thread {
                         lbl2.setIcon(imagenes.get(0));
                     } else {
                         // de lo contrario, dejo la foto siguiente en 
-                        // el label 2sjkdfhalskj sdklf s
+                        // el label 2
                         lbl2.setIcon(imagenes.get(i + 1));
                     }
 
@@ -59,13 +54,12 @@ public class HiloCoverArt extends Thread {
                     cont = 0;
 
                     while (cont < x) {
-
                         // descomentar para ver el efecto
                                 lbl1.setBounds(x2--, lbl1.getY(), 168, 168);
                                 lbl2.setBounds(x--, lbl2.getY(), 168, 168);
                         lbl2.setLocation(x--, lbl2.getY());
 //                                NewJFrame.this.repaint();
-                        Thread.sleep(pauseMover);
+                        Thread.sleep(Rules.PAUSE_MOVER);
                     }
 
                 }

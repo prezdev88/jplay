@@ -53,7 +53,6 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
-        jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jplay/recursos/iconos/1443343087_volume-up.png"))); // NOI18N
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jToggleButton1ActionPerformed(evt);
@@ -169,10 +168,8 @@ public class NewJFrame extends javax.swing.JFrame {
         imagenes.add(ii4);
         imagenes.add(ii5);
         
-        int pauseMover = 3;// el pause para mover la x de la foto
-        int pauseEntreFotos = 5000; // pause entre cada fotos
         
-        HiloCoverArt hca = new HiloCoverArt(lbl1, lbl2, imagenes, pauseMover,pauseEntreFotos);
+        HiloCoverArt hca = new HiloCoverArt(lbl1, lbl2, imagenes);
         hca.start();
     }//GEN-LAST:event_jButton1ActionPerformed
 

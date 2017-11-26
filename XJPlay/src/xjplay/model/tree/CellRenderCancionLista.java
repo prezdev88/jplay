@@ -5,7 +5,6 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Image;
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,10 +59,17 @@ public class CellRenderCancionLista extends JLabel implements TreeCellRenderer {
                             Image.SCALE_SMOOTH);
                     actualDiscIcon = new ImageIcon(im);
                     setIcon(actualDiscIcon);
+                } else if (c.hasLastFMImage()) {
+                    Image im = c.getLastFMImageCover().getImage().getScaledInstance(
+                            (int) Rules.MINI_CARATULA.getWidth(),
+                            (int) Rules.MINI_CARATULA.getHeight(),
+                            Image.SCALE_SMOOTH);
+                    actualDiscIcon = new ImageIcon(im);
+                    setIcon(actualDiscIcon);
                 } else {
                     setIcon(null);
                 }
-            } else if (ob instanceof String) {
+            } else if (ob instanceof String) { // es un disco
                 this.setText(ob.toString());
                 setIcon(this.discIcon);
 
@@ -100,13 +106,11 @@ public class CellRenderCancionLista extends JLabel implements TreeCellRenderer {
             if (isCancionActual) {
 //                this.setForeground(Color.red);
 //                
-//                if(actualDiscIcon != null){
-//                    setIcon(actualDiscIcon);
-//                }else{
-//                    setIcon(playIcon);
-//                }
-                setIcon(playIcon);
-                
+                if (actualDiscIcon == null) {
+                    setIcon(playIcon);
+                }
+//                setIcon(playIcon);
+
                 this.setText(">> " + this.getText().trim() + "");
                 this.setFont(fuente.deriveFont(Font.BOLD, 14));
             }

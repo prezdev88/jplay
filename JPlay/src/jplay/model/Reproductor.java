@@ -1,6 +1,5 @@
 package jplay.model;
 
-import java.io.FileNotFoundException;
 import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayer;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
