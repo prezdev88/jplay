@@ -12,26 +12,28 @@ import java.util.List;
  * @author pperezp
  */
 public class Biblioteca implements Serializable{
-    private final List<Cancion> CANCIONES;
+    private List<Cancion> canciones;
+    private List<Album> albums;
     
     public Biblioteca(){
-        CANCIONES = new ArrayList<>();
+        albums = new ArrayList<>();
+        canciones = new ArrayList<>();
     }
-
-//    public Biblioteca(List<Cancion> canciones) {
-//        this.CANCIONES = canciones;
-//    }
+    
+    public void add(Cancion c){
+        this.canciones.add(c);
+    }
     
     public List<Cancion> getCanciones() {
-        return CANCIONES;
+        return canciones;
     }
     
     public void remover(Cancion c){
-        CANCIONES.remove(c);
+        canciones.remove(c);
     }
     
     public int removerNoExistentes(){
-        Iterator<Cancion> iterator = CANCIONES.iterator();
+        Iterator<Cancion> iterator = canciones.iterator();
         Cancion c;
         int cont = 0;
         while(iterator.hasNext()){
@@ -47,13 +49,13 @@ public class Biblioteca implements Serializable{
     }
     
     public boolean estaCancion(Cancion c){
-        return CANCIONES.contains(c);
+        return canciones.contains(c);
     }
     
     public List<Cancion> getCancionesMasReproducidas(){
         List<Cancion> topCanciones = new ArrayList<>();
         
-        for(Cancion c : CANCIONES){
+        for(Cancion c : canciones){
             if(c.getCantidadReproducciones() != 0){
                 topCanciones.add(c);
             }
@@ -90,4 +92,45 @@ public class Biblioteca implements Serializable{
 //        
 //        return null;
 //    }
+    
+    public void procesarAlbums(){
+        for (Cancion cancion : canciones) {
+            addToAlbum(cancion);
+        }
+        
+        printAlbums();
+    }
+
+    private void addToAlbum(Cancion c) {
+        boolean encontrado = false;
+        for (Album a : albums) {
+            if(a.getName().trim().equalsIgnoreCase(c.getAlbum().trim())){
+                a.addCancion(c);
+                encontrado = true;
+                break;
+            }
+        }
+        
+        if(!encontrado){
+            Album a = new Album(c.getAutor(), c.getAlbum());
+            a.addCancion(c);
+            
+            albums.add(a);
+        }
+    }
+    
+    private void printAlbums(){
+        for (Album album : albums) {
+            System.out.println(album);
+        }
+    }
+    
+    public Album getAlbum(Cancion c){
+        for (Album a : albums) {
+            if(a.existCancion(c)){
+                return a;
+            }
+        }
+        return null;
+    }
 }

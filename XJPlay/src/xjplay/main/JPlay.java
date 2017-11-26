@@ -51,6 +51,7 @@ import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
+import jplay.model.Album;
 import nicon.notify.core.Notification;
 import xjplay.model.lastFM.LastFM;
 import xjplay.model.rules.Rules;
@@ -148,12 +149,11 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         setBounds(0, 0, 1024, 600);
         setLocationRelativeTo(null);
         hiloCovertArt = null;
-        
+
         progress.setStringPainted(true);
-        
+
 //        jSplitPane1.setDividerLocation(0.0);
 //        jSplitPane2.setDividerLocation(1);
-
 //        inicializarBarraProgreso();
     }
 
@@ -653,7 +653,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 canciones = new ArrayList<>();
                 for (File f : ar) {
                     try {
-                        cargarCanciones(f, canciones);
+                        cargarCancionesALista(f);
                     } catch (IOException ex) {
                         Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -1154,18 +1154,29 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
      * el arbol con el click secundario
      *
      * @param raiz
-     * @param ar
      */
-    private void cargarCanciones(File ar, List<Cancion> lista) throws IOException, InterruptedException {
-        if (ar.listFiles() != null) {
-            for (File a : ar.listFiles()) {
+    private void cargarCancionesABiblioteca(File raiz) throws IOException, InterruptedException {
+        if (raiz.listFiles() != null) {
+            for (File a : raiz.listFiles()) {
                 if (a.isDirectory()) {
-//                    cargarCancionesEnLista(ar.listFiles(), lista);
-                    cargarCanciones(a, lista);
+                    cargarCancionesABiblioteca(a);
                 } else if (Validar.isCancion(a)) {
                     Cancion c = new Cancion(a.getPath());
+                    biblioteca.add(c);
+                    lblInfoCarga.setText("Agregando " + c);
+                }
+            }
+        }
+    }
 
-                    agregarCancion(c, lista);
+    private void cargarCancionesALista(File raiz) throws IOException, InterruptedException {
+        if (raiz.listFiles() != null) {
+            for (File a : raiz.listFiles()) {
+                if (a.isDirectory()) {
+                    cargarCancionesALista(a);
+                } else if (Validar.isCancion(a)) {
+                    Cancion c = new Cancion(a.getPath());
+                    canciones.add(c);
                 }
             }
         }
@@ -1373,15 +1384,13 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
     private void cargarArbolConCanciones() {
         DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("raiz");
 
-        List<String> discos = getNombreDiscos();
+        List<Album> albumes = getDiscos();
 
-        for (String nombreDisco : discos) {
-            DefaultMutableTreeNode disco = new DefaultMutableTreeNode(nombreDisco);
+        for (Album a : albumes) {
+            DefaultMutableTreeNode disco = new DefaultMutableTreeNode(a);
 
-            for (Cancion cancion : canciones) {
-                if (nombreDisco.equalsIgnoreCase(cancion.getAutor() + " - " + cancion.getAlbum())) {
-                    disco.add(new DefaultMutableTreeNode(cancion));
-                }
+            for (Cancion cancion : a.getCanciones()) {
+                disco.add(new DefaultMutableTreeNode(cancion));
             }
 
             raiz.add(disco);
@@ -1392,10 +1401,10 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 //        treeSong.expandRow(0);
 
         treeSong.setCellRenderer(
-            new CellRenderCancionLista(
-                CellRenderExplorer.crearIcono(Ruta.ICONO_PLAY_ARBOL),
-                CellRenderExplorer.crearIcono(Ruta.ICONO_CD_ARBOL)
-            )
+                new CellRenderCancionLista(
+                        CellRenderExplorer.crearIcono(Ruta.ICONO_PLAY_ARBOL),
+                        CellRenderExplorer.crearIcono(Ruta.ICONO_CD_ARBOL)
+                )
         );
     }
 
@@ -1445,7 +1454,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                     public void run() {
                         btnCancelarCarga.setEnabled(true);
                         try {
-                            cargarCanciones(f, canciones);
+                            cargarCancionesALista(f);
                             cargarCancionesAListaGrafica();
                         } catch (IOException ex) {
                             Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
@@ -1469,7 +1478,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                         try {
                             File f = getSelectedTreeFile();
                             try {
-                                cargarCanciones(f, canciones);
+                                cargarCancionesALista(f);
                                 cargarCancionesAListaGrafica();
                             } catch (InterruptedException ex) {
                                 Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
@@ -1496,11 +1505,12 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                         try {
                             File f = getSelectedTreeFile();
                             try {
-                                cargarCanciones(f, biblioteca.getCanciones());
+                                cargarCancionesABiblioteca(f);
                             } catch (InterruptedException ex) {
                                 Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             cargarCancionesABiblioteca(biblioteca.getCanciones());
+                            biblioteca.procesarAlbums();
                         } catch (IOException ex) {
                             Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -1562,18 +1572,18 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         });
 //        listaCanciones.setModel(new LMCancion(canciones));
         // sin titulos las tabla
-        tablaCanciones.getTableHeader().setUI(null);
-        tablaCanciones.setRowHeight(20);
-        tablaCanciones.setModel(new TMCancion(canciones));
+//        tablaCanciones.getTableHeader().setUI(null);
+//        tablaCanciones.setRowHeight(20);
+//        tablaCanciones.setModel(new TMCancion(canciones));
 
         cargarArbolConCanciones();
-
-        tablaCanciones.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-        tablaCanciones.getColumnModel().getColumn(0).setPreferredWidth(300);
+//
+//        tablaCanciones.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+//        tablaCanciones.getColumnModel().getColumn(0).setPreferredWidth(300);
         /**/
-        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-        rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
-        tablaCanciones.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
+//        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+//        rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+//        tablaCanciones.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
         /**/
 
         btnCancelarCarga.setEnabled(false);
@@ -1609,99 +1619,17 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         btnCancelarCarga.setEnabled(false);
     }
 
-    private void reproducir(Cancion cancion) {
+    private void reproducir(final Cancion cancion) {
         try {
-//            Cancion c = new Cancion(f.getPath());
-            if (!cancion.exists()) { // si canción no existe
-                if (JOptionPane.showConfirmDialog(
-                        this,
-                        cancion.exists() + "[" + cancion.getNombre() + "] no encontrada. "
-                        + "¿Desea analizar la lista completa para eliminar los no encontrados?", "Error",
-                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                    Iterator<Cancion> iterator = canciones.iterator();
-
-                    Cancion c;
-                    int cont = 0;
-                    while (iterator.hasNext()) {
-                        c = iterator.next();
-
-                        if (!c.exists()) {
-                            canciones.remove(c);
-                            cont++;
-                        }
-                    }
-
-                    JOptionPane.showMessageDialog(this, "Se han eliminado " + cont + " canciones de la lista.", "Info", JOptionPane.INFORMATION_MESSAGE);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    procesarCover(cancion);
                 }
-            } else if (!cancion.hasImagenes()) { // si la cancion NO tiene una lista de imagenes
-                System.out.println("La canción no tiene imágenes asociadas!");
-                List<ImageIcon> fotos = Recurso.getFotos(cancion);
-                System.out.println("Se han encontrado " + fotos.size() + " foto");
-
-                if (!fotos.isEmpty()) {
-                    /*
-                    si la lista de fotos no esta vacía por lo menos hay una
-                    para poder comenzar el hilo de las caratulas
-                     */
-                    cancion.setImagenes(fotos);
-                    System.out.println("Se añadió una lista de fotos a la cancion [" + fotos.size() + " fotos]");
-                } else if (!cancion.hasLastFMImage()) { // si la cancion no tiene una imagen desde LastFM
-                    try {
-                        Image imLastFM = LastFM.getImage(cancion.getAutor(), cancion.getAlbum());
-                        imLastFM = imLastFM.getScaledInstance(
-                                (int) Rules.CARATULA.getWidth(),
-                                (int) Rules.CARATULA.getHeight(),
-                                Image.SCALE_SMOOTH);
-                        cancion.setLastFMImageCover(new ImageIcon(imLastFM));
-                        System.out.println("Se añadió una image desde LastFM!");
-                    } catch (Exception ex) {
-                        /*Establezco la caratula por defecto (el disco)*/
-//                        icono = icono.getScaledInstance(
-//                                (int) Rules.CARATULA.getWidth(),
-//                                (int) Rules.CARATULA.getHeight(),
-//                                Image.SCALE_SMOOTH);
-                        cancion.setDefaultCover(icono);
-                        System.out.println("Se añadió una caratula POR DEFECTO --> " + ex.getMessage());
-                    }
-
-                }
-            } else {
-                System.out.println("La canción tiene caratula!");
-            }
-
-            if (cancion.getDefaultCover() != null) {
-//                lblCaratula.setIcon(cancion.getDefaultCover());
-                if (hiloCovertArt != null) {
-                    hiloCovertArt.interrupt();
-                }
-                lbl2.setIcon(cancion.getDefaultCover());
-                lbl1.setIcon(cancion.getDefaultCover());
-            } else if (cancion.hasLastFMImage()) {
-                if (hiloCovertArt != null) {
-                    hiloCovertArt.interrupt();
-                }
-                ImageIcon image = cancion.getLastFMImageCover();
-//                lbl2.setIcon(image);
-//                lbl1.setIcon(image);
-            } else {
-                //quiere decir que la cancion tiene una lista de fotos
-
-                //por ahora sólo cargo la primera foto
-//                lblCaratula.setIcon(cancion.getImagenes().get(0));
-                if (hiloCovertArt != null) {
-                    hiloCovertArt.interrupt();
-                }
-
-                hiloCovertArt = new HiloCoverArt(
-                        lbl1, lbl2,
-                        cancion.getImagenes());
-
-                hiloCovertArt.start();
-            }
+            }).start();
 //            lblCaratula.setIcon(new ImageIcon(icono)); 
 
-            pnlCoverArt.updateUI();
-
+//            pnlCoverArt.updateUI();
             if (reproductor != null) {
                 reproductor.stop();
             }
@@ -1727,25 +1655,9 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 //                        CellRenderExplorer.crearIcono("/jplay/recursos/iconos/1453541047_emblem-cd.png")
 //                )
 //            );
-            treeSong.updateUI();
+            
 
-            boolean soloUno = true;
-            ImageIcon caratula;
-            if (cancion.getDefaultCover() != null) { // si la cancion tiene un default cover
-                caratula = cancion.getDefaultCover();
-            } else if(cancion.hasLastFMImage()){
-                caratula = cancion.getLastFMImageCover();
-            } else{// si no, pongo la primera imagen que encontro
-                caratula = cancion.getImagenes().get(0);
-            }
-            Notification.show(
-                cancion.getAutor(),
-                cancion.getNombre(),
-                caratula,
-                8000, // Segundos en milis
-                new Dimension(100, 100),
-                soloUno
-            );
+            
 //            System.out.println("Esta en biblioteca: "+biblioteca.estaCancion(cancion));
 //            System.out.println("-----------------------------------------");
 //            System.out.println("LISTADO DE MÁS REPRODUCCIONES");
@@ -1773,12 +1685,11 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         return canciones.indexOf(f);
     }
 
-    private void agregarCancion(Cancion cancion, List<Cancion> lista) {
-        lista.add(cancion);
-        lblInfoCarga.setText("Agregando " + cancion);
-//        System.out.println("Agregando "+cancion);
-    }
-
+//    private void agregarCancion(Cancion cancion, List<Cancion> lista) {
+//        lista.add(cancion);
+//        lblInfoCarga.setText("Agregando " + cancion);
+////        System.out.println("Agregando "+cancion);
+//    }
     private void imprimirTemaActual(int milis) {
         String durActual = "0:00";
         String durTotal = "()";
@@ -1824,6 +1735,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         int fila = tablaBiblioteca.getSelectedRow();
         Cancion c = (Cancion) tablaBiblioteca.getValueAt(fila, TMCancionBiblioteca.OBJETO_COMPLETO);
 
+//        System.out.println(biblioteca.getAlbum(c));
         TMCancionBiblioteca model = (TMCancionBiblioteca) tablaBiblioteca.getModel();
 
         canciones = model.canciones;
@@ -1831,8 +1743,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 
         cargarCancionesAListaGrafica();
 
-        tablaCanciones.getSelectionModel().setSelectionInterval(fila, fila);
-
+//        tablaCanciones.getSelectionModel().setSelectionInterval(fila, fila);
         reproducir(c);
     }
 
@@ -1851,10 +1762,8 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                         public void run() {
                             btnCancelarCarga.setEnabled(true);
                             try {
-                                cargarCanciones(f.getParentFile(), canciones);
-                            } catch (InterruptedException ex) {
-                                Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (IOException ex) {
+                                cargarCancionesALista(f.getParentFile());
+                            } catch (InterruptedException | IOException ex) {
                                 Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             cargarCancionesAListaGrafica();
@@ -1872,29 +1781,18 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         }
     }
 
-    private List<String> getNombreDiscos() {
-        boolean discoExiste;
-        List<String> discos = new ArrayList<>();
+    private List<Album> getDiscos() {
+        List<Album> discos = new ArrayList<>();
+        Album a;
 
         for (Cancion c : canciones) {
-            if (discos.isEmpty()) {
-                discos.add(c.getAutor() + " - " + c.getAlbum());
-            } else {
-                // tengo que buscar ese album
-                discoExiste = false;
+            a = biblioteca.getAlbum(c);
 
-                for (String disco : discos) {
-                    if (disco.equalsIgnoreCase(c.getAutor() + " - " + c.getAlbum())) {
-                        discoExiste = true;
-                        break;
-                    }
-                }
-
-                if (!discoExiste) {
-                    discos.add(c.getAutor() + " - " + c.getAlbum());
-                }
+            if (!discos.contains(a)) {
+                discos.add(a);
             }
         }
+
         return discos;
     }
 
@@ -1917,5 +1815,122 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    private void procesarCover(Cancion cancion) {
+        Album album = biblioteca.getAlbum(cancion);
+        if (!cancion.exists()) { // si canción no existe
+            if (JOptionPane.showConfirmDialog(
+                    this,
+                    cancion.exists() + "[" + cancion.getNombre() + "] no encontrada. "
+                    + "¿Desea analizar la lista completa para eliminar los no encontrados?", "Error",
+                    JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                Iterator<Cancion> iterator = canciones.iterator();
+
+                Cancion c;
+                int cont = 0;
+                while (iterator.hasNext()) {
+                    c = iterator.next();
+
+                    if (!c.exists()) {
+                        canciones.remove(c);
+                        cont++;
+                    }
+                }
+
+                JOptionPane.showMessageDialog(this, "Se han eliminado " + cont + " canciones de la lista.", "Info", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else if (!album.hasImagenes()) { // si el Album NO tiene una lista de imagenes
+            System.out.println("La canción no tiene imágenes asociadas!");
+            List<ImageIcon> fotos = Recurso.getFotos(cancion);
+            System.out.println("Se han encontrado " + fotos.size() + " foto");
+
+            if (!fotos.isEmpty()) {
+                /*
+                si la lista de fotos no esta vacía por lo menos hay una
+                para poder comenzar el hilo de las caratulas
+                 */
+                album.setImagenes(fotos);
+                System.out.println("Se añadió una lista de fotos a la cancion [" + fotos.size() + " fotos]");
+            } else if (!album.hasLastFMImage()) { // si el album no tiene una imagen desde LastFM
+                try {
+                    Image imLastFM = LastFM.getImage(cancion.getAutor(), cancion.getAlbum());
+                    imLastFM = imLastFM.getScaledInstance(
+                            (int) Rules.CARATULA.getWidth(),
+                            (int) Rules.CARATULA.getHeight(),
+                            Image.SCALE_SMOOTH);
+                    album.setLastFMImageCover(new ImageIcon(imLastFM));
+                    System.out.println("Se añadió una image desde LastFM!");
+                } catch (Exception ex) {
+                    /*Establezco la caratula por defecto (el disco)*/
+//                        icono = icono.getScaledInstance(
+//                                (int) Rules.CARATULA.getWidth(),
+//                                (int) Rules.CARATULA.getHeight(),
+//                                Image.SCALE_SMOOTH);
+                    album.setDefaultCover(icono);
+                    System.out.println("Se añadió una caratula POR DEFECTO --> " + ex.getMessage());
+                }
+
+            }
+        } else {
+            System.out.println("La canción tiene caratula!");
+        }
+
+        if (album.getDefaultCover() != null) {
+//                lblCaratula.setIcon(cancion.getDefaultCover());
+            if (hiloCovertArt != null) {
+                hiloCovertArt.interrupt();
+            }
+            lbl2.setIcon(album.getDefaultCover());
+            lbl1.setIcon(album.getDefaultCover());
+        } else if (album.hasLastFMImage()) {
+            if (hiloCovertArt != null) {
+                hiloCovertArt.interrupt();
+            }
+            ImageIcon image = album.getLastFMImageCover();
+            lbl2.setIcon(image);
+            lbl1.setIcon(image);
+        } else {
+            //quiere decir que la cancion tiene una lista de fotos
+
+            //por ahora sólo cargo la primera foto
+//                lblCaratula.setIcon(cancion.getImagenes().get(0));
+            if (hiloCovertArt != null) {
+                hiloCovertArt.interrupt();
+            }
+
+            hiloCovertArt = new HiloCoverArt(
+                    lbl1, lbl2,
+                    album.getImagenes());
+
+            hiloCovertArt.start();
+        }
+
+        boolean soloUno = true;
+        ImageIcon caratula;
+        if (album.getDefaultCover() != null) { // si la cancion tiene un default cover
+            caratula = album.getDefaultCover();
+        } else if (album.hasLastFMImage()) {
+            caratula = album.getLastFMImageCover();
+        } else {// si no, pongo la primera imagen que encontro
+            caratula = album.getImagenes().get(0);
+        }
+        
+//        treeSong.updateUI();
+        treeSong.setCellRenderer(
+                new CellRenderCancionLista(
+                        CellRenderExplorer.crearIcono(Ruta.ICONO_PLAY_ARBOL),
+                        CellRenderExplorer.crearIcono(Ruta.ICONO_CD_ARBOL)
+                )
+        );
+        
+//        Notification.show(
+//            cancion.getAutor(),
+//            cancion.getNombre(),
+//            caratula,
+//            8000, // Segundos en milis
+//            new Dimension(100, 100),
+//            soloUno
+//        );
     }
 }

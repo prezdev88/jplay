@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
+import jplay.model.Album;
 import xjplay.main.JPlay;
 import jplay.model.Cancion;
 import xjplay.model.rules.Rules;
@@ -49,30 +50,35 @@ public class CellRenderCancionLista extends JLabel implements TreeCellRenderer {
             boolean isDiscoActual = false;
 
             if (ob instanceof Cancion) {
-//                File f = (File) ob;
                 Cancion c = (Cancion) ob;
-                this.setText("       " + ob.toString());
-                if (c.hasImagenes()) {
-                    Image im = c.getImagenes().get(0).getImage().getScaledInstance(
+                this.setText(c.getTrack()+".- "+c.toString() + " ("+c.getDuracionAsString()+")");
+                this.setIcon(null);
+            } else if (ob instanceof Album) { // es un disco
+                Album album = (Album) ob;
+                this.setText(ob.toString());
+
+                if (album.hasImagenes()) {
+                    Image im = album.getImagenes().get(0).getImage().getScaledInstance(
                             (int) Rules.MINI_CARATULA.getWidth(),
                             (int) Rules.MINI_CARATULA.getHeight(),
                             Image.SCALE_SMOOTH);
                     actualDiscIcon = new ImageIcon(im);
                     setIcon(actualDiscIcon);
-                } else if (c.hasLastFMImage()) {
-                    Image im = c.getLastFMImageCover().getImage().getScaledInstance(
+                } else if (album.hasLastFMImage()) {
+                    Image im = album.getLastFMImageCover().getImage().getScaledInstance(
                             (int) Rules.MINI_CARATULA.getWidth(),
                             (int) Rules.MINI_CARATULA.getHeight(),
                             Image.SCALE_SMOOTH);
                     actualDiscIcon = new ImageIcon(im);
                     setIcon(actualDiscIcon);
                 } else {
-                    setIcon(null);
+                    setIcon(new ImageIcon(discIcon.getImage().getScaledInstance(
+                            (int) Rules.MINI_CARATULA.getWidth(),
+                            (int) Rules.MINI_CARATULA.getHeight(),
+                            Image.SCALE_SMOOTH)));
                 }
-            } else if (ob instanceof String) { // es un disco
-                this.setText(ob.toString());
-                setIcon(this.discIcon);
 
+//                setIcon(this.discIcon);
                 if (JPlay.reproductor != null) {
                     Cancion actual = JPlay.reproductor.getCancion();
                     String disco = ob.toString();
@@ -106,13 +112,14 @@ public class CellRenderCancionLista extends JLabel implements TreeCellRenderer {
             if (isCancionActual) {
 //                this.setForeground(Color.red);
 //                
-                if (actualDiscIcon == null) {
-                    setIcon(playIcon);
-                }
-//                setIcon(playIcon);
-
-                this.setText(">> " + this.getText().trim() + "");
+//                if (actualDiscIcon == null) {
+//                    setIcon(playIcon);
+//                }
+                setIcon(playIcon);
+                
                 this.setFont(fuente.deriveFont(Font.BOLD, 14));
+                this.setText(this.getText().trim() + "");
+                
             }
 
             if (isDiscoActual) {

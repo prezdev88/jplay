@@ -20,9 +20,7 @@ public class Cancion extends File {
     private int track;
     private long microseconds;
 //    private File coverFile;
-    private List<ImageIcon> imagenes;
-    private ImageIcon lastFMImageCover;
-    private ImageIcon defaultCover;
+    
     private int cantidadReproducciones;
 
     public Cancion(String pathname) {
@@ -33,8 +31,7 @@ public class Cancion extends File {
         track = -1;
         cargar();
 //        coverFile = null;
-        imagenes = new ArrayList<>();
-        defaultCover = null;
+        
         cantidadReproducciones = 0;
     }
 
@@ -53,17 +50,7 @@ public class Cancion extends File {
 //        return coverFile;
 //    }
 //
-    public boolean hasImagenes() {
-        return !imagenes.isEmpty();
-    }
-
-    public void setImagenes(List<ImageIcon> imagenes) {
-        this.imagenes = imagenes;
-    }
-
-    public List<ImageIcon> getImagenes() {
-        return imagenes;
-    }
+    
 
     public long getMicroseconds() {
         return microseconds;
@@ -71,18 +58,6 @@ public class Cancion extends File {
 
     public void setMicroseconds(long microseconds) {
         this.microseconds = microseconds;
-    }
-
-    public ImageIcon getLastFMImageCover() {
-        return lastFMImageCover;
-    }
-
-    public void setLastFMImageCover(ImageIcon lastFMImageCover) {
-        this.lastFMImageCover = lastFMImageCover;
-    }
-    
-    public boolean hasLastFMImage(){
-        return lastFMImageCover != null;
     }
 //
 //    public void setCoverFile(File caratula) {
@@ -111,13 +86,7 @@ public class Cancion extends File {
 //    }
 //
 
-    public ImageIcon getDefaultCover(){
-        return this.defaultCover;
-    }
     
-    public void setDefaultCover(Image image) {
-        this.defaultCover = new ImageIcon(image);
-    }
 
     private void cargar() {
         try {
