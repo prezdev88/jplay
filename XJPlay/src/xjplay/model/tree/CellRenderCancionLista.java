@@ -41,7 +41,7 @@ public class CellRenderCancionLista extends JLabel implements TreeCellRenderer {
 
             Font fuente;
             fuente = Font.createFont(Font.TRUETYPE_FONT, Recurso.FUENTE_ROBOTO);
-            fuente = fuente.deriveFont(Font.PLAIN, 14);
+            fuente = fuente.deriveFont(Font.PLAIN, Rules.FONT_SIZE_CANCIONES);
 
             this.setFont(fuente);
             DefaultMutableTreeNode v = (DefaultMutableTreeNode) value;
@@ -117,13 +117,13 @@ public class CellRenderCancionLista extends JLabel implements TreeCellRenderer {
 //                }
                 setIcon(playIcon);
                 
-                this.setFont(fuente.deriveFont(Font.BOLD, 14));
+                this.setFont(fuente.deriveFont(Font.BOLD, Rules.FONT_SIZE_CANCIONES));
                 this.setText(this.getText().trim() + "");
                 
             }
 
             if (isDiscoActual) {
-                this.setFont(fuente.deriveFont(Font.BOLD, 14));
+                this.setFont(fuente.deriveFont(Font.BOLD, Rules.FONT_SIZE_CANCIONES));
             }
 
         } catch (FontFormatException ex) {

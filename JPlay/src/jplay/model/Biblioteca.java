@@ -21,7 +21,9 @@ public class Biblioteca implements Serializable{
     }
     
     public void add(Cancion c){
-        this.canciones.add(c);
+        if(!estaCancion(c)){
+            this.canciones.add(c);
+        }
     }
     
     public List<Cancion> getCanciones() {

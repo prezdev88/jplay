@@ -12,6 +12,8 @@ public class Recurso {
 
     public static final File FUENTE_ROBOTO
             = new File("recursos" + File.separator + "Roboto-Regular.ttf");
+    public static final File FUENTE_TYPEWRITER
+            = new File("recursos" + File.separator + "TravelingTypewriter.ttf");
 
     public static final Image ICONO_JPLAY = new ImageIcon(Recurso.class.getResource(Ruta.ICONO_JPLAY)).getImage();
 
