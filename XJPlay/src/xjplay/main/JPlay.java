@@ -117,10 +117,10 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 
         cargarArbolConCanciones();
 
-        /*Se hace inisible la tabla antigua de temas y el boton limpiar*/
+        /*Se hace invisible la tabla antigua de temas y el boton limpiar*/
         jScrollPane2.setVisible(false);
         jLabel2.setVisible(false);
-        /*Se hace inisible la tabla antigua de temas y el boton limpiar*/
+        /*Se hace invisible la tabla antigua de temas y el boton limpiar*/
 
         setIconImage(icono);
 
@@ -148,7 +148,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         hiloCovertArt = null;
 
         progress.setStringPainted(true);
-
+        lbl1.requestFocus();
 //        jSplitPane1.setDividerLocation(0.0);
 //        jSplitPane2.setDividerLocation(1);
 //        inicializarBarraProgreso();
@@ -171,21 +171,10 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel2 = new javax.swing.JPanel();
-        jSplitPane1 = new javax.swing.JSplitPane();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tree = new javax.swing.JTree();
-        jSplitPane2 = new javax.swing.JSplitPane();
-        jPanel3 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tablaCanciones = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        treeSong = new javax.swing.JTree();
+        dialogCanciones = new javax.swing.JDialog();
+        jDialog1 = new javax.swing.JDialog();
         jPanel1 = new javax.swing.JPanel();
         txtBuscar = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tablaBiblioteca = new javax.swing.JTable();
         slideVol = new javax.swing.JSlider();
         togVol = new javax.swing.JToggleButton();
         lblInfoCarga = new javax.swing.JLabel();
@@ -205,6 +194,28 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         lbl2 = new javax.swing.JLabel();
         lbl1 = new javax.swing.JLabel();
         progress = new javax.swing.JProgressBar();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaBiblioteca = new javax.swing.JTable();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tree = new javax.swing.JTree();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaCanciones = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        treeSong = new javax.swing.JTree();
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(254, 254, 254));
@@ -213,101 +224,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 formWindowClosing(evt);
             }
         });
-
-        jPanel2.setBackground(new java.awt.Color(254, 254, 254));
-
-        jSplitPane1.setDividerLocation(100);
-        jSplitPane1.setOneTouchExpandable(true);
-
-        tree.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                treeMouseReleased(evt);
-            }
-        });
-        tree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
-            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
-                treeValueChanged(evt);
-            }
-        });
-        jScrollPane3.setViewportView(tree);
-
-        jSplitPane1.setLeftComponent(jScrollPane3);
-
-        jSplitPane2.setDividerLocation(600);
-        jSplitPane2.setOneTouchExpandable(true);
-
-        tablaCanciones.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        tablaCanciones.setShowHorizontalLines(false);
-        tablaCanciones.setShowVerticalLines(false);
-        tablaCanciones.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                tablaCancionesMouseReleased(evt);
-            }
-        });
-        tablaCanciones.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                tablaCancionesKeyReleased(evt);
-            }
-        });
-        jScrollPane2.setViewportView(tablaCanciones);
-
-        jLabel2.setBackground(new java.awt.Color(63, 81, 181));
-        jLabel2.setForeground(new java.awt.Color(254, 254, 254));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Limpiar");
-        jLabel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jLabel2.setOpaque(true);
-        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel2MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jLabel2MouseExited(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel2MousePressed(evt);
-            }
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                jLabel2MouseReleased(evt);
-            }
-        });
-
-        treeSong.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                treeSongMouseReleased(evt);
-            }
-        });
-        jScrollPane4.setViewportView(treeSong);
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        jSplitPane2.setRightComponent(jPanel3);
 
         jPanel1.setBackground(new java.awt.Color(254, 254, 254));
 
@@ -342,32 +258,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 txtBuscarKeyReleased(evt);
             }
         });
-
-        tablaBiblioteca.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        tablaBiblioteca.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                tablaBibliotecaMousePressed(evt);
-            }
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                tablaBibliotecaMouseReleased(evt);
-            }
-        });
-        tablaBiblioteca.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                tablaBibliotecaKeyReleased(evt);
-            }
-        });
-        jScrollPane1.setViewportView(tablaBiblioteca);
 
         slideVol.setBackground(new java.awt.Color(254, 254, 254));
         slideVol.setMaximum(40);
@@ -494,7 +384,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                         .addComponent(opAleatorio)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(opRepetirCancion)))
-                .addContainerGap(469, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -563,15 +453,131 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
             }
         });
 
+        tablaBiblioteca.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tablaBiblioteca.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tablaBibliotecaMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tablaBibliotecaMouseReleased(evt);
+            }
+        });
+        tablaBiblioteca.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tablaBibliotecaKeyReleased(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tablaBiblioteca);
+
+        jTabbedPane1.addTab("Biblioteca", jScrollPane1);
+
+        tree.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                treeMouseReleased(evt);
+            }
+        });
+        tree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
+                treeValueChanged(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tree);
+
+        jTabbedPane1.addTab("Explorer", jScrollPane3);
+
+        tablaCanciones.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tablaCanciones.setShowHorizontalLines(false);
+        tablaCanciones.setShowVerticalLines(false);
+        tablaCanciones.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tablaCancionesMouseReleased(evt);
+            }
+        });
+        tablaCanciones.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tablaCancionesKeyReleased(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tablaCanciones);
+
+        jLabel2.setBackground(new java.awt.Color(63, 81, 181));
+        jLabel2.setForeground(new java.awt.Color(254, 254, 254));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Limpiar");
+        jLabel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jLabel2.setOpaque(true);
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel2MouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel2MousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jLabel2MouseReleased(evt);
+            }
+        });
+
+        treeSong.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                treeSongMouseReleased(evt);
+            }
+        });
+        jScrollPane4.setViewportView(treeSong);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jTabbedPane1.addTab("Lista actual", jPanel3);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(txtBuscar)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTabbedPane1)
                     .addComponent(progress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 926, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(lblInfoCarga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -587,7 +593,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                             .addComponent(slideVol, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addComponent(togVol, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
-            .addComponent(txtBuscar)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -608,29 +613,14 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(progress, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblInfoCarga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnCancelarCarga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
-        jSplitPane2.setLeftComponent(jPanel1);
-
-        jSplitPane1.setRightComponent(jSplitPane2);
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 924, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1)
-        );
-
-        getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -868,16 +858,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         }
     }//GEN-LAST:event_formWindowClosing
 
-    private void tablaCancionesMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaCancionesMouseReleased
-        if (evt.getClickCount() == 2) {
-            TMCancion model = (TMCancion) tablaCanciones.getModel();
-            indiceActual = tablaCanciones.getSelectedRow();
-            Cancion c = (Cancion) model.getValueAt(indiceActual, 0);
-
-            reproducir(c);
-        }
-    }//GEN-LAST:event_tablaCancionesMouseReleased
-
     private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
         String filtro = txtBuscar.getText().toLowerCase().trim();
 //        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
@@ -952,37 +932,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         isRandom = opAleatorio.isSelected();
     }//GEN-LAST:event_opAleatorioActionPerformed
 
-    private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        jLabel2.setBackground(new java.awt.Color(26, 35, 126));
-    }//GEN-LAST:event_jLabel2MousePressed
-
-    private void jLabel2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseReleased
-        jLabel2.setBackground(new java.awt.Color(63, 81, 181));
-        canciones = new ArrayList<>();
-        cargarCancionesAListaGrafica();
-    }//GEN-LAST:event_jLabel2MouseReleased
-
-    private void jLabel2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseExited
-        jLabel2.setBackground(new java.awt.Color(63, 81, 181));
-    }//GEN-LAST:event_jLabel2MouseExited
-
-    private void jLabel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseEntered
-        jLabel2.setBackground(new java.awt.Color(92, 107, 192));
-    }//GEN-LAST:event_jLabel2MouseEntered
-
-    private void tablaCancionesKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaCancionesKeyReleased
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-
-            TMCancion model = (TMCancion) tablaCanciones.getModel();
-            indiceActual = tablaCanciones.getSelectedRow();
-            Cancion c = (Cancion) model.getValueAt(indiceActual, 0);
-
-            reproducir(c);
-//            tablaCanciones.getSelectionModel().clearSelection();
-            tablaCanciones.getSelectionModel().setSelectionInterval(indiceActual, indiceActual);
-        }
-    }//GEN-LAST:event_tablaCancionesKeyReleased
-
     private void tablaBibliotecaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaBibliotecaKeyReleased
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             tocarCancionSeleccionadaEnTablaBiblioteca(); // xD
@@ -1046,6 +995,47 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         cambiarProgress((evt.getX() * 100) / progress.getWidth(), false);
         imprimirBarraDeProgreso = false;
     }//GEN-LAST:event_progressMouseDragged
+
+    private void jLabel2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseReleased
+        jLabel2.setBackground(new java.awt.Color(63, 81, 181));
+        canciones = new ArrayList<>();
+        cargarCancionesAListaGrafica();
+    }//GEN-LAST:event_jLabel2MouseReleased
+
+    private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
+        jLabel2.setBackground(new java.awt.Color(26, 35, 126));
+    }//GEN-LAST:event_jLabel2MousePressed
+
+    private void jLabel2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseExited
+        jLabel2.setBackground(new java.awt.Color(63, 81, 181));
+    }//GEN-LAST:event_jLabel2MouseExited
+
+    private void jLabel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseEntered
+        jLabel2.setBackground(new java.awt.Color(92, 107, 192));
+    }//GEN-LAST:event_jLabel2MouseEntered
+
+    private void tablaCancionesKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaCancionesKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+
+            TMCancion model = (TMCancion) tablaCanciones.getModel();
+            indiceActual = tablaCanciones.getSelectedRow();
+            Cancion c = (Cancion) model.getValueAt(indiceActual, 0);
+
+            reproducir(c);
+            //            tablaCanciones.getSelectionModel().clearSelection();
+            tablaCanciones.getSelectionModel().setSelectionInterval(indiceActual, indiceActual);
+        }
+    }//GEN-LAST:event_tablaCancionesKeyReleased
+
+    private void tablaCancionesMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaCancionesMouseReleased
+        if (evt.getClickCount() == 2) {
+            TMCancion model = (TMCancion) tablaCanciones.getModel();
+            indiceActual = tablaCanciones.getSelectedRow();
+            Cancion c = (Cancion) model.getValueAt(indiceActual, 0);
+
+            reproducir(c);
+        }
+    }//GEN-LAST:event_tablaCancionesMouseReleased
 
     private void cargarSave() {
         if (new File(Ruta.SAVE).exists()) {
@@ -1209,11 +1199,12 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
     private javax.swing.JButton btnExaminar;
     private javax.swing.JButton btnPause;
     private javax.swing.JButton btnPause1;
+    private javax.swing.JDialog dialogCanciones;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -1221,8 +1212,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JSplitPane jSplitPane2;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lbl1;
     private javax.swing.JLabel lbl2;
     private javax.swing.JLabel lblArtista;
