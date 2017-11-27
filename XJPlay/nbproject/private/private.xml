@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="11">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="13">
         <file>
             <url>src/jplay/main/JPlay.java</url>
             <bookmark id="8">
@@ -16,14 +16,9 @@
         </file>
         <file>
             <url>src/xjplay/main/JPlay.java</url>
-            <bookmark id="10">
+            <bookmark id="13">
                 <name/>
-                <line>1096</line>
-                <key/>
-            </bookmark>
-            <bookmark id="11">
-                <name/>
-                <line>1665</line>
+                <line>1628</line>
                 <key/>
             </bookmark>
         </file>
@@ -39,12 +34,7 @@
         <group name="MIO"/>
         <group/>
         <group name="POO_1">
-            <file>file:/home/prez/Escritorio/GIT/jplay/XJPlay/src/xjplay/recursos/Ruta.java</file>
-            <file>file:/home/prez/Escritorio/GIT/jplay/XJPlay/src/xjplay/model/tree/CellRenderExplorer.java</file>
             <file>file:/home/prez/Escritorio/GIT/jplay/XJPlay/src/xjplay/model/rules/Rules.java</file>
-            <file>file:/home/prez/Escritorio/GIT/jplay/XJPlay/src/xjplay/test/NewJFrame.java</file>
-            <file>file:/home/prez/Escritorio/GIT/jplay/XJPlay/src/xjplay/model/tree/CellRenderCancionLista.java</file>
-            <file>file:/home/prez/Escritorio/GIT/jplay/XJPlay/src/xjplay/recursos/Recurso.java</file>
             <file>file:/home/prez/Escritorio/GIT/jplay/XJPlay/src/xjplay/main/JPlay.java</file>
         </group>
     </open-files>

@@ -10,7 +10,6 @@ import jplay.model.Cancion;
 import xjplay.utils.Validar;
 import xjplay.save.IO;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import xjplay.model.tableModel.TMCancion;
@@ -23,6 +22,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+import java.io.InvalidClassException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -41,10 +41,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javazoom.jlgui.basicplayer.BasicController;
@@ -52,7 +50,6 @@ import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
 import jplay.model.Album;
-import nicon.notify.core.Notification;
 import xjplay.model.lastFM.LastFM;
 import xjplay.model.rules.Rules;
 import xjplay.model.tree.CellRenderExplorer;
@@ -1095,9 +1092,12 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 cargarCancionesABiblioteca(biblioteca.getCanciones());
                 imprimirTemaActual(0);
 
-            } catch (IOException ex) {
-                Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
+            } catch (InvalidClassException ex) {
+                System.out.println("EX: "+ex.getMessage());
+                biblioteca = new Biblioteca();
+                canciones = biblioteca.getCanciones();
+                cargarDefault();
+            } catch (ClassNotFoundException | IOException ex) {
                 Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
@@ -1607,9 +1607,16 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         System.out.println("Se cargaron " + lista.size() + " canciones en biblioteca");
         lblInfoCarga.setText("Se cargaron " + lista.size() + " canciones en biblioteca");
 //        tablaBiblioteca.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-        tablaBiblioteca.getColumnModel().getColumn(0).setPreferredWidth(60);
-        tablaBiblioteca.getColumnModel().getColumn(1).setPreferredWidth(200);
-        tablaBiblioteca.getColumnModel().getColumn(2).setPreferredWidth(200);
+
+//        System.out.println(tablaBiblioteca.getColumnModel().getColumn(0).getMinWidth());
+//        System.out.println(tablaBiblioteca.getColumnModel().getColumn(1).getMinWidth());
+//        System.out.println(tablaBiblioteca.getColumnModel().getColumn(2).getMinWidth());
+//        System.out.println(tablaBiblioteca.getColumnModel().getColumn(3).getMinWidth());
+
+        tablaBiblioteca.getColumnModel().getColumn(0).setPreferredWidth(Rules.TRACK_NUMBER_COLUMN_SIZE);
+        tablaBiblioteca.getColumnModel().getColumn(1).setPreferredWidth(Rules.ARTIST_COLUMN_SIZE);
+        tablaBiblioteca.getColumnModel().getColumn(2).setPreferredWidth(Rules.ALBUM_COLUMN_SIZE);
+        tablaBiblioteca.getColumnModel().getColumn(3).setPreferredWidth(Rules.ARTIST_COLUMN_SIZE);
         /**/
 //        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
 //        rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);

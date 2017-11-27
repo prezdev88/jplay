@@ -1,15 +1,11 @@
 package jplay.model;
 
-import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.ImageIcon;
 import org.tritonus.share.sampled.file.TAudioFileFormat;
 
 public class Cancion extends File {
@@ -40,6 +36,7 @@ public class Cancion extends File {
      */
     public void aumentarContadorReproducciones() {
         cantidadReproducciones++;
+        System.out.println("Se ha aumentado el contador: "+cantidadReproducciones);
     }
 
     public int getCantidadReproducciones() {
