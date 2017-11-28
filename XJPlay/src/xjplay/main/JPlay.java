@@ -30,7 +30,9 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Random;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
@@ -156,6 +158,13 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 //        inicializarBarraProgreso();
         cargarArbolConCancionesMasTocadas();
         initFonts();
+//        Properties properties = System.getProperties();
+//        Set<Map.Entry<Object, Object>> entrySet = properties.entrySet();
+//   
+//        for (Map.Entry<Object, Object> entry : entrySet) {
+//            System.out.println(entry);
+//        }
+        
     }
 
     // http://stackoverflow.com/questions/13516730/disable-enter-key-from-moving-down-a-row-in-jtable
@@ -841,20 +850,25 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if (!canciones.isEmpty()) {
-            if (isRandom) {
-                indiceActual = getRandom();
-                nextRandom = getRandom();
-                if (reproductor != null) {
-                    reproducirCancionActual();
+        try {
+            if (!canciones.isEmpty()) {
+                if (isRandom) {
+                    indiceActual = getRandom();
+                    nextRandom = getRandom();
+                    if (reproductor != null) {
+                        reproducirCancionActual();
+                    }
+                } else if (indiceActual != (canciones.size() - 1)) {
+                    indiceActual++;
+                    if (reproductor != null) {
+                        reproducirCancionActual();
+                    }
                 }
-            } else if (indiceActual != (canciones.size() - 1)) {
-                indiceActual++;
-                if (reproductor != null) {
-                    reproducirCancionActual();
-                }
-            }
 
+            }
+        } catch (IndexOutOfBoundsException e) {
+            indiceActual = 0;
+            reproducirCancionActual();
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -1454,8 +1468,8 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                         CellRenderExplorer.crearIcono(Ruta.ICONO_CD_ARBOL)
                 )
         );
-        
-        jTabbedPane1.setTitleAt(3, "+ tocadas! ("+masRepro.size()+")");
+
+        jTabbedPane1.setTitleAt(3, "+ tocadas! (" + masRepro.size() + ")");
     }
 
     private void listenerClickDerechoSobreArbol() {
@@ -1991,7 +2005,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
     private void initFonts() {
         try {
             Font fuente = Font.createFont(Font.TRUETYPE_FONT, Recurso.FUENTE_ROBOTO);
-            
+
             lblTema.setFont(fuente.deriveFont(Font.BOLD, Rules.FONT_SIZE_NORMAL));
             lblArtista.setFont(fuente.deriveFont(Font.PLAIN, 11));
             opAleatorio.setFont(fuente.deriveFont(Font.PLAIN, 13));
@@ -2001,10 +2015,10 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
             tablaBiblioteca.setFont(fuente.deriveFont(Font.PLAIN, 14));
             lblInfoCarga.setFont(fuente.deriveFont(Font.BOLD, 13));
             btnCancelarCarga.setFont(fuente.deriveFont(Font.PLAIN, 13));
-            
+
             /*
             TAMBIEN CAMBIAR FUENTES EN LOS CELL RENDERERS (xjplay.model.tree)
-            */
+             */
         } catch (FontFormatException | IOException ex) {
             Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
         }

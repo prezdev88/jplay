@@ -42,7 +42,7 @@ public class Biblioteca implements Serializable{
             c = iterator.next();
             
             if(!c.exists()){
-                this.remover(c);
+                iterator.remove();
                 cont++;
             }
         }

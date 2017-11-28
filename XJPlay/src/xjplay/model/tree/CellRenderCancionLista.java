@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
 import jplay.model.Album;
 import xjplay.main.JPlay;
@@ -115,15 +116,18 @@ public class CellRenderCancionLista extends JLabel implements TreeCellRenderer {
 //                if (actualDiscIcon == null) {
 //                    setIcon(playIcon);
 //                }
-                setIcon(playIcon);
-                
-                this.setFont(fuente.deriveFont(Font.BOLD, Rules.FONT_SIZE_CANCIONES));
-                this.setText(this.getText().trim() + "");
-                
+//                setIcon(playIcon);
+//                
+//                this.setFont(fuente.deriveFont(Font.BOLD, Rules.FONT_SIZE_CANCIONES));
+//                this.setText(this.getText().trim() + "");
+                this.setBackground(Color.black);
+                this.setForeground(Color.white);
             }
 
             if (isDiscoActual) {
-                this.setFont(fuente.deriveFont(Font.BOLD, Rules.FONT_SIZE_CANCIONES));
+                this.setBackground(Color.black);
+                this.setForeground(Color.white);
+//                this.setFont(fuente.deriveFont(Font.BOLD, Rules.FONT_SIZE_CANCIONES));
             }
 
         } catch (FontFormatException ex) {
