@@ -50,7 +50,7 @@ public class Reproductor {
         control.setGain((double) vol / 100);
     }
 
-    public Cancion getCancion() {
+    public Cancion getCancionActual() {
         return actual;
     }
 

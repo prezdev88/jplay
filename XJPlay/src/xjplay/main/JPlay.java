@@ -67,7 +67,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
     public static Reproductor reproductor;
     private Biblioteca biblioteca;
     private List<Cancion> canciones;
-    private int indiceActual;
     private Thread hiloRep;
     private Thread hiloCargar;
     private JPopupMenu popUpTree;
@@ -86,8 +85,8 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
     private int totalBytes; // GUARDA EL TOTAL DE DURACIÓN DE LA CANCION EN MILIS
 
     private int porcentaje;
-    private boolean imprimirBarraDeProgreso = true;
     private WorkerStringProgress workerStringProgress; // para pintar los minutos en la barra
+    private boolean imprimirBarraDeProgreso;
 
     public JPlay() {
         initComponents();
@@ -102,7 +101,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         crearPopUpBiblioteca();
 
         btnCancelarCarga.setEnabled(false);
-        indiceActual = -1;
+//        indiceActual = -1;
         if (SAVE) {
             cargarSave();
         }
@@ -731,7 +730,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 //            }
 
 //            setSlideTime(canciones.get(0).getDuracionEnMilis());
-                indiceActual = 0;
+//                indiceActual = 0;
 
 //            hiloRep = new Thread(new Runnable() {
 //
@@ -753,9 +752,9 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 //                                    }
 //                                }else{
 //                                    setSlideValue(r.getPosition());
-//    //                                System.out.println("Aún esta la canción "+r.getCancion()+" ["+r.getPosition()/1000+"]");
-//                                    jLabel1.setText(r.getCancion().getDuracionAsString(r.getPosition()) + " / "+ r.getCancion().getDuracionAsString());
-//                                    System.out.println("Aún esta la canción ["+r.getCancion().getNombre()+"] "+r.getCancion().getDuracionAsString(r.getPosition()));
+//    //                                System.out.println("Aún esta la canción "+r.getCancionActual()+" ["+r.getPosition()/1000+"]");
+//                                    jLabel1.setText(r.getCancionActual().getDuracionAsString(r.getPosition()) + " / "+ r.getCancionActual().getDuracionAsString());
+//                                    System.out.println("Aún esta la canción ["+r.getCancionActual().getNombre()+"] "+r.getCancionActual().getDuracionAsString(r.getPosition()));
 //                                }
 //                            }else{
 //                                System.out.println("Player es null");
@@ -793,21 +792,22 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                     btnPause.setIcon(new javax.swing.ImageIcon(getClass().getResource(Ruta.PAUSE)));
                     if (isStop) {
 //                        reproductor.play();
-                        reproducir(canciones.get(indiceActual));
+//                        reproducir(canciones.get(indiceActual));
                         isPlay = true;
                         isStop = false;
                     } else {
                         reproductor.resume();
                     }
                 }
-            } else if (indiceActual != -1) {
-//                r = new Reproductor(canciones.get(indiceActual), this);
-//                r.play();      
-                reproducir(canciones.get(indiceActual));
-                isPlay = true;
-                isStop = false;
-                btnPause.setIcon(new javax.swing.ImageIcon(getClass().getResource(Ruta.PAUSE)));
-            }
+            } 
+//            else if (indiceActual != -1) {
+////                r = new Reproductor(canciones.get(indiceActual), this);
+////                r.play();      
+//                reproducir(canciones.get(indiceActual));
+//                isPlay = true;
+//                isStop = false;
+//                btnPause.setIcon(new javax.swing.ImageIcon(getClass().getResource(Ruta.PAUSE)));
+//            }
         } catch (BasicPlayerException ex) {
             Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -859,28 +859,29 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         hiloCargar.stop();
         btnCancelarCarga.setEnabled(false);
         cargarCancionesAListaGrafica();
-        if (reproductor != null) {
-            indiceActual = getIndice(reproductor.getCancion());
-        } else {
-            indiceActual = 0;
-        }
-        System.out.println("Indice actual : " + indiceActual);
+//        if (reproductor != null) {
+//            indiceActual = getIndice(reproductor.getCancionActual());
+//        } else {
+//            indiceActual = 0;
+//        }
+//        System.out.println("Indice actual : " + indiceActual);
     }//GEN-LAST:event_btnCancelarCargaActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (!canciones.isEmpty()) {
             if (isRandom) {
-                indiceActual = getRandom();
+//                indiceActual = getRandom();
                 nextRandom = getRandom();
                 if (reproductor != null) {
                     reproducirCancionActual();
                 }
-            } else if (indiceActual != 0) {
-                indiceActual--;
-                if (reproductor != null) {
-                    reproducirCancionActual();
-                }
-            }
+            } 
+//            else if (indiceActual != 0) {
+//                indiceActual--;
+//                if (reproductor != null) {
+//                    reproducirCancionActual();
+//                }
+//            }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -888,21 +889,22 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         try {
             if (!canciones.isEmpty()) {
                 if (isRandom) {
-                    indiceActual = getRandom();
+//                    indiceActual = getRandom();
                     nextRandom = getRandom();
                     if (reproductor != null) {
                         reproducirCancionActual();
                     }
-                } else if (indiceActual != (canciones.size() - 1)) {
-                    indiceActual++;
-                    if (reproductor != null) {
-                        reproducirCancionActual();
-                    }
-                }
+                } 
+//                else if (indiceActual != (canciones.size() - 1)) {
+//                    indiceActual++;
+//                    if (reproductor != null) {
+//                        reproducirCancionActual();
+//                    }
+//                }
 
             }
         } catch (IndexOutOfBoundsException e) {
-            indiceActual = 0;
+//            indiceActual = 0;
             reproducirCancionActual();
         }
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -913,7 +915,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 Guardar g = new Guardar();
 
                 g.canciones = canciones;
-                g.indiceActual = indiceActual;
+//                g.indiceActual = indiceActual;
 
                 IO.escribirObjetoEn(g, Ruta.SAVE);
                 IO.escribirObjetoEn(biblioteca, Ruta.BIBLIOTECA);
@@ -1040,8 +1042,8 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 if (o instanceof Cancion) {
                     Cancion c = (Cancion) o;
 
-                    indiceActual = canciones.indexOf(c);
-                    System.out.println("Índice actual: " + indiceActual);
+//                    indiceActual = canciones.indexOf(c);
+//                    System.out.println("Índice actual: " + indiceActual);
                     reproducir(c);
                 }
             }
@@ -1086,22 +1088,22 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 
             TMCancion model = (TMCancion) tablaCanciones.getModel();
-            indiceActual = tablaCanciones.getSelectedRow();
-            Cancion c = (Cancion) model.getValueAt(indiceActual, 0);
+            int index = tablaCanciones.getSelectedRow();
+            Cancion c = (Cancion) model.getValueAt(index, 0);
 
             reproducir(c);
             //            tablaCanciones.getSelectionModel().clearSelection();
-            tablaCanciones.getSelectionModel().setSelectionInterval(indiceActual, indiceActual);
+//            tablaCanciones.getSelectionModel().setSelectionInterval(indiceActual, indiceActual);
         }
     }//GEN-LAST:event_tablaCancionesKeyReleased
 
     private void tablaCancionesMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaCancionesMouseReleased
         if (evt.getClickCount() == 2) {
             TMCancion model = (TMCancion) tablaCanciones.getModel();
-            indiceActual = tablaCanciones.getSelectedRow();
-            Cancion c = (Cancion) model.getValueAt(indiceActual, 0);
-
-            reproducir(c);
+//            indiceActual = tablaCanciones.getSelectedRow();
+//            Cancion c = (Cancion) model.getValueAt(indiceActual, 0);
+//
+//            reproducir(c);
         }
     }//GEN-LAST:event_tablaCancionesMouseReleased
 
@@ -1161,8 +1163,8 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 }
 
                 System.out.println("Cantidad de canciones cargadas del save: " + canciones.size());
-                indiceActual = g.indiceActual;
-                System.out.println("Índice actual: " + indiceActual);
+//                indiceActual = g.indiceActual;
+//                System.out.println("Índice actual: " + indiceActual);
                 cargarCancionesAListaGrafica();
                 cargarCancionesABiblioteca(biblioteca.getCanciones());
                 imprimirTemaActual(0);
@@ -1329,6 +1331,8 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 //        System.out.println("cambio al valor: "+valor);
 //        int ancho = progress.getWidth();;
 //        int pixActual = (valorEnMilis * ancho) / totalMilis;
+//        progress.setValue(readedBytes);W
+//        System.out.println(readedBytes);
         if (imprimirBarraDeProgreso) {
 //            progress.setStringPainted(true);
             progress.setValue(readedBytes);
@@ -1403,16 +1407,16 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         if (bpe.getCode() == BasicPlayerEvent.EOM) {
             if (!repetirCancion) {
                 if (isRandom) {
-                    indiceActual = getRandom();
+//                    indiceActual = getRandom();
                     nextRandom = getRandom();
                 } else {
-                    indiceActual++;
+//                    indiceActual++;
                 }
 
             }
-            if (indiceActual < canciones.size()) {
-                reproducir(canciones.get(indiceActual));
-            }
+//            if (indiceActual < canciones.size()) {
+//                reproducir(canciones.get(indiceActual));
+//            }
         } else if (bpe.getCode() == BasicPlayerEvent.STOPPED) {
 //            imprimirTemaActual(0);
 //            slideTime.setValue(0);
@@ -1420,9 +1424,9 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 //            setSlideTime(bpe.getPosition());
         } else if (bpe.getCode() == BasicPlayerEvent.OPENED) {
             // el indice es -1 cuando cargo desde la biblioteca
-            if (indiceActual != -1) {
-                setSlideTime((int) canciones.get(indiceActual).length());
-            }
+//            if (indiceActual != -1) {
+            setSlideTime((int) reproductor.getCancionActual().length());
+//            }
         }
     }
 
@@ -1812,7 +1816,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
      * debe ser válido
      */
     private void reproducirCancionActual() {
-        reproducir(canciones.get(indiceActual));
+//        reproducir(canciones.get(indiceActual));
     }
 
     private int getIndice(File f) {
@@ -1830,19 +1834,20 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 
         if (reproductor != null) {
 //            if(milis != 0){
-//                durActual = r.getCancion().getDuracionAsString(milis) + " / "+ r.getCancion().getDuracionAsString();
+//                durActual = r.getCancionActual().getDuracionAsString(milis) + " / "+ r.getCancionActual().getDuracionAsString();
 //            }else{
-//                durActual = "0:00 / "+ r.getCancion().getDuracionAsString();
+//                durActual = "0:00 / "+ r.getCancionActual().getDuracionAsString();
 //            }
 
-            lblArtista.setText(reproductor.getCancion().getAutor());
-            lblTema.setText(reproductor.getCancion().getNombre() + " (" + reproductor.getCancion().getDuracionAsString() + ")");
-        } else if (indiceActual != -1) {
-            Cancion c = canciones.get(indiceActual);
-            durActual = "0:00 / " + c.getDuracionAsString();
-            lblArtista.setText(c.getAutor());
-            lblTema.setText(c.getNombre() + " (" + durActual + ")");
-        }
+            lblArtista.setText(reproductor.getCancionActual().getAutor());
+            lblTema.setText(reproductor.getCancionActual().getNombre() + " (" + reproductor.getCancionActual().getDuracionAsString() + ")");
+        } 
+//        else if (indiceActual != -1) {
+//            Cancion c = canciones.get(indiceActual);
+//            durActual = "0:00 / " + c.getDuracionAsString();
+//            lblArtista.setText(c.getAutor());
+//            lblTema.setText(c.getNombre() + " (" + durActual + ")");
+//        }
     }
 
     private void cargarDefault() {
@@ -1873,7 +1878,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         TMCancionBiblioteca model = (TMCancionBiblioteca) tablaBiblioteca.getModel();
 
         canciones = model.canciones;
-        indiceActual = fila;
+//        indiceActual = fila;
 
         cargarCancionesAListaGrafica();
 
@@ -1901,8 +1906,8 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                                 Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             cargarCancionesAListaGrafica();
-                            indiceActual = getIndice(f);
-                            System.out.println("Indice actual : " + indiceActual);
+//                            indiceActual = getIndice(f);
+//                            System.out.println("Indice actual : " + indiceActual);
                         }
                     });
 

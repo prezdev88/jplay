@@ -17,7 +17,7 @@ import xjplay.recursos.Ruta;
  */
 public class WorkerStringProgress extends SwingWorker<Void, String> {
 
-    private JProgressBar progreso;
+    private JProgressBar progressBar;
     private String maxString;
     private int totalSegundos;
 
@@ -25,7 +25,7 @@ public class WorkerStringProgress extends SwingWorker<Void, String> {
     private int iniSeg;
 
     public WorkerStringProgress(JProgressBar progressBar, String max) {
-        this.progreso = progressBar;
+        this.progressBar = progressBar;
         maxString = max;
         this.totalSegundos = getTotalSegundos();
 
@@ -72,7 +72,7 @@ public class WorkerStringProgress extends SwingWorker<Void, String> {
 
     @Override
     protected void process(List<String> chunks) {
-        progreso.setString(chunks.get(0));
+        progressBar.setString(chunks.get(0));
     }
 
     private int getTotalSegundos() {
