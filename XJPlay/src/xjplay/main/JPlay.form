@@ -408,8 +408,7 @@
                   <Group type="102" attributes="0">
                       <Component id="togVol" min="-2" pref="44" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="slideVol" min="-2" pref="216" max="-2" attributes="0"/>
-                      <EmptySpace pref="134" max="32767" attributes="0"/>
+                      <Component id="slideVol" pref="350" max="32767" attributes="0"/>
                   </Group>
                   <Component id="progress" alignment="0" max="32767" attributes="0"/>
                   <Component id="jPanel5" alignment="0" max="32767" attributes="0"/>
@@ -425,9 +424,9 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="togVol" min="-2" max="-2" attributes="0"/>
-                          <Component id="slideVol" min="-2" pref="38" max="-2" attributes="0"/>
+                          <Component id="slideVol" min="-2" pref="24" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>

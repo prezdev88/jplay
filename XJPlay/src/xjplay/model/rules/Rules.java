@@ -3,8 +3,8 @@ package xjplay.model.rules;
 import java.awt.Dimension;
 
 public class Rules {
-    public static final String NOMBRE                      = "JPlay";
-    public static final String VERSION                     = "0.3a";
+    public static final String NOMBRE               = "JPlay";
+    public static final String VERSION              = "0.3a";
     
     public static int PAUSE_MOVER                   = 3;         // el pause para mover la x de la foto
     public static int PAUSE_ENTRE_FOTOS             = 10000;     // pause entre cada fotos;
