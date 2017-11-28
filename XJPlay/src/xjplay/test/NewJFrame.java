@@ -169,7 +169,7 @@ public class NewJFrame extends javax.swing.JFrame {
         imagenes.add(ii5);
         
         
-        HiloCoverArt hca = new HiloCoverArt(lbl1, lbl2, imagenes);
+        HiloCoverArt hca = new HiloCoverArt(lbl1, imagenes);
         hca.start();
     }//GEN-LAST:event_jButton1ActionPerformed
 

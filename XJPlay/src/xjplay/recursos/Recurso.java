@@ -31,8 +31,8 @@ public class Recurso {
                 System.out.println("RUTA FOTO: "+archivo.getPath());
                 imageIcon = new ImageIcon(
                         image.getScaledInstance(
-                                (int)Rules.CARATULA.getWidth(),
-                                (int)Rules.CARATULA.getHeight(),
+                                (int)Rules.COVER_DIMENSION.getWidth(),
+                                (int)Rules.COVER_DIMENSION.getHeight(),
                                 Image.SCALE_SMOOTH)
                 );
                 fotos.add(imageIcon);
