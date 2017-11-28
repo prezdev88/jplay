@@ -121,9 +121,10 @@ public class Biblioteca implements Serializable{
         }
     }
     
-    private void printAlbums(){
+    public void printAlbums(){
         for (Album album : albums) {
             System.out.println(album);
+            System.out.println("Canciones: "+album.getCanciones().size());
         }
     }
     

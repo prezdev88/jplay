@@ -54,6 +54,7 @@ import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
 import jplay.model.Album;
 import xjplay.model.lastFM.LastFM;
+import xjplay.model.progress.WorkerStringProgress;
 import xjplay.model.rules.Rules;
 import xjplay.model.tree.CellRenderExplorer;
 import xjplay.model.tree.CellRenderCancionLista;
@@ -71,7 +72,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
     private Thread hiloCargar;
     private JPopupMenu popUpTree;
     private JPopupMenu popUpBiblio;
-    
+
     private final boolean SAVE = true; // ESTO ES SOLO PARA DEBUGGING
     private List<Cancion> lFiltrada;
     private boolean isPlay;
@@ -86,6 +87,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 
     private int porcentaje;
     private boolean imprimirBarraDeProgreso = true;
+    private WorkerStringProgress workerStringProgress; // para pintar los minutos en la barra
 
     public JPlay() {
         initComponents();
@@ -164,7 +166,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 //            System.out.println(entry);
 //        }
 //        togVol.setVisible(false);
-        
+        biblioteca.printAlbums();
     }
 
     // http://stackoverflow.com/questions/13516730/disable-enter-key-from-moving-down-a-row-in-jtable
@@ -255,7 +257,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         jPanel6.setBackground(new java.awt.Color(254, 254, 254));
         jPanel6.setOpaque(false);
 
-        txtBuscar.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
         txtBuscar.setForeground(new java.awt.Color(153, 153, 153));
         txtBuscar.setText("Buscar aquí tus canciones");
         txtBuscar.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -393,7 +394,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -437,9 +438,9 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblInfoCarga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -786,11 +787,13 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                     isPlay = false;
                     btnPause.setIcon(new javax.swing.ImageIcon(getClass().getResource(Ruta.PLAY)));
                     reproductor.pause();
+                    workerStringProgress.cancel(true);
                 } else {
                     isPlay = true;
                     btnPause.setIcon(new javax.swing.ImageIcon(getClass().getResource(Ruta.PAUSE)));
                     if (isStop) {
-                        reproductor.play();
+//                        reproductor.play();
+                        reproducir(canciones.get(indiceActual));
                         isPlay = true;
                         isStop = false;
                     } else {
@@ -955,6 +958,9 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 isStop = true;
                 btnPause.setIcon(new javax.swing.ImageIcon(getClass().getResource(Ruta.PLAY)));
                 setSlideValue(0);
+                workerStringProgress.cancel(true);
+//                workerStringProgress = null;
+                progress.setString("0:00");
             } catch (BasicPlayerException ex) {
                 Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -1129,29 +1135,27 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                             }
                         }
 
-                        
-
                         if (JOptionPane.showConfirmDialog(this, "Se han encontrado " + cont + " canciones que no existen. ¿Desea eliminarlas?") == JOptionPane.YES_OPTION) {
                             int cant = biblioteca.removerNoExistentes();
                             JOptionPane.showMessageDialog(this, "Se han eliminado " + cant + " canciones de la biblioteca!", "Info", JOptionPane.INFORMATION_MESSAGE);
-                            
+
                             Iterator<Cancion> iterator = canciones.iterator();
-                            
+
                             Cancion c;
                             cant = 0;
-                            while(iterator.hasNext()){
+                            while (iterator.hasNext()) {
                                 c = iterator.next();
-                                
-                                if(!biblioteca.estaCancion(c)){
+
+                                if (!biblioteca.estaCancion(c)) {
                                     iterator.remove();
                                     cant++;
                                 }
                             }
-                            
-                            if(cant != 0){
+
+                            if (cant != 0) {
                                 JOptionPane.showMessageDialog(this, "Se han eliminado " + cant + " canciones de la lista principal!", "Info", JOptionPane.INFORMATION_MESSAGE);
                             }
-                            
+
                         }
                     }
                 }
@@ -1328,7 +1332,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         if (imprimirBarraDeProgreso) {
 //            progress.setStringPainted(true);
             progress.setValue(readedBytes);
-            progress.setString(readedBytes + " bytes / " + totalBytes + " bytes");
+//            progress.setString(readedBytes + " bytes / " + totalBytes + " bytes");
         }
 
     }
@@ -1787,6 +1791,16 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 //            }
 //            System.out.println("-----------------------------------------");
             cargarArbolConCancionesMasTocadas();
+
+            System.out.println("WORKER!");
+            if (this.workerStringProgress != null) {
+                this.workerStringProgress.cancel(true);
+            }
+
+            this.workerStringProgress = new WorkerStringProgress(progress, cancion.getDuracionAsString());
+
+            this.workerStringProgress.execute();
+            System.out.println("WORKER execute!");
         } catch (BasicPlayerException ex) {
             JOptionPane.showMessageDialog(this, "Error al reproducir: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -1925,11 +1939,12 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 
         final float value = totalBytes * ((float) porc / (float) 100);
         progress.setValue((int) value);
-        progress.setString(value + " bytes");
-//        progress.setString(porc + "%");
+//        progress.setString(value + " bytes");
 
+//        progress.setString(porc + "%");
         if (seek) {
             try {
+                this.workerStringProgress.cambiar(porc);
                 reproductor.seek((long) value);
             } catch (BasicPlayerException ex) {
                 Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
