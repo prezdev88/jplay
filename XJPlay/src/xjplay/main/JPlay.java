@@ -164,6 +164,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 //        }
 //        togVol.setVisible(false);
         biblioteca.printAlbums();
+        imprimirBarraDeProgreso = true;
     }
 
     // http://stackoverflow.com/questions/13516730/disable-enter-key-from-moving-down-a-row-in-jtable
