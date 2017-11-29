@@ -23,6 +23,7 @@ public class WorkerStringProgress extends SwingWorker<Void, String> {
 
     private int iniMin;
     private int iniSeg;
+    private boolean pausado;
 
     public WorkerStringProgress(JProgressBar progressBar, String max) {
         this.progressBar = progressBar;
@@ -33,6 +34,15 @@ public class WorkerStringProgress extends SwingWorker<Void, String> {
         iniSeg = 0;
         
         progressBar.setForeground(new Color(76,175,80));
+        pausado = false;
+    }
+    
+    public void pausar(){
+        pausado = true;
+    }
+    
+    public void resume(){
+        pausado = false;
     }
 
     /**
@@ -63,6 +73,10 @@ public class WorkerStringProgress extends SwingWorker<Void, String> {
     protected Void doInBackground() throws Exception {
         for (iniMin = 0; iniMin < 60; iniMin++) {
             for (iniSeg = 0; iniSeg < 60; iniSeg++) {
+                while(pausado){
+                    Thread.sleep(500);
+                }
+                
                 publish(iniMin + ":" + (iniSeg < 10 ? "0" + iniSeg : iniSeg));
                 Thread.sleep(1000);
             }

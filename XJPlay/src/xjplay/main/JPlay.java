@@ -30,9 +30,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Random;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
@@ -66,7 +64,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 
     public static Reproductor reproductor;
     private Biblioteca biblioteca;
-    private List<Cancion> canciones;
+    private List<Cancion> canciones; // son las canciones de la lista de reproducción actual
     private Thread hiloRep;
     private Thread hiloCargar;
     private JPopupMenu popUpTree;
@@ -215,9 +213,9 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         lblArtista = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         btnPause = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        btnPause1 = new javax.swing.JButton();
+        btnTocarAnterior = new javax.swing.JButton();
+        btnTocarSiguiente = new javax.swing.JButton();
+        btnStop = new javax.swing.JButton();
         btnExaminar = new javax.swing.JButton();
         opAleatorio = new javax.swing.JCheckBox();
         opRepetirCancion = new javax.swing.JCheckBox();
@@ -439,7 +437,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblInfoCarga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -503,27 +501,27 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(63, 81, 181));
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/xjplay/recursos/iconos/material/ic_skip_previous_white_24dp_1x.png"))); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnTocarAnterior.setBackground(new java.awt.Color(63, 81, 181));
+        btnTocarAnterior.setIcon(new javax.swing.ImageIcon(getClass().getResource("/xjplay/recursos/iconos/material/ic_skip_previous_white_24dp_1x.png"))); // NOI18N
+        btnTocarAnterior.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnTocarAnteriorActionPerformed(evt);
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(63, 81, 181));
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/xjplay/recursos/iconos/material/ic_skip_next_white_24dp_1x.png"))); // NOI18N
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnTocarSiguiente.setBackground(new java.awt.Color(63, 81, 181));
+        btnTocarSiguiente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/xjplay/recursos/iconos/material/ic_skip_next_white_24dp_1x.png"))); // NOI18N
+        btnTocarSiguiente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnTocarSiguienteActionPerformed(evt);
             }
         });
 
-        btnPause1.setBackground(new java.awt.Color(244, 67, 54));
-        btnPause1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/xjplay/recursos/iconos/material/ic_stop_white_24dp_1x.png"))); // NOI18N
-        btnPause1.addActionListener(new java.awt.event.ActionListener() {
+        btnStop.setBackground(new java.awt.Color(244, 67, 54));
+        btnStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/xjplay/recursos/iconos/material/ic_stop_white_24dp_1x.png"))); // NOI18N
+        btnStop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPause1ActionPerformed(evt);
+                btnStopActionPerformed(evt);
             }
         });
 
@@ -561,11 +559,11 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(btnPause)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
+                        .addComponent(btnTocarAnterior)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)
+                        .addComponent(btnTocarSiguiente)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnPause1)
+                        .addComponent(btnStop)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnExaminar))
                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -579,11 +577,11 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnTocarSiguiente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnPause, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnTocarAnterior, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnExaminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnPause1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(opRepetirCancion)
@@ -731,7 +729,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 
 //            setSlideTime(canciones.get(0).getDuracionEnMilis());
 //                indiceActual = 0;
-
 //            hiloRep = new Thread(new Runnable() {
 //
 //                @Override
@@ -786,20 +783,19 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                     isPlay = false;
                     btnPause.setIcon(new javax.swing.ImageIcon(getClass().getResource(Ruta.PLAY)));
                     reproductor.pause();
-                    workerStringProgress.cancel(true);
+                    
                 } else {
                     isPlay = true;
                     btnPause.setIcon(new javax.swing.ImageIcon(getClass().getResource(Ruta.PAUSE)));
                     if (isStop) {
-//                        reproductor.play();
-//                        reproducir(canciones.get(indiceActual));
+                        reproducirCancionActual();
                         isPlay = true;
                         isStop = false;
                     } else {
                         reproductor.resume();
                     }
                 }
-            } 
+            }
 //            else if (indiceActual != -1) {
 ////                r = new Reproductor(canciones.get(indiceActual), this);
 ////                r.play();      
@@ -867,47 +863,29 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 //        System.out.println("Indice actual : " + indiceActual);
     }//GEN-LAST:event_btnCancelarCargaActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnTocarAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTocarAnteriorActionPerformed
         if (!canciones.isEmpty()) {
             if (isRandom) {
-//                indiceActual = getRandom();
-                nextRandom = getRandom();
-                if (reproductor != null) {
-                    reproducirCancionActual();
-                }
-            } 
-//            else if (indiceActual != 0) {
-//                indiceActual--;
-//                if (reproductor != null) {
-//                    reproducirCancionActual();
-//                }
-//            }
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        try {
-            if (!canciones.isEmpty()) {
-                if (isRandom) {
-//                    indiceActual = getRandom();
-                    nextRandom = getRandom();
-                    if (reproductor != null) {
-                        reproducirCancionActual();
-                    }
-                } 
-//                else if (indiceActual != (canciones.size() - 1)) {
-//                    indiceActual++;
-//                    if (reproductor != null) {
-//                        reproducirCancionActual();
-//                    }
-//                }
-
+                reproducirRandom();
+            } else if (repetirCancion) {
+                reproducirCancionActual();
+            } else {
+                reproducirAnterior();
             }
-        } catch (IndexOutOfBoundsException e) {
-//            indiceActual = 0;
-            reproducirCancionActual();
         }
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnTocarAnteriorActionPerformed
+
+    private void btnTocarSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTocarSiguienteActionPerformed
+        if (!canciones.isEmpty()) {
+            if (isRandom) {
+                reproducirRandom();
+            } else if (repetirCancion) {
+                reproducirCancionActual();
+            } else {
+                reproducirSiguiente();
+            }
+        }
+    }//GEN-LAST:event_btnTocarSiguienteActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         if (SAVE) {
@@ -952,7 +930,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         }
     }//GEN-LAST:event_tablaBibliotecaMouseReleased
 
-    private void btnPause1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPause1ActionPerformed
+    private void btnStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStopActionPerformed
         if (reproductor != null) {
             try {
                 reproductor.stop();
@@ -967,7 +945,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }//GEN-LAST:event_btnPause1ActionPerformed
+    }//GEN-LAST:event_btnStopActionPerformed
 
     private void tablaBibliotecaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaBibliotecaMousePressed
         if (SwingUtilities.isRightMouseButton(evt)) {
@@ -1167,7 +1145,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 //                System.out.println("Índice actual: " + indiceActual);
                 cargarCancionesAListaGrafica();
                 cargarCancionesABiblioteca(biblioteca.getCanciones());
-                imprimirTemaActual(0);
+                imprimirTemaActual();
 
             } catch (InvalidClassException ex) {
                 System.out.println("EX: " + ex.getMessage());
@@ -1285,10 +1263,10 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
     private javax.swing.JButton btnCancelarCarga;
     private javax.swing.JButton btnExaminar;
     private javax.swing.JButton btnPause;
-    private javax.swing.JButton btnPause1;
+    private javax.swing.JButton btnStop;
+    private javax.swing.JButton btnTocarAnterior;
+    private javax.swing.JButton btnTocarSiguiente;
     private javax.swing.JDialog dialogCanciones;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -1395,7 +1373,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         setSlideValue(bytesread);
 
         // acá esta el error. Ver bien esto!
-        imprimirTemaActual(milis);
+//        imprimirTemaActual(milis);
 //        System.out.println("BYTES LEIDOS: "+bytesread);
 //        System.out.println(properties);
 //        System.out.println("MS: "+microseconds);
@@ -1404,29 +1382,43 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
     @Override
     public void stateUpdated(BasicPlayerEvent bpe) {
         System.out.println("STATE UPDATED: " + bpe.toString());
-        if (bpe.getCode() == BasicPlayerEvent.EOM) {
-            if (!repetirCancion) {
-                if (isRandom) {
-//                    indiceActual = getRandom();
-                    nextRandom = getRandom();
+        switch (bpe.getCode()) {
+            case BasicPlayerEvent.EOM:
+                /*
+                End of music: Se ejecuta esto cuando finaliza de tocar un tema
+                 */
+                if (!repetirCancion) {
+                    if (isRandom) {
+                        reproducirRandom();
+                    } else {
+                        reproducirSiguiente();
+                    }
                 } else {
-//                    indiceActual++;
+                    reproducirCancionActual();
                 }
 
-            }
-//            if (indiceActual < canciones.size()) {
-//                reproducir(canciones.get(indiceActual));
-//            }
-        } else if (bpe.getCode() == BasicPlayerEvent.STOPPED) {
-//            imprimirTemaActual(0);
-//            slideTime.setValue(0);
-        } else if (bpe.getCode() == BasicPlayerEvent.SEEKED) {
+                System.out.println("END_OF_MUSIC");
+                break;
+            case BasicPlayerEvent.STOPPED:
+                break;
+                
+            case BasicPlayerEvent.RESUMED:
+                workerStringProgress.resume();
+                break;
+            case BasicPlayerEvent.PAUSED:
+                workerStringProgress.pausar();
+                break;
 //            setSlideTime(bpe.getPosition());
-        } else if (bpe.getCode() == BasicPlayerEvent.OPENED) {
-            // el indice es -1 cuando cargo desde la biblioteca
+            case BasicPlayerEvent.SEEKED:
+                break;
+            case BasicPlayerEvent.OPENED:
+                // el indice es -1 cuando cargo desde la biblioteca
 //            if (indiceActual != -1) {
-            setSlideTime((int) reproductor.getCancionActual().length());
+                setSlideTime((int) reproductor.getCancionActual().length());
 //            }
+                break;
+            default:
+                break;
         }
     }
 
@@ -1796,7 +1788,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 //            System.out.println("-----------------------------------------");
             cargarArbolConCancionesMasTocadas();
 
-            System.out.println("WORKER!");
             if (this.workerStringProgress != null) {
                 this.workerStringProgress.cancel(true);
             }
@@ -1804,31 +1795,27 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
             this.workerStringProgress = new WorkerStringProgress(progress, cancion.getDuracionAsString());
 
             this.workerStringProgress.execute();
-            System.out.println("WORKER execute!");
+
+            imprimirTemaActual();
         } catch (BasicPlayerException ex) {
             JOptionPane.showMessageDialog(this, "Error al reproducir: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }
 
-    /**
-     * Este método reproduce la canción actual según el índiceActual El indice
-     * debe ser válido
-     */
     private void reproducirCancionActual() {
-//        reproducir(canciones.get(indiceActual));
+        reproducir(canciones.get(canciones.indexOf(reproductor.getCancionActual())));
     }
 
-    private int getIndice(File f) {
-        return canciones.indexOf(f);
-    }
-
+//    private int getIndice(File f) {
+//        return canciones.indexOf(f);
+//    }
 //    private void agregarCancion(Cancion cancion, List<Cancion> lista) {
 //        lista.add(cancion);
 //        lblInfoCarga.setText("Agregando " + cancion);
 ////        System.out.println("Agregando "+cancion);
 //    }
-    private void imprimirTemaActual(int milis) {
+    private void imprimirTemaActual() {
         String durActual = "0:00";
         String durTotal = "()";
 
@@ -1841,7 +1828,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 
             lblArtista.setText(reproductor.getCancionActual().getAutor());
             lblTema.setText(reproductor.getCancionActual().getNombre() + " (" + reproductor.getCancionActual().getDuracionAsString() + ")");
-        } 
+        }
 //        else if (indiceActual != -1) {
 //            Cancion c = canciones.get(indiceActual);
 //            durActual = "0:00 / " + c.getDuracionAsString();
@@ -2094,5 +2081,36 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         } catch (FontFormatException | IOException ex) {
             Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    /**
+     * Reproduce el siguiente, si es el último reproduce el primero
+     */
+    private void reproducirSiguiente() {
+        int indexActual = canciones.indexOf(reproductor.getCancionActual());
+        indexActual++;
+        if (indexActual < canciones.size()) {
+            reproducir(canciones.get(indexActual));
+        } else {
+            reproducir(canciones.get(0));
+        }
+    }
+    
+    /**
+     * Reproduce el anterior, si es el primero reproduce el último
+     */
+    private void reproducirAnterior() {
+        int indexActual = canciones.indexOf(reproductor.getCancionActual());
+        indexActual--;
+        if (indexActual >= 0) {
+            reproducir(canciones.get(indexActual));
+        } else {
+            // reproduce el último
+            reproducir(canciones.get(canciones.size()-1));
+        }
+    }
+
+    private void reproducirRandom() {
+        reproducir(canciones.get(getRandom()));
     }
 }
