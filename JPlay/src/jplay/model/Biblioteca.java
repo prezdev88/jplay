@@ -106,8 +106,13 @@ public class Biblioteca implements Serializable{
     private void addToAlbum(Cancion c) {
         boolean encontrado = false;
         for (Album a : albums) {
+            // si el album es igual que el album de la cancion
             if(a.getName().trim().equalsIgnoreCase(c.getAlbum().trim())){
-                a.addCancion(c);
+                // y si la cancion no existe en el album
+                if(!a.existCancion(c)){ // este if es por el issue #12
+                    // la añado!
+                    a.addCancion(c);
+                }
                 encontrado = true;
                 break;
             }
