@@ -35,6 +35,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
@@ -61,8 +62,6 @@ import xjplay.model.tree.CellRenderExplorer;
 import xjplay.model.tree.CellRenderCancionLista;
 import xjplay.model.tree.CellRenderCancionMasTocada;
 import xjplay.recursos.Recurso;
-import xjplay.test.NewJDialog;
-import xjplay.test.NewJFrame;
 //import nicon.notify.core.Notification;
 
 public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IBuscar {
@@ -2142,5 +2141,16 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
     @Override
     public void focusOn() {
         tablaBiblioteca.setRowSelectionInterval(0, 0);
+    }
+
+    @Override
+    public void cargarComboDeBusqueda(JComboBox cbo) {
+        
+        cbo.removeAllItems();
+        cbo.addItem("");
+        
+        for (String artista : biblioteca.getArtistas()) {
+            cbo.addItem(artista);
+        }
     }
 }

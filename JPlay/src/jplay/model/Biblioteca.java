@@ -141,4 +141,15 @@ public class Biblioteca implements Serializable{
         }
         return null;
     }
+    
+    public List<String> getArtistas(){
+        List<String> lista = new ArrayList<>();
+        for (Album album : albums) {
+            if(!lista.contains(album.getArtist())){
+                lista.add(album.getArtist());
+            }
+        }
+        
+        return lista;
+    }
 }

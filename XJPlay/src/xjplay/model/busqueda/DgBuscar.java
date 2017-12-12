@@ -51,6 +51,7 @@ public class DgBuscar extends javax.swing.JDialog {
             
         });
         
+        // Esto es de SWINGX!
         AutoCompleteDecorator.decorate(this.cboBuscar);
     }
     
@@ -60,6 +61,7 @@ public class DgBuscar extends javax.swing.JDialog {
 
     public void setIbuscar(IBuscar ibuscar) {
         this.ibuscar = ibuscar;
+        ibuscar.cargarComboDeBusqueda(cboBuscar);
     }
     
     
@@ -81,6 +83,16 @@ public class DgBuscar extends javax.swing.JDialog {
         cboBuscar.setEditable(true);
         cboBuscar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "asd", "canni", "creed" }));
         cboBuscar.setOpaque(false);
+        cboBuscar.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cboBuscarItemStateChanged(evt);
+            }
+        });
+        cboBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                cboBuscarMouseReleased(evt);
+            }
+        });
         cboBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 cboBuscarKeyReleased(evt);
@@ -120,6 +132,18 @@ public class DgBuscar extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void cboBuscarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cboBuscarMouseReleased
+        
+    }//GEN-LAST:event_cboBuscarMouseReleased
+
+    private void cboBuscarItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboBuscarItemStateChanged
+        try {
+            ibuscar.search(cboBuscar.getEditor().getItem().toString().toLowerCase().trim());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }//GEN-LAST:event_cboBuscarItemStateChanged
 
     /**
      * @param args the command line arguments
