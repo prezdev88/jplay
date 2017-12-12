@@ -1,11 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package xjplay.test;
 
 import com.sun.glass.events.KeyEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.ComboBoxModel;
+import javax.swing.JRootPane;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ListDataListener;
 
 /**
  *
@@ -13,15 +18,81 @@ import com.sun.glass.events.KeyEvent;
  */
 public class NewJDialog extends javax.swing.JDialog {
 
-    /**
-     * Creates new form NewJDialog
-     */
+    private List<String> lista;
+
     public NewJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         this.setUndecorated(true);
-        
+
+        cargarLista();
+
         initComponents();
+
         resetTextField();
+        this.jComboBox1.removeAllItems();
+
+        /*Con escape, f3 y control f se desaparece el dialogo*/
+        this.getRootPane().getInputMap(JRootPane.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0), "refresh");
+        this.getRootPane().getInputMap(JRootPane.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "refresh");
+        this.getRootPane().getInputMap(JRootPane.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK), "refresh");
+        /*Con escape, f3 y control f se desaparece el dialogo*/
+
+        this.getRootPane().getActionMap().put("refresh", new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("F3 New JDialog");
+                NewJDialog.this.setVisible(false);
+            }
+        });
+
+        jComboBox1.getEditor().getEditorComponent().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(java.awt.event.KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(java.awt.event.KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(java.awt.event.KeyEvent e) {
+                System.out.println(e.getKeyCode());
+                comboKeyReleased(e);
+            }
+        });
+
+    }
+
+    private void comboKeyReleased(java.awt.event.KeyEvent e) {
+        if (e.getKeyCode() != KeyEvent.VK_ESCAPE
+                || e.getKeyCode() != KeyEvent.VK_DOWN
+                || e.getKeyCode() != KeyEvent.VK_UP) {
+//            String filtro = jComboBox1.getEditor().getItem().toString();
+//
+//            jComboBox1.removeAllItems();
+//
+//            jComboBox1.addItem(filtro);
+//
+//            for (String string : lista) {
+//                if (string.contains(filtro)) {
+//                    jComboBox1.addItem(string);
+//                }
+//            }
+//
+////            jComboBox1.showPopup();
+//            SwingUtilities.invokeLater(new Runnable() {
+//                @Override
+//                public void run() {
+//                    jComboBox1.showPopup();
+//                }
+//            });
+        } else if (e.getKeyCode() != KeyEvent.VK_ESCAPE) {
+            this.setVisible(false);
+        }
     }
 
     /**
@@ -33,14 +104,25 @@ public class NewJDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jTextField1.setText("jTextField1");
-        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+        jComboBox1.setEditable(true);
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox1ItemStateChanged(evt);
+            }
+        });
+        jComboBox1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField1KeyReleased(evt);
+                jComboBox1KeyReleased(evt);
+            }
+        });
+        jComboBox1.addVetoableChangeListener(new java.beans.VetoableChangeListener() {
+            public void vetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {
+                jComboBox1VetoableChange(evt);
             }
         });
 
@@ -50,25 +132,31 @@ public class NewJDialog extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                .addComponent(jComboBox1, 0, 376, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER || evt.getKeyCode() == KeyEvent.VK_F3){
-            this.setVisible(false);
-        }
-    }//GEN-LAST:event_jTextField1KeyReleased
+    private void jComboBox1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jComboBox1KeyReleased
+
+    }//GEN-LAST:event_jComboBox1KeyReleased
+
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+
+    }//GEN-LAST:event_jComboBox1ItemStateChanged
+
+    private void jComboBox1VetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {//GEN-FIRST:event_jComboBox1VetoableChange
+
+    }//GEN-LAST:event_jComboBox1VetoableChange
 
     /**
      * @param args the command line arguments
@@ -113,11 +201,23 @@ public class NewJDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JComboBox<String> jComboBox1;
     // End of variables declaration//GEN-END:variables
 
     public void resetTextField() {
-        jTextField1.setText(null);
-        jTextField1.requestFocus();
+
+        jComboBox1.requestFocus();
     }
+
+    private void cargarLista() {
+        lista = new ArrayList<>();
+        lista.add("Alberto");
+        lista.add("Patricio");
+        lista.add("Nicolas");
+        lista.add("Fabiola");
+        lista.add("Julia");
+        lista.add("Muñoz");
+        lista.add("16828943-k");
+    }
+
 }

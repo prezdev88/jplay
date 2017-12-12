@@ -7,11 +7,15 @@ package xjplay.test;
 
 import com.sun.glass.events.KeyEvent;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
+import javax.swing.JRootPane;
+import javax.swing.KeyStroke;
 import xjplay.coverArt.HiloCoverArt;
 import xjplay.test.progress.WorkerStringProgress;
 import xjplay.test.progress.WorkerValueProgress;
@@ -21,13 +25,42 @@ import xjplay.test.progress.WorkerValueProgress;
  * @author pperezp
  */
 public class NewJFrame extends javax.swing.JFrame {
+
     private NewJDialog p;
+
     /**
      * Creates new form NewJFrame
      */
     public NewJFrame() {
         initComponents();
         jSlider1.setVisible(jToggleButton1.isSelected());
+
+        /*Código para escuchar a un boton para todos los componentes*/
+        
+        /*CON CTRL + F y f3 funciona el buscar*/
+        this.getRootPane().getInputMap(JRootPane.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK), "refresh");
+        this.getRootPane().getInputMap(JRootPane.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0), "refresh");
+        /*CON CTRL + F y f3 funciona el buscar*/
+
+        this.getRootPane().getActionMap().put("refresh", new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("F3");
+                if (p == null) {
+                    p = new NewJDialog(NewJFrame.this, false);
+                    //            p.setUndecorated(true);
+                    p.setBounds(NewJFrame.this.getX(), NewJFrame.this.getY(), NewJFrame.this.getWidth(), p.getHeight());
+                    p.setVisible(true);
+                } else {
+                    p.resetTextField();
+                    p.setVisible(!p.isVisible());
+                }
+            }
+        });
+        /*Código para escuchar a un boton para todos los componentes*/
     }
 
     /**
@@ -39,6 +72,9 @@ public class NewJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
         jSlider1 = new javax.swing.JSlider();
         jToggleButton1 = new javax.swing.JToggleButton();
         jLabel1 = new javax.swing.JLabel();
@@ -51,6 +87,12 @@ public class NewJFrame extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
+
+        jMenu1.setText("File");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -298,7 +340,7 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
@@ -312,7 +354,7 @@ public class NewJFrame extends javax.swing.JFrame {
             int ancho;
             int alto;
             int limite = 300;
-            
+
             @Override
             public void run() {
                 for (int i = 0; i < limite; i++) {
@@ -341,7 +383,7 @@ public class NewJFrame extends javax.swing.JFrame {
             int y;
             int ancho;
             int alto;
-            
+
             @Override
             public void run() {
                 for (int i = 0; i < 300; i++) {
@@ -365,21 +407,21 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField2FocusLost
 
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
-        
+
     }//GEN-LAST:event_formKeyReleased
 
     private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
-        if(evt.getKeyCode() == KeyEvent.VK_F3){
-            if(p == null){
-                p = new NewJDialog(this, false);
-    //            p.setUndecorated(true);
-                p.setBounds(this.getX(), this.getY(), this.getWidth(), p.getHeight());
-                p.setVisible(true);
-            }else {
-                p.resetTextField();
-                p.setVisible(!p.isVisible());
-            }
-        }
+//        if(evt.getKeyCode() == KeyEvent.VK_F3){
+//            if(p == null){
+//                p = new NewJDialog(this, false);
+//    //            p.setUndecorated(true);
+//                p.setBounds(this.getX(), this.getY(), this.getWidth(), p.getHeight());
+//                p.setVisible(true);
+//            }else {
+//                p.resetTextField();
+//                p.setVisible(!p.isVisible());
+//            }
+//        }
     }//GEN-LAST:event_jTextField1KeyReleased
 
     /**
@@ -400,6 +442,9 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JSlider jSlider1;
@@ -409,4 +454,7 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lbl1;
     private javax.swing.JLabel lbl2;
     // End of variables declaration//GEN-END:variables
+
+   
+
 }
