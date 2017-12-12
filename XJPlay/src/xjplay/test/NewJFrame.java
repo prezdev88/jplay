@@ -5,6 +5,7 @@
  */
 package xjplay.test;
 
+import com.sun.glass.events.KeyEvent;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ import xjplay.test.progress.WorkerValueProgress;
  * @author pperezp
  */
 public class NewJFrame extends javax.swing.JFrame {
-
+    private NewJDialog p;
     /**
      * Creates new form NewJFrame
      */
@@ -48,8 +49,15 @@ public class NewJFrame extends javax.swing.JFrame {
         jProgressBar1 = new javax.swing.JProgressBar();
         jButton2 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                formKeyReleased(evt);
+            }
+        });
 
         jSlider1.setOrientation(javax.swing.JSlider.VERTICAL);
         jSlider1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -90,6 +98,33 @@ public class NewJFrame extends javax.swing.JFrame {
         });
 
         jTextField1.setText("1281351");
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+        });
+
+        jTextField2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jTextField2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField2FocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField2FocusLost(evt);
+            }
+        });
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("jButton3");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -107,7 +142,11 @@ public class NewJFrame extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(56, 56, 56)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(98, 98, 98)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(64, 64, 64)
                         .addComponent(jButton1)
@@ -137,6 +176,10 @@ public class NewJFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                         .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -207,12 +250,10 @@ public class NewJFrame extends javax.swing.JFrame {
 
         WorkerStringProgress w2 = new WorkerStringProgress(jProgressBar1);
         WorkerValueProgress w1 = new WorkerValueProgress(jProgressBar1, max, w2);
-        
-        
+
         w1.execute();
         w2.execute();
-        
-        
+
 //        final Thread h2 = new Thread(new Runnable() {
 //            @Override
 //            public void run() {
@@ -256,6 +297,91 @@ public class NewJFrame extends javax.swing.JFrame {
 //        h2.start();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jTextField2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusGained
+        new Thread(new Runnable() {
+            int x;
+            int y;
+            int ancho;
+            int alto;
+            int limite = 300;
+            
+            @Override
+            public void run() {
+                for (int i = 0; i < limite; i++) {
+                    x = jTextField2.getX();
+                    y = jTextField2.getY();
+
+                    ancho = jTextField2.getWidth();
+                    alto = jTextField2.getHeight();
+
+                    ancho += 1;
+
+                    jTextField2.setBounds(x, y, ancho, alto);
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }).start();
+    }//GEN-LAST:event_jTextField2FocusGained
+
+    private void jTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusLost
+        new Thread(new Runnable() {
+            int x;
+            int y;
+            int ancho;
+            int alto;
+            
+            @Override
+            public void run() {
+                for (int i = 0; i < 300; i++) {
+                    x = jTextField2.getX();
+                    y = jTextField2.getY();
+
+                    ancho = jTextField2.getWidth();
+                    alto = jTextField2.getHeight();
+
+                    ancho -= 1;
+
+                    jTextField2.setBounds(x, y, ancho, alto);
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }).start();
+    }//GEN-LAST:event_jTextField2FocusLost
+
+    private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
+        
+    }//GEN-LAST:event_formKeyReleased
+
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        if(evt.getKeyCode() == KeyEvent.VK_F3){
+            if(p == null){
+                p = new NewJDialog(this, false);
+    //            p.setUndecorated(true);
+                p.setBounds(this.getX(), this.getY(), this.getWidth(), p.getHeight());
+                p.setVisible(true);
+            }else {
+                p.resetTextField();
+                p.setVisible(!p.isVisible());
+            }
+        }
+    }//GEN-LAST:event_jTextField1KeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -272,11 +398,13 @@ public class NewJFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JSlider jSlider1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JLabel lbl1;
     private javax.swing.JLabel lbl2;

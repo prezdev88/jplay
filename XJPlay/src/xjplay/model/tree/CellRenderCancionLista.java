@@ -72,6 +72,7 @@ public class CellRenderCancionLista extends JLabel implements TreeCellRenderer {
                     actualDiscIcon = new ImageIcon(im);
                     setIcon(actualDiscIcon);
                 } else {
+                    System.out.println(discIcon.toString());
                     setIcon(new ImageIcon(discIcon.getImage().getScaledInstance(
                             (int) Rules.MINI_CARATULA.getWidth(),
                             (int) Rules.MINI_CARATULA.getHeight(),

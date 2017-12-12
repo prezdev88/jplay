@@ -335,8 +335,8 @@
                 <Container class="javax.swing.JPanel" name="jPanel2">
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                      <JTabbedPaneConstraints tabName="+ tocadas!">
-                        <Property name="tabTitle" type="java.lang.String" value="+ tocadas!"/>
+                      <JTabbedPaneConstraints tabName="+ escuchadas">
+                        <Property name="tabTitle" type="java.lang.String" value="+ escuchadas"/>
                       </JTabbedPaneConstraints>
                     </Constraint>
                   </Constraints>

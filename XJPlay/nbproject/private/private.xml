@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="24">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="28">
         <file>
             <url>src/jplay/main/JPlay.java</url>
             <bookmark id="8">
@@ -16,54 +16,19 @@
         </file>
         <file>
             <url>src/xjplay/main/JPlay.java</url>
-            <bookmark id="23">
+            <bookmark id="26">
                 <name/>
-                <line>791</line>
+                <line>1104</line>
                 <key/>
             </bookmark>
-            <bookmark id="22">
+            <bookmark id="27">
                 <name/>
-                <line>875</line>
+                <line>1501</line>
                 <key/>
             </bookmark>
-            <bookmark id="17">
+            <bookmark id="28">
                 <name/>
-                <line>940</line>
-                <key/>
-            </bookmark>
-            <bookmark id="15">
-                <name/>
-                <line>1121</line>
-                <key/>
-            </bookmark>
-            <bookmark id="16">
-                <name/>
-                <line>1308</line>
-                <key/>
-            </bookmark>
-            <bookmark id="18">
-                <name/>
-                <line>1371</line>
-                <key/>
-            </bookmark>
-            <bookmark id="20">
-                <name/>
-                <line>1390</line>
-                <key/>
-            </bookmark>
-            <bookmark id="24">
-                <name/>
-                <line>1624</line>
-                <key/>
-            </bookmark>
-            <bookmark id="13">
-                <name/>
-                <line>1725</line>
-                <key/>
-            </bookmark>
-            <bookmark id="19">
-                <name/>
-                <line>1797</line>
+                <line>2053</line>
                 <key/>
             </bookmark>
         </file>
@@ -82,5 +47,6 @@
             <file>file:/home/prez/Escritorio/GIT/jplay/XJPlay/src/xjplay/model/rules/Rules.java</file>
             <file>file:/home/prez/Escritorio/GIT/jplay/XJPlay/src/xjplay/main/JPlay.java</file>
         </group>
+        <group name="jplay"/>
     </open-files>
 </project-private>

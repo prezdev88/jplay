@@ -22,4 +22,5 @@ public class Ruta {
     public final static String ATRAS =              RECURSOS+"1443342924_chevron-left.png";
     public final static String ADELANTE =           RECURSOS+"1443342930_chevron-right.png";
     public final static String EXAMINAR =           RECURSOS+"1443343078_folder-close.png";
+    public final static String ICONO_CORAZON =      RECURSOS+"corazon.png";
 }

@@ -412,7 +412,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 
         jPanel2.add(jScrollPane5, java.awt.BorderLayout.CENTER);
 
-        jTabbedPane1.addTab("+ tocadas!", jPanel2);
+        jTabbedPane1.addTab("+ escuchadas", jPanel2);
 
         lblInfoCarga.setBackground(new java.awt.Color(254, 254, 254));
         lblInfoCarga.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -1105,7 +1105,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                     cargarCancionesAListaGrafica(true);
 
                     reproducir(c);
-                    
+
                     jTabbedPane1.setSelectedIndex(2);
                 }
             }
@@ -1503,15 +1503,17 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("raiz");
 
         if (isMasTocadas) {
-            Album a = new Album("JPLAY", "Canciones más tocadas!");
-            
+            Album a = new Album("JPLAY", "Canciones más escuchadas!");
+
             DefaultMutableTreeNode disco = new DefaultMutableTreeNode(a);
             for (Cancion c : canciones) {
                 a.addCancion(c);
-                
+
                 disco.add(new DefaultMutableTreeNode(c));
             }
             
+            
+//            a.setLastFMImageCover(new ImageIcon(Ruta.ICONO_JPLAY));
             raiz.add(disco);
         } else {
             List<Album> albumes = getDiscos(canciones);
@@ -1529,13 +1531,19 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 
         treeSong.setModel(new javax.swing.tree.DefaultTreeModel(raiz));
         treeSong.setRootVisible(false);
-        
-        if(isMasTocadas) treeSong.expandRow(0);
-        
+
+        if (isMasTocadas) {
+            treeSong.expandRow(0);
+        }
+
+        String rutaIcon = (isMasTocadas ? Ruta.ICONO_CORAZON : Ruta.ICONO_JPLAY);
+
+        System.out.println(rutaIcon);
+
         treeSong.setCellRenderer(
                 new CellRenderCancionLista(
                         CellRenderExplorer.crearIcono(Ruta.ICONO_PLAY_ARBOL),
-                        CellRenderExplorer.crearIcono(Ruta.ICONO_JPLAY)
+                        CellRenderExplorer.crearIcono(rutaIcon)
                 )
         );
     }
@@ -1562,7 +1570,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 )
         );
 
-        jTabbedPane1.setTitleAt(3, "+ tocadas! (" + masRepro.size() + ")");
+        jTabbedPane1.setTitleAt(3, "+ escuchadas (" + masRepro.size() + ")");
     }
 
     private void listenerClickDerechoSobreArbol() {
@@ -1726,13 +1734,15 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 
         //ordenar acá
         System.out.println("Se cargaron " + canciones.size() + " canciones a la lista principal");
-        Collections.sort(canciones, new Comparator<File>() {
+        if (!isMasTocadas) {
+            Collections.sort(canciones, new Comparator<File>() {
 
-            @Override
-            public int compare(File f1, File f2) {
-                return f1.compareTo(f2);
-            }
-        });
+                @Override
+                public int compare(File f1, File f2) {
+                    return f1.compareTo(f2);
+                }
+            });
+        }
 //        listaCanciones.setModel(new LMCancion(canciones));
         // sin titulos las tabla
 //        tablaCanciones.getTableHeader().setUI(null);
@@ -2080,7 +2090,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
             hiloCovertArt.start();
         }
 
-        boolean soloUno = true;
         ImageIcon caratula;
         if (album.getDefaultCover() != null) { // si la cancion tiene un default cover
             caratula = album.getDefaultCover();
