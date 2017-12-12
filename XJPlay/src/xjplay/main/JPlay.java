@@ -40,6 +40,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.JRootPane;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -51,6 +52,8 @@ import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
 import jplay.model.Album;
+import xjplay.model.busqueda.DgBuscar;
+import xjplay.model.busqueda.IBuscar;
 import xjplay.model.lastFM.LastFM;
 import xjplay.model.progress.WorkerStringProgress;
 import xjplay.model.rules.Rules;
@@ -58,9 +61,11 @@ import xjplay.model.tree.CellRenderExplorer;
 import xjplay.model.tree.CellRenderCancionLista;
 import xjplay.model.tree.CellRenderCancionMasTocada;
 import xjplay.recursos.Recurso;
+import xjplay.test.NewJDialog;
+import xjplay.test.NewJFrame;
 //import nicon.notify.core.Notification;
 
-public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
+public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IBuscar {
 
     public static Reproductor reproductor;
     private Biblioteca biblioteca;
@@ -85,6 +90,8 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
     private int porcentaje;
     private WorkerStringProgress workerStringProgress; // para pintar los minutos en la barra
     private boolean imprimirBarraDeProgreso;
+    
+    private DgBuscar dialogBuscar;
 
     public JPlay() {
         initComponents();
@@ -165,6 +172,8 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 //        togVol.setVisible(false);
         biblioteca.printAlbums();
         imprimirBarraDeProgreso = true;
+        
+        initBuscar();
     }
 
     // http://stackoverflow.com/questions/13516730/disable-enter-key-from-moving-down-a-row-in-jtable
@@ -190,7 +199,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         pnlCoverArt = new javax.swing.JPanel();
         lbl1 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        txtBuscar = new javax.swing.JTextField();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane3 = new javax.swing.JScrollPane();
         tree = new javax.swing.JTree();
@@ -254,37 +262,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 
         jPanel6.setBackground(new java.awt.Color(254, 254, 254));
         jPanel6.setOpaque(false);
-
-        txtBuscar.setForeground(new java.awt.Color(153, 153, 153));
-        txtBuscar.setText("Buscar aquí tus canciones");
-        txtBuscar.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                txtBuscarMouseDragged(evt);
-            }
-        });
-        txtBuscar.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtBuscarFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtBuscarFocusLost(evt);
-            }
-        });
-        txtBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                txtBuscarMouseReleased(evt);
-            }
-        });
-        txtBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtBuscarActionPerformed(evt);
-            }
-        });
-        txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtBuscarKeyReleased(evt);
-            }
-        });
 
         tree.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -392,7 +369,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -435,14 +412,11 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                 .addComponent(lblInfoCarga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCancelarCarga, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(txtBuscar)
             .addComponent(jTabbedPane1)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -676,7 +650,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
                         .addComponent(pnlCoverArt, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 16, Short.MAX_VALUE))
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -909,27 +883,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         }
     }//GEN-LAST:event_formWindowClosing
 
-    private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
-        String filtro = txtBuscar.getText().toLowerCase().trim();
-//        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-        lFiltrada = new ArrayList<>();
-
-        int i = 1;
-        for (Cancion c : biblioteca.getCanciones()) {
-            if (c.getAutor().toLowerCase().contains(filtro)
-                    || c.getAlbum().toLowerCase().contains(filtro)
-                    || c.getNombre().toLowerCase().contains(filtro)) {
-                lFiltrada.add(c);
-            }
-        }
-
-        cargarCancionesABiblioteca(lFiltrada);
-
-//        }else if(filtro.equals("")){
-//            cargarCancionesABiblioteca(biblioteca);
-//        }
-    }//GEN-LAST:event_txtBuscarKeyReleased
-
     private void tablaBibliotecaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaBibliotecaMouseReleased
         if (evt.getClickCount() == 2) {
             tocarCancionSeleccionadaEnTablaBiblioteca();
@@ -963,10 +916,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
         repetirCancion = opRepetirCancion.isSelected();
     }//GEN-LAST:event_opRepetirCancionActionPerformed
 
-    private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtBuscarActionPerformed
-
     private void togVolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togVolActionPerformed
         slideVol.setVisible(togVol.isSelected());
     }//GEN-LAST:event_togVolActionPerformed
@@ -991,32 +940,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
             tocarCancionSeleccionadaEnTablaBiblioteca(); // xD
         }
     }//GEN-LAST:event_tablaBibliotecaKeyReleased
-
-    private void txtBuscarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtBuscarMouseReleased
-//        txtBuscar.setFont(new java.awt.Font("Tahoma", Font.PLAIN, 11)); // NOI18N
-//        txtBuscar.setForeground(Color.black);
-//        txtBuscar.setText("");
-    }//GEN-LAST:event_txtBuscarMouseReleased
-
-    private void txtBuscarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBuscarFocusLost
-        if (txtBuscar.getText().trim().equals("")) {
-            txtBuscar.setFont(new java.awt.Font("Tahoma", Font.ITALIC, Rules.FONT_SIZE_SEARCH)); // NOI18N
-            txtBuscar.setForeground(new java.awt.Color(153, 153, 153));
-            txtBuscar.setText("Buscar aquí tus canciones");
-        }
-    }//GEN-LAST:event_txtBuscarFocusLost
-
-    private void txtBuscarFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBuscarFocusGained
-        txtBuscar.setFont(new java.awt.Font("Tahoma", Font.PLAIN, Rules.FONT_SIZE_SEARCH)); // NOI18N
-        txtBuscar.setForeground(Color.black);
-        txtBuscar.setText("");
-//        txtBuscar.setSelectionStart(0);
-//        txtBuscar.setSelectionEnd(0);
-    }//GEN-LAST:event_txtBuscarFocusGained
-
-    private void txtBuscarMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtBuscarMouseDragged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtBuscarMouseDragged
 
     private void treeSongMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treeSongMouseReleased
         if (evt.getClickCount() == 2) {
@@ -1324,7 +1247,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
     private javax.swing.JTree tree;
     private javax.swing.JTree treeMasTocadas;
     private javax.swing.JTree treeSong;
-    private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 
     private void setSlideTime(int totalBytes) {
@@ -2125,7 +2047,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
             lblArtista.setFont(fuente.deriveFont(Font.PLAIN, 11));
             opAleatorio.setFont(fuente.deriveFont(Font.PLAIN, 13));
             opRepetirCancion.setFont(fuente.deriveFont(Font.PLAIN, 13));
-            txtBuscar.setFont(fuente.deriveFont(Font.PLAIN, 13));
+//            txtBuscar.setFont(fuente.deriveFont(Font.PLAIN, 13));
             jTabbedPane1.setFont(fuente.deriveFont(Font.PLAIN, 13));
             tablaBiblioteca.setFont(fuente.deriveFont(Font.PLAIN, 14));
             lblInfoCarga.setFont(fuente.deriveFont(Font.BOLD, 13));
@@ -2168,5 +2090,57 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener {
 
     private void reproducirRandom() {
         reproducir(canciones.get(getRandom()));
+    }
+
+    @Override
+    public void search(String filtro) {
+        
+        lFiltrada = new ArrayList<>();
+
+        int i = 1;
+        for (Cancion c : biblioteca.getCanciones()) {
+            if (c.getAutor().toLowerCase().contains(filtro)
+                    || c.getAlbum().toLowerCase().contains(filtro)
+                    || c.getNombre().toLowerCase().contains(filtro)) {
+                lFiltrada.add(c);
+            }
+        }
+
+        cargarCancionesABiblioteca(lFiltrada);
+    }
+
+    private void initBuscar() {
+        //<editor-fold defaultstate="collapsed" desc="Código para escuchar a un boton para todos los componentes" >
+        /*CON CTRL + F y f3 funciona el buscar*/
+        this.getRootPane().getInputMap(JRootPane.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK), "buscar");
+        this.getRootPane().getInputMap(JRootPane.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0), "buscar");
+        /*CON CTRL + F y f3 funciona el buscar*/
+
+        this.getRootPane().getActionMap().put("buscar", new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jTabbedPane1.setSelectedIndex(1);
+                if (dialogBuscar == null) {
+                    dialogBuscar = new DgBuscar(JPlay.this, false);
+                    dialogBuscar.setIbuscar(JPlay.this);
+                    dialogBuscar.setBounds(JPlay.this.getX(), JPlay.this.getY(), JPlay.this.getWidth(),dialogBuscar .getHeight());
+                    dialogBuscar.setVisible(true);
+                } else {
+//                    dialogBuscar.resetTextField();
+                    dialogBuscar.setBounds(JPlay.this.getX(), JPlay.this.getY(), JPlay.this.getWidth(),dialogBuscar .getHeight());
+                    dialogBuscar.setVisible(!dialogBuscar.isVisible());
+                }
+            }
+        });
+        /*Código para escuchar a un boton para todos los componentes*/
+        // </editor-fold>
+    }
+
+    @Override
+    public void focusOn() {
+        tablaBiblioteca.setRowSelectionInterval(0, 0);
     }
 }
