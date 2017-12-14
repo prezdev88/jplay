@@ -56,7 +56,11 @@ public class DgBuscar extends javax.swing.JDialog {
     }
     
     private void comboKeyReleased(KeyEvent e) {
-        ibuscar.search(cboBuscar.getEditor().getItem().toString().toLowerCase().trim());
+        try {
+            ibuscar.search(cboBuscar.getEditor().getItem().toString().toLowerCase().trim());
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     public void setIbuscar(IBuscar ibuscar) {

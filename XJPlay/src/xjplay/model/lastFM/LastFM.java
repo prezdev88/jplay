@@ -87,13 +87,13 @@ public class LastFM {
         //https://stackoverflow.com/questions/19966672/java-json-with-gson
     }
     
-    public static void main(String[] args) {
-        try {
-            LastFM.getImage("Cannibal Corpse", "Tomb of the mutilated");
-        } catch (Exception ex) {
-            System.out.println("EX: "+ex.getMessage());
-        }
-    }
+//    public static void main(String[] args) {
+//        try {
+//            LastFM.getImage("Cannibal Corpse", "Tomb of the mutilated");
+//        } catch (Exception ex) {
+//            System.out.println("EX: "+ex.getMessage());
+//        }
+//    }
 
     private static Image getImage(CoverArt ca) throws MalformedURLException, IOException {
         URL url = new URL(ca.getUrl());
