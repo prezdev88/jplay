@@ -1781,9 +1781,11 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
             this.workerStringProgress.execute();
 
             imprimirTemaActual();
+            
+            
         } catch (BasicPlayerException ex) {
             JOptionPane.showMessageDialog(this, "Error al reproducir: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        } 
 
     }
 
@@ -1994,6 +1996,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
             }
 //            lbl2.setIcon(album.getDefaultCover());
             lblCover.setIcon(album.getDefaultCover());
+            
         } else if (album.hasLastFMImage()) {
             if (hCover != null) {
                 hCover.interrupt();
@@ -2001,6 +2004,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
             ImageIcon image = album.getLastFMImageCover();
 //            lbl2.setIcon(image);
             lblCover.setIcon(image);
+            
         } else {
             //quiere decir que la cancion tiene una lista de fotos
 
@@ -2017,14 +2021,16 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
             hCover.start();
         }
 
-        ImageIcon caratula;
+        ImageIcon cover;
         if (album.getDefaultCover() != null) { // si la cancion tiene un default cover
-            caratula = album.getDefaultCover();
+            cover = album.getDefaultCover();
         } else if (album.hasLastFMImage()) {
-            caratula = album.getLastFMImageCover();
+            cover = album.getLastFMImageCover();
         } else {// si no, pongo la primera imagen que encontro
-            caratula = album.getCovers().get(0);
+            cover = album.getCovers().get(0);
         }
+        
+        setIconImage(cover.getImage());
 
 //        treeSong.updateUI();
         treeSong.setCellRenderer(
@@ -2037,7 +2043,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
 //        Notification.show(
 //            cancion.getAutor(),
 //            cancion.getNombre(),
-//            caratula,
+//            cover,
 //            8000, // Segundos en milis
 //            new Dimension(100, 100),
 //            soloUno
@@ -2178,17 +2184,21 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
         itemEliminarCover.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(hCover.isAlive()){
-                    ImageIcon actualCover = hCover.getActualCover();
-                    
-                    hCover.interrupt();
-                    
-                    Album a = biblioteca.getAlbum(reproductor.getCancionActual());
-                    
-                    a.removeImage(actualCover);
-                    
-                    hCover = new HiloCover(lblCover, a.getCovers());
-                    hCover.start();
+                try {
+                    if(hCover.isAlive()){
+                        ImageIcon actualCover = hCover.getActualCover();
+
+                        hCover.interrupt();
+
+                        Album a = biblioteca.getAlbum(reproductor.getCancionActual());
+
+                        a.removeImage(actualCover);
+
+                        hCover = new HiloCover(lblCover, a.getCovers());
+                        hCover.start();
+                    }
+                } catch (NullPointerException ex) {
+                    System.out.println("Objeto HCOVER es nulo");
                 }
             }
         });
