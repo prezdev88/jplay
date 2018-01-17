@@ -100,7 +100,7 @@ public class Biblioteca implements Serializable {
             addToAlbum(cancion);
         }
 
-        printAlbums();
+//        printAlbums();
     }
 
     private void addToAlbum(Cancion c) {
