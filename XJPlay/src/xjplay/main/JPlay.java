@@ -48,6 +48,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.JPopupMenu.Separator;
 import javax.swing.JRootPane;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
@@ -97,9 +98,9 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
     private int porcentaje;
     private WorkerStringProgress workerStringProgress; // para pintar los minutos en la barra
     private boolean imprimirBarraDeProgreso;
-    
+
     private DgBuscar dialogBuscar;
-    
+
     private int tabActual; // esto es para el drag and drop
 
     public JPlay() {
@@ -182,7 +183,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
 //        togVol.setVisible(false);
         biblioteca.printAlbums();
         imprimirBarraDeProgreso = true;
-        
+
         initBuscar();
         initDragDropTabbedPane();
     }
@@ -369,7 +370,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
             }
         });
 
-        treeSong.setToolTipText("Doble click en título para cargar la biblioteca");
         treeSong.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 treeSongMouseReleased(evt);
@@ -1058,8 +1058,8 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
     }//GEN-LAST:event_treeMasTocadasMouseReleased
 
     private void tabbedPaneMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabbedPaneMouseReleased
-        if(evt.getClickCount() == 2){
-            if(tabbedPane.getSelectedIndex() == 1){
+        if (evt.getClickCount() == 2) {
+            if (tabbedPane.getSelectedIndex() == 1) {
                 cargarCancionesABiblioteca(biblioteca.getCanciones());
             }
         }
@@ -1201,7 +1201,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
                     lblInfoCarga.setText("Agregando " + c);
                 }
             }
-        }else{
+        } else {
             Cancion c = new Cancion(raiz.getPath());
             biblioteca.add(c);
             lblInfoCarga.setText("Agregando " + c);
@@ -1467,8 +1467,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
 
                 disco.add(new DefaultMutableTreeNode(c));
             }
-            
-            
+
 //            a.setLastFMImageCover(new ImageIcon(Ruta.ICONO_JPLAY));
             raiz.add(disco);
         } else {
@@ -1623,7 +1622,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
                         btnCancelarCarga.setEnabled(true);
                         try {
                             File f = getSelectedTreeFile();
-                            
+
                             cargarCancionesABiblioteca(f);
                             cargarCancionesABiblioteca(biblioteca.getCanciones());
                             biblioteca.procesarAlbums();
@@ -1643,8 +1642,71 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
     private void crearPopUpBiblioteca() {
         popUpBiblio = new JPopupMenu();
         JMenuItem itemRemoverDeBiblioteca = new JMenuItem("Remover");
+        JMenuItem itemTocarDisco = new JMenuItem("Reproducir Disco");
+        JMenuItem itemAnadirDisco = new JMenuItem("Añadir Disco");
 
+        popUpBiblio.add(itemTocarDisco);
+        popUpBiblio.add(itemAnadirDisco);
+        popUpBiblio.add(new Separator());
         popUpBiblio.add(itemRemoverDeBiblioteca);
+
+        itemTocarDisco.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int[] selRows = tablaBiblioteca.getSelectedRows();
+                
+                List<Album> albums = new ArrayList<>();
+                Cancion c;
+                Album a;
+                
+                canciones = new ArrayList<>();
+                
+                for (int fila : selRows) {
+                    c = (Cancion) tablaBiblioteca.getValueAt(fila, TMCancionBiblioteca.OBJETO_COMPLETO);
+                    a = biblioteca.getAlbum(c);
+                    
+                    if(!albums.contains(a)){
+                        albums.add(a);
+                        
+                        for (Cancion can : a.getCanciones()) {
+                            canciones.add(can);
+                        }
+                    }
+                }
+                
+                cargarArbolConCanciones(false);
+                reproducir(canciones.get(0));
+                tabbedPane.setSelectedIndex(2);
+            }
+        });
+        
+        itemAnadirDisco.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int[] selRows = tablaBiblioteca.getSelectedRows();
+                
+                List<Album> albums = new ArrayList<>();
+                Cancion c;
+                Album a;
+                
+                for (int fila : selRows) {
+                    c = (Cancion) tablaBiblioteca.getValueAt(fila, TMCancionBiblioteca.OBJETO_COMPLETO);
+                    a = biblioteca.getAlbum(c);
+                    
+                    if(!albums.contains(a)){
+                        albums.add(a);
+                        
+                        for (Cancion can : a.getCanciones()) {
+                            canciones.add(can);
+                        }
+                    }
+                }
+                
+                cargarArbolConCanciones(false);
+//                reproducir(canciones.get(0));
+//                tabbedPane.setSelectedIndex(2);
+            }
+        });
 
         itemRemoverDeBiblioteca.addActionListener(new ActionListener() {
             @Override
@@ -1807,11 +1869,10 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
             this.workerStringProgress.execute();
 
             imprimirTemaActual();
-            
-            
+
         } catch (BasicPlayerException ex) {
             JOptionPane.showMessageDialog(this, "Error al reproducir: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } 
+        }
 
     }
 
@@ -1926,7 +1987,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
         for (Cancion c : lista) {
             a = biblioteca.getAlbum(c);
 
-            if(a != null){
+            if (a != null) {
                 if (!discos.contains(a)) {
                     discos.add(a);
                 }
@@ -2024,7 +2085,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
             }
 //            lbl2.setIcon(album.getDefaultCover());
             lblCover.setIcon(album.getDefaultCover());
-            
+
         } else if (album.hasLastFMImage()) {
             if (hCover != null) {
                 hCover.interrupt();
@@ -2032,7 +2093,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
             ImageIcon image = album.getLastFMImageCover();
 //            lbl2.setIcon(image);
             lblCover.setIcon(image);
-            
+
         } else {
             //quiere decir que la cancion tiene una lista de fotos
 
@@ -2057,7 +2118,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
         } else {// si no, pongo la primera imagen que encontro
             cover = album.getCovers().get(0);
         }
-        
+
         setIconImage(cover.getImage());
 
 //        treeSong.updateUI();
@@ -2133,7 +2194,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
 
     @Override
     public void search(String filtro) {
-        
+
         lFiltrada = new ArrayList<>();
 
         int i = 1;
@@ -2165,11 +2226,11 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
                 if (dialogBuscar == null) {
                     dialogBuscar = new DgBuscar(JPlay.this, false);
                     dialogBuscar.setIbuscar(JPlay.this);
-                    dialogBuscar.setBounds(JPlay.this.getX(), JPlay.this.getY(), JPlay.this.getWidth(),dialogBuscar .getHeight());
+                    dialogBuscar.setBounds(JPlay.this.getX(), JPlay.this.getY(), JPlay.this.getWidth(), dialogBuscar.getHeight());
                     dialogBuscar.setVisible(true);
                 } else {
 //                    dialogBuscar.resetTextField();
-                    dialogBuscar.setBounds(JPlay.this.getX(), JPlay.this.getY(), JPlay.this.getWidth(),dialogBuscar .getHeight());
+                    dialogBuscar.setBounds(JPlay.this.getX(), JPlay.this.getY(), JPlay.this.getWidth(), dialogBuscar.getHeight());
                     dialogBuscar.setVisible(!dialogBuscar.isVisible());
                 }
             }
@@ -2185,16 +2246,16 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
 
     @Override
     public void cargarComboDeBusqueda(JComboBox cbo) {
-        
+
         cbo.removeAllItems();
         cbo.addItem("");
-        
+
         for (String artista : biblioteca.getArtistas()) {
             cbo.addItem(artista);
         }
-        
+
         for (Album album : biblioteca.getAlbums()) {
-            if(!album.getName().trim().equals("")){
+            if (!album.getName().trim().equals("")) {
                 cbo.addItem(album.getName());
             }
         }
@@ -2202,18 +2263,15 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
 
     private void crearPopUpCover() {
         popCover = new JPopupMenu();
-        
+
         JMenuItem itemEliminarCover = new JMenuItem("Eliminar Cover");
 
         //JPopupMenu.Separator sep = new JPopupMenu.Separator();
-
-        
-        
         itemEliminarCover.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    if(hCover.isAlive()){
+                    if (hCover.isAlive()) {
                         ImageIcon actualCover = hCover.getActualCover();
 
                         hCover.interrupt();
@@ -2230,9 +2288,9 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
                 }
             }
         });
-        
+
         popCover.add(itemEliminarCover);
-        
+
         lblCover.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -2240,10 +2298,10 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
             }
         });
     }
-    
+
     private void mostrarPopUpCover(MouseEvent e) {
         if (SwingUtilities.isRightMouseButton(e)) {
-            popCover.show(e.getComponent(), e.getX()+8, e.getY()+8);
+            popCover.show(e.getComponent(), e.getX() + 8, e.getY() + 8);
         }
     }
 
@@ -2251,13 +2309,13 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
         tabbedPane.setDropTarget(new DropTarget(this, new DropTargetListener() {
             @Override
             public void drop(DropTargetDropEvent dtde) {
-                
+
                 try {
                     dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
                     Object o = dtde.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
-                    
-                    final List<File> archs = (List)o;
-                    
+
+                    final List<File> archs = (List) o;
+
                     hiloCargar = new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -2273,7 +2331,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
                             }
                         }
                     });
-                    
+
                     hiloCargar.start();
                 } catch (UnsupportedFlavorException | IOException ex) {
                     Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);

@@ -311,9 +311,6 @@
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
                         <Component class="javax.swing.JTree" name="treeSong">
-                          <Properties>
-                            <Property name="toolTipText" type="java.lang.String" value="Doble click en t&#xed;tulo para cargar la biblioteca"/>
-                          </Properties>
                           <Events>
                             <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="treeSongMouseReleased"/>
                           </Events>
