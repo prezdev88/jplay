@@ -18,7 +18,7 @@ import javax.swing.KeyStroke;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 import org.jdesktop.swingx.treetable.TreeTableModel;
-import xjplay.coverArt.HiloCoverArt;
+import xjplay.coverArt.HiloCover;
 import xjplay.test.progress.WorkerStringProgress;
 import xjplay.test.progress.WorkerValueProgress;
 
@@ -282,7 +282,7 @@ public class NewJFrame extends javax.swing.JFrame {
         imagenes.add(ii4);
         imagenes.add(ii5);
 
-        HiloCoverArt hca = new HiloCoverArt(lbl1, imagenes);
+        HiloCover hca = new HiloCover(lbl1, imagenes);
         hca.start();
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -58,7 +58,7 @@ public class CellRenderCancionLista extends JLabel implements TreeCellRenderer {
                 this.setText(ob.toString());
 
                 if (album.hasImagenes()) {
-                    Image im = album.getImagenes().get(0).getImage().getScaledInstance(
+                    Image im = album.getCovers().get(0).getImage().getScaledInstance(
                             (int) Rules.MINI_CARATULA.getWidth(),
                             (int) Rules.MINI_CARATULA.getHeight(),
                             Image.SCALE_SMOOTH);

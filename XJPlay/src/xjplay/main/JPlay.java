@@ -4,15 +4,15 @@ package xjplay.main;
 import xjplay.save.Guardar;
 import xjplay.recursos.Ruta;
 import jplay.model.Reproductor;
-import xjplay.coverArt.HiloCoverArt;
+import xjplay.coverArt.HiloCover;
 import jplay.model.Biblioteca;
 import jplay.model.Cancion;
 import xjplay.utils.Validar;
 import xjplay.save.IO;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Image;
+import java.awt.Point;
 import xjplay.model.tableModel.TMCancion;
 import xjplay.model.tableModel.TMCancionBiblioteca;
 import java.awt.event.ActionEvent;
@@ -53,8 +53,6 @@ import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
 import jplay.model.Album;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.json.JSONObject;
 import xjplay.model.busqueda.DgBuscar;
 import xjplay.model.busqueda.IBuscar;
 import xjplay.model.lastFM.LastFM;
@@ -75,6 +73,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
     private Thread hiloCargar;
     private JPopupMenu popUpTree;
     private JPopupMenu popUpBiblio;
+    private JPopupMenu popCover;
 
     private final boolean SAVE = true; // ESTO ES SOLO PARA DEBUGGING
     private List<Cancion> lFiltrada;
@@ -84,7 +83,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
     private boolean repetirCancion;
     private int nextRandom;
     private Image icono;
-    private HiloCoverArt hiloCovertArt; // hilo para animación de caratulas
+    private HiloCover hCover; // hilo para animación de caratulas
 
     private int totalBytes; // GUARDA EL TOTAL DE DURACIÓN DE LA CANCION EN MILIS
 
@@ -105,6 +104,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
         listenerClickDerechoSobreArbol();
         crearPopUpTree();
         crearPopUpBiblioteca();
+        crearPopUpCover();
 
         btnCancelarCarga.setEnabled(false);
 //        indiceActual = -1;
@@ -149,20 +149,20 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
                 (int) Rules.COVER_DIMENSION.getHeight(),
                 Image.SCALE_SMOOTH);
 //        lblCaratula.setIcon(new ImageIcon(icono));
-        lbl1.setIcon(new ImageIcon(icono));
-        lbl1.setText(null);
+        lblCover.setIcon(new ImageIcon(icono));
+        lblCover.setText(null);
 //        lbl2.setText(null);
 
         setBounds(0, 0, 1200, 700);
         setLocationRelativeTo(null);
-        hiloCovertArt = null;
+        hCover = null;
 
         progress.setStringPainted(true);
-        lbl1.requestFocus();
+        lblCover.requestFocus();
 //        jSplitPane1.setDividerLocation(0.0);
 //        jSplitPane2.setDividerLocation(1);
 //        inicializarBarraProgreso();
-        cargarArbolConCancionesMasTocadas();
+        cargarArbolConCancionesMasEscuchadas();
         initFonts();
 //        Properties properties = System.getProperties();
 //        Set<Map.Entry<Object, Object>> entrySet = properties.entrySet();
@@ -199,7 +199,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
         jDialog1 = new javax.swing.JDialog();
         jPanel1 = new javax.swing.JPanel();
         pnlCoverArt = new javax.swing.JPanel();
-        lbl1 = new javax.swing.JLabel();
+        lblCover = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -258,9 +258,9 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
         pnlCoverArt.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         pnlCoverArt.setLayout(new java.awt.BorderLayout());
 
-        lbl1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbl1.setText("[COVER]");
-        pnlCoverArt.add(lbl1, java.awt.BorderLayout.CENTER);
+        lblCover.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblCover.setText("[COVER]");
+        pnlCoverArt.add(lblCover, java.awt.BorderLayout.CENTER);
 
         jPanel6.setBackground(new java.awt.Color(254, 254, 254));
         jPanel6.setOpaque(false);
@@ -1236,8 +1236,8 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JLabel lbl1;
     private javax.swing.JLabel lblArtista;
+    private javax.swing.JLabel lblCover;
     private javax.swing.JLabel lblInfoCarga;
     private javax.swing.JLabel lblLimpiar;
     private javax.swing.JLabel lblTema;
@@ -1475,7 +1475,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
         );
     }
 
-    private void cargarArbolConCancionesMasTocadas() {
+    private void cargarArbolConCancionesMasEscuchadas() {
         DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("raiz");
 
         List<Cancion> masRepro = biblioteca.getCancionesMasReproducidas();
@@ -1770,7 +1770,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
 //                System.out.println("[" + c.getCantidadReproducciones() + "]" + c.getNombre());
 //            }
 //            System.out.println("-----------------------------------------");
-            cargarArbolConCancionesMasTocadas();
+            cargarArbolConCancionesMasEscuchadas();
 
             if (this.workerStringProgress != null) {
                 this.workerStringProgress.cancel(true);
@@ -1961,7 +1961,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
                 si la lista de fotos no esta vacía por lo menos hay una
                 para poder comenzar el hilo de las caratulas
                  */
-                album.setImagenes(fotos);
+                album.setCovers(fotos);
                 System.out.println("Se añadió una lista de fotos a la cancion [" + fotos.size() + " fotos]");
             } else if (!album.hasLastFMImage()) { // si el album no tiene una imagen desde LastFM
                 try {
@@ -1989,32 +1989,32 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
 
         if (album.getDefaultCover() != null) {
 //                lblCaratula.setIcon(cancion.getDefaultCover());
-            if (hiloCovertArt != null) {
-                hiloCovertArt.interrupt();
+            if (hCover != null) {
+                hCover.interrupt();
             }
 //            lbl2.setIcon(album.getDefaultCover());
-            lbl1.setIcon(album.getDefaultCover());
+            lblCover.setIcon(album.getDefaultCover());
         } else if (album.hasLastFMImage()) {
-            if (hiloCovertArt != null) {
-                hiloCovertArt.interrupt();
+            if (hCover != null) {
+                hCover.interrupt();
             }
             ImageIcon image = album.getLastFMImageCover();
 //            lbl2.setIcon(image);
-            lbl1.setIcon(image);
+            lblCover.setIcon(image);
         } else {
             //quiere decir que la cancion tiene una lista de fotos
 
             //por ahora sólo cargo la primera foto
 //                lblCaratula.setIcon(cancion.getImagenes().get(0));
-            if (hiloCovertArt != null) {
-                hiloCovertArt.interrupt();
+            if (hCover != null) {
+                hCover.interrupt();
             }
 
-            hiloCovertArt = new HiloCoverArt(
-                    lbl1,
-                    album.getImagenes());
+            hCover = new HiloCover(
+                    lblCover,
+                    album.getCovers());
 
-            hiloCovertArt.start();
+            hCover.start();
         }
 
         ImageIcon caratula;
@@ -2023,7 +2023,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
         } else if (album.hasLastFMImage()) {
             caratula = album.getLastFMImageCover();
         } else {// si no, pongo la primera imagen que encontro
-            caratula = album.getImagenes().get(0);
+            caratula = album.getCovers().get(0);
         }
 
 //        treeSong.updateUI();
@@ -2163,6 +2163,49 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
             if(!album.getName().trim().equals("")){
                 cbo.addItem(album.getName());
             }
+        }
+    }
+
+    private void crearPopUpCover() {
+        popCover = new JPopupMenu();
+        
+        JMenuItem itemEliminarCover = new JMenuItem("Eliminar Cover");
+
+        //JPopupMenu.Separator sep = new JPopupMenu.Separator();
+
+        
+        
+        itemEliminarCover.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(hCover.isAlive()){
+                    ImageIcon actualCover = hCover.getActualCover();
+                    
+                    hCover.interrupt();
+                    
+                    Album a = biblioteca.getAlbum(reproductor.getCancionActual());
+                    
+                    a.removeImage(actualCover);
+                    
+                    hCover = new HiloCover(lblCover, a.getCovers());
+                    hCover.start();
+                }
+            }
+        });
+        
+        popCover.add(itemEliminarCover);
+        
+        lblCover.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                mostrarPopUpCover(e);
+            }
+        });
+    }
+    
+    private void mostrarPopUpCover(MouseEvent e) {
+        if (SwingUtilities.isRightMouseButton(e)) {
+            popCover.show(e.getComponent(), e.getX()+8, e.getY()+8);
         }
     }
 }

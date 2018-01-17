@@ -136,6 +136,7 @@ public class Biblioteca implements Serializable {
     public Album getAlbum(Cancion c) {
         for (Album a : albums) {
             if (a.existCancion(c)) {
+                System.out.println("Album encontrado! : "+a);
                 return a;
             }
         }
