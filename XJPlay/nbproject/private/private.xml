@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="28">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="29">
         <file>
             <url>src/jplay/main/JPlay.java</url>
             <bookmark id="8">
@@ -18,17 +18,22 @@
             <url>src/xjplay/main/JPlay.java</url>
             <bookmark id="26">
                 <name/>
-                <line>1032</line>
+                <line>0</line>
                 <key/>
             </bookmark>
             <bookmark id="27">
                 <name/>
-                <line>1428</line>
+                <line>0</line>
+                <key/>
+            </bookmark>
+            <bookmark id="29">
+                <name/>
+                <line>0</line>
                 <key/>
             </bookmark>
             <bookmark id="28">
                 <name/>
-                <line>1980</line>
+                <line>0</line>
                 <key/>
             </bookmark>
         </file>
@@ -48,6 +53,7 @@
             <file>file:/home/prez/Escritorio/GIT/jplay/XJPlay/src/xjplay/main/JPlay.java</file>
         </group>
         <group name="jplay">
+            <file>file:/home/prez/Escritorio/GIT/jplay/XJPlay/src/xjplay/model/tree/CellRenderCancionLista.java</file>
             <file>file:/home/prez/Escritorio/GIT/jplay/XJPlay/src/xjplay/main/JPlay.java</file>
         </group>
     </open-files>

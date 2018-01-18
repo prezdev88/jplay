@@ -18,21 +18,13 @@ import xjplay.main.JPlay;
 import jplay.model.Cancion;
 import xjplay.model.rules.Rules;
 import xjplay.recursos.Recurso;
+import xjplay.recursos.Ruta;
 
 /**
  *
  * @author Patricio Pérez Pinto
  */
 public class CellRenderCancionLista extends JLabel implements TreeCellRenderer {
-
-    private ImageIcon discIcon = null;
-    private ImageIcon playIcon = null;
-    private ImageIcon actualDiscIcon = null;
-
-    public CellRenderCancionLista(ImageIcon playIcon, ImageIcon discIcon) {
-        this.playIcon = playIcon;
-        this.discIcon = discIcon;
-    }
 
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
@@ -57,29 +49,23 @@ public class CellRenderCancionLista extends JLabel implements TreeCellRenderer {
                 Album album = (Album) ob;
                 this.setText(ob.toString());
 
-                if (album.hasImagenes()) {
+                try {// intento colocar el cover que tenga el album
                     Image im = album.getCovers().get(0).getImage().getScaledInstance(
+                        (int) Rules.MINI_CARATULA.getWidth(),
+                        (int) Rules.MINI_CARATULA.getHeight(),
+                        Image.SCALE_SMOOTH);
+                    setIcon(new ImageIcon(im));
+                } catch (IndexOutOfBoundsException e) {
+                    // si no hay cover, cargo el icono de la app
+                    setIcon(new ImageIcon(
+                        CellRenderCancionLista.crearIcono(Ruta.ICONO_JPLAY).getImage().getScaledInstance(
                             (int) Rules.MINI_CARATULA.getWidth(),
                             (int) Rules.MINI_CARATULA.getHeight(),
-                            Image.SCALE_SMOOTH);
-                    actualDiscIcon = new ImageIcon(im);
-                    setIcon(actualDiscIcon);
-                } else if (album.hasLastFMImage()) {
-                    Image im = album.getLastFMImageCover().getImage().getScaledInstance(
-                            (int) Rules.MINI_CARATULA.getWidth(),
-                            (int) Rules.MINI_CARATULA.getHeight(),
-                            Image.SCALE_SMOOTH);
-                    actualDiscIcon = new ImageIcon(im);
-                    setIcon(actualDiscIcon);
-                } else {
-                    System.out.println(discIcon.toString());
-                    setIcon(new ImageIcon(discIcon.getImage().getScaledInstance(
-                            (int) Rules.MINI_CARATULA.getWidth(),
-                            (int) Rules.MINI_CARATULA.getHeight(),
-                            Image.SCALE_SMOOTH)));
+                            Image.SCALE_SMOOTH)
+                        )
+                    );
                 }
 
-//                setIcon(this.discIcon);
                 if (JPlay.reproductor != null) {
                     Cancion actual = JPlay.reproductor.getCancionActual();
                     String disco = ob.toString();

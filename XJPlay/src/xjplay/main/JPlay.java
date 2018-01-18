@@ -1468,7 +1468,10 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
                 disco.add(new DefaultMutableTreeNode(c));
             }
 
-//            a.setLastFMImageCover(new ImageIcon(Ruta.ICONO_JPLAY));
+            List<ImageIcon> covers = new ArrayList<>();
+            covers.add(CellRenderCancionLista.crearIcono(Ruta.ICONO_CORAZON));
+            a.setCovers(covers);
+            
             raiz.add(disco);
         } else {
             List<Album> albumes = getDiscos(canciones);
@@ -1496,10 +1499,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
         System.out.println(rutaIcon);
 
         treeSong.setCellRenderer(
-                new CellRenderCancionLista(
-                        CellRenderExplorer.crearIcono(Ruta.ICONO_PLAY_ARBOL),
-                        CellRenderExplorer.crearIcono(rutaIcon)
-                )
+                new CellRenderCancionLista()
         );
     }
 
@@ -2054,14 +2054,19 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
                  */
                 album.setCovers(fotos);
                 System.out.println("Se añadió una lista de fotos a la cancion [" + fotos.size() + " fotos]");
-            } else if (!album.hasLastFMImage()) { // si el album no tiene una imagen desde LastFM
+            } else { // no hay imagenes en la carpeta de la canción
+                List<ImageIcon> covers = new ArrayList<>();
                 try {
                     Image imLastFM = LastFM.getImage(cancion.getAutor(), cancion.getAlbum());
                     imLastFM = imLastFM.getScaledInstance(
                             (int) Rules.COVER_DIMENSION.getWidth(),
                             (int) Rules.COVER_DIMENSION.getHeight(),
                             Image.SCALE_SMOOTH);
-                    album.setLastFMImageCover(new ImageIcon(imLastFM));
+                    
+                    
+                    covers.add(new ImageIcon(imLastFM));
+                    
+                    
                     System.out.println("Se añadió una image desde LastFM!");
                 } catch (Exception ex) {
                     /*Establezco la caratula por defecto (el disco)*/
@@ -2069,64 +2074,28 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
 //                                (int) Rules.COVER_DIMENSION.getWidth(),
 //                                (int) Rules.COVER_DIMENSION.getHeight(),
 //                                Image.SCALE_SMOOTH);
-                    album.setDefaultCover(icono);
+                    covers.add(new ImageIcon(icono));
                     System.out.println("Se añadió una caratula POR DEFECTO --> " + ex.getMessage());
                 }
-
+                album.setCovers(covers);
             }
         } else {
             System.out.println("La canción tiene caratula!");
         }
 
-        if (album.getDefaultCover() != null) {
-//                lblCaratula.setIcon(cancion.getDefaultCover());
-            if (hCover != null) {
-                hCover.interrupt();
-            }
-//            lbl2.setIcon(album.getDefaultCover());
-            lblCover.setIcon(album.getDefaultCover());
-
-        } else if (album.hasLastFMImage()) {
-            if (hCover != null) {
-                hCover.interrupt();
-            }
-            ImageIcon image = album.getLastFMImageCover();
-//            lbl2.setIcon(image);
-            lblCover.setIcon(image);
-
-        } else {
-            //quiere decir que la cancion tiene una lista de fotos
-
-            //por ahora sólo cargo la primera foto
-//                lblCaratula.setIcon(cancion.getImagenes().get(0));
-            if (hCover != null) {
-                hCover.interrupt();
-            }
-
-            hCover = new HiloCover(
-                    lblCover,
-                    album.getCovers());
-
-            hCover.start();
+        
+        if (hCover != null) {
+            hCover.interrupt();
         }
+        lblCover.setIcon(album.getCovers().get(0));
+        
+        hCover = new HiloCover(lblCover,album.getCovers());
+        hCover.start();
 
-        ImageIcon cover;
-        if (album.getDefaultCover() != null) { // si la cancion tiene un default cover
-            cover = album.getDefaultCover();
-        } else if (album.hasLastFMImage()) {
-            cover = album.getLastFMImageCover();
-        } else {// si no, pongo la primera imagen que encontro
-            cover = album.getCovers().get(0);
-        }
+        setIconImage(album.getCovers().get(0).getImage());
 
-        setIconImage(cover.getImage());
-
-//        treeSong.updateUI();
         treeSong.setCellRenderer(
-                new CellRenderCancionLista(
-                        CellRenderExplorer.crearIcono(Ruta.ICONO_PLAY_ARBOL),
-                        CellRenderExplorer.crearIcono(Ruta.ICONO_JPLAY)
-                )
+                new CellRenderCancionLista()
         );
 
 //        Notification.show(

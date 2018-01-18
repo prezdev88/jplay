@@ -18,6 +18,11 @@ public class Recurso {
 
     
 
+    /**
+     * Obtiene una lista de imagenes de una ruta en específico
+     * @param f
+     * @return 
+     */
     public static List<ImageIcon> getFotos(File f) {
         List<ImageIcon> fotos = new ArrayList<>();
         Image image;
