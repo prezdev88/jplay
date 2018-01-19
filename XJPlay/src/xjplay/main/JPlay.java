@@ -116,6 +116,13 @@ public class JPlay extends javax.swing.JFrame implements
     public JPlay() {
         initComponents();
         
+        icono = Recurso.ICONO_JPLAY;
+
+        icono = icono.getScaledInstance(
+                (int) Rules.COVER_DIMENSION.getWidth(),
+                (int) Rules.COVER_DIMENSION.getHeight(),
+                Image.SCALE_SMOOTH);
+        
         initLog();
         
         canciones = new ArrayList<>();
@@ -167,14 +174,9 @@ public class JPlay extends javax.swing.JFrame implements
 //            
 //            
 //        }
-        icono = Recurso.ICONO_JPLAY;
-
-        icono = icono.getScaledInstance(
-                (int) Rules.COVER_DIMENSION.getWidth(),
-                (int) Rules.COVER_DIMENSION.getHeight(),
-                Image.SCALE_SMOOTH);
+        
 //        lblCaratula.setIcon(new ImageIcon(icono));
-        lblCover.setIcon(new ImageIcon(icono));
+        
         lblCover.setText(null);
 //        lbl2.setText(null);
 
@@ -201,6 +203,7 @@ public class JPlay extends javax.swing.JFrame implements
 
         initBuscar();
         initDragDropTabbedPane();
+        initIconosTabs();
     }
 
     // http://stackoverflow.com/questions/13516730/disable-enter-key-from-moving-down-a-row-in-jtable
@@ -226,7 +229,7 @@ public class JPlay extends javax.swing.JFrame implements
         pnlCoverArt = new javax.swing.JPanel();
         lblCover = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        tabbedPane = new javax.swing.JTabbedPane();
+        tabbedPrincipal = new javax.swing.JTabbedPane();
         jScrollPane3 = new javax.swing.JScrollPane();
         tree = new javax.swing.JTree();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -293,10 +296,10 @@ public class JPlay extends javax.swing.JFrame implements
         jPanel6.setBackground(new java.awt.Color(254, 254, 254));
         jPanel6.setOpaque(false);
 
-        tabbedPane.setToolTipText("");
-        tabbedPane.addMouseListener(new java.awt.event.MouseAdapter() {
+        tabbedPrincipal.setToolTipText("");
+        tabbedPrincipal.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                tabbedPaneMouseReleased(evt);
+                tabbedPrincipalMouseReleased(evt);
             }
         });
 
@@ -312,7 +315,7 @@ public class JPlay extends javax.swing.JFrame implements
         });
         jScrollPane3.setViewportView(tree);
 
-        tabbedPane.addTab("Explorer", jScrollPane3);
+        tabbedPrincipal.addTab("Explorer", jScrollPane3);
 
         tablaBiblioteca.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -340,7 +343,7 @@ public class JPlay extends javax.swing.JFrame implements
         });
         jScrollPane1.setViewportView(tablaBiblioteca);
 
-        tabbedPane.addTab("Biblioteca", jScrollPane1);
+        tabbedPrincipal.addTab("Biblioteca", jScrollPane1);
 
         tablaCanciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -413,7 +416,7 @@ public class JPlay extends javax.swing.JFrame implements
                 .addComponent(lblLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        tabbedPane.addTab("Lista actual", jPanel3);
+        tabbedPrincipal.addTab("Lista actual", jPanel3);
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
@@ -426,7 +429,7 @@ public class JPlay extends javax.swing.JFrame implements
 
         jPanel2.add(jScrollPane5, java.awt.BorderLayout.CENTER);
 
-        tabbedPane.addTab("+ escuchadas", jPanel2);
+        tabbedPrincipal.addTab("+ escuchadas", jPanel2);
 
         jPanel8.setLayout(new java.awt.BorderLayout());
 
@@ -445,7 +448,7 @@ public class JPlay extends javax.swing.JFrame implements
 
         jPanel8.add(jScrollPane6, java.awt.BorderLayout.CENTER);
 
-        tabbedPane.addTab("Logger", jPanel8);
+        tabbedPrincipal.addTab("Logger (DEV)", jPanel8);
 
         lblInfoCarga.setBackground(new java.awt.Color(254, 254, 254));
         lblInfoCarga.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -467,12 +470,12 @@ public class JPlay extends javax.swing.JFrame implements
                 .addComponent(lblInfoCarga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCancelarCarga))
-            .addComponent(tabbedPane)
+            .addComponent(tabbedPrincipal)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(tabbedPane)
+                .addComponent(tabbedPrincipal)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblInfoCarga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -933,7 +936,9 @@ public class JPlay extends javax.swing.JFrame implements
 
                 g.canciones         = canciones;
                 g.isMasEscuchadas   = isMasEscuchadas;
-                g.indexTab          = tabbedPane.getSelectedIndex();
+                g.indexTab          = tabbedPrincipal.getSelectedIndex();
+                g.logEntries        = Log.getEntrys();
+                g.cover             = lblCover.getIcon();
 
                 IO.escribirObjetoEn(g, Ruta.SAVE);
                 IO.escribirObjetoEn(biblioteca, Ruta.BIBLIOTECA);
@@ -1090,19 +1095,19 @@ public class JPlay extends javax.swing.JFrame implements
 
                     reproducir(c);
 
-                    tabbedPane.setSelectedIndex(2);
+                    tabbedPrincipal.setSelectedIndex(2);
                 }
             }
         }
     }//GEN-LAST:event_treeMasTocadasMouseReleased
 
-    private void tabbedPaneMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabbedPaneMouseReleased
+    private void tabbedPrincipalMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabbedPrincipalMouseReleased
         if (evt.getClickCount() == 2) {
-            if (tabbedPane.getSelectedIndex() == 1) {
+            if (tabbedPrincipal.getSelectedIndex() == 1) {
                 cargarCancionesABiblioteca(biblioteca.getCanciones());
             }
         }
-    }//GEN-LAST:event_tabbedPaneMouseReleased
+    }//GEN-LAST:event_tabbedPrincipalMouseReleased
 
     private void cargarSave() {
         if (new File(Ruta.SAVE).exists()) {
@@ -1112,7 +1117,12 @@ public class JPlay extends javax.swing.JFrame implements
 
                 canciones       = g.canciones;
                 isMasEscuchadas = g.isMasEscuchadas;
-                tabbedPane.setSelectedIndex(g.indexTab);
+                tabbedPrincipal.setSelectedIndex(g.indexTab);
+                
+                Log.setLogEntries(g.logEntries);
+                tabbedPrincipal.setTitleAt(4, "Logger ("+tableLogger.getRowCount()+")");
+                
+                lblCover.setIcon(g.cover);
                 
                 biblioteca = (Biblioteca) IO.leerObjetoDesde(Ruta.BIBLIOTECA);
 
@@ -1326,7 +1336,7 @@ public class JPlay extends javax.swing.JFrame implements
     private javax.swing.JPanel pnlCoverArt;
     private javax.swing.JProgressBar progress;
     private javax.swing.JSlider slideVol;
-    private javax.swing.JTabbedPane tabbedPane;
+    private javax.swing.JTabbedPane tabbedPrincipal;
     private javax.swing.JTable tablaBiblioteca;
     private javax.swing.JTable tablaCanciones;
     private javax.swing.JTable tableLogger;
@@ -1575,7 +1585,7 @@ public class JPlay extends javax.swing.JFrame implements
                 )
         );
 
-        tabbedPane.setTitleAt(3, "+ escuchadas (" + masRepro.size() + ")");
+        tabbedPrincipal.setTitleAt(3, "+ escuchadas (" + masRepro.size() + ")");
     }
 
     private void listenerClickDerechoSobreArbol() {
@@ -1727,7 +1737,7 @@ public class JPlay extends javax.swing.JFrame implements
                 
                 cargarArbolConCanciones(false);
                 reproducir(canciones.get(0));
-                tabbedPane.setSelectedIndex(2);
+                tabbedPrincipal.setSelectedIndex(2);
             }
         });
         
@@ -1755,7 +1765,7 @@ public class JPlay extends javax.swing.JFrame implements
                 
                 cargarArbolConCanciones(false);
 //                reproducir(canciones.get(0));
-//                tabbedPane.setSelectedIndex(2);
+//                tabbedPrincipal.setSelectedIndex(2);
             }
         });
 
@@ -1843,6 +1853,7 @@ public class JPlay extends javax.swing.JFrame implements
 //        tablaBiblioteca.getTableHeader().setUI(null);
 //        tablaBiblioteca.setRowHeight(20);
         tablaBiblioteca.setModel(new TMCancionBiblioteca(lista));
+        tabbedPrincipal.setTitleAt(1, "Biblioteca ("+lista.size()+")");
         Log.add("Se cargaron " + lista.size() + " canciones en biblioteca");
         lblInfoCarga.setText("Se cargaron " + lista.size() + " canciones en biblioteca");
 //        tablaBiblioteca.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
@@ -1964,6 +1975,7 @@ public class JPlay extends javax.swing.JFrame implements
     private void cargarDefault() {
         cargarCancionesABiblioteca(biblioteca.getCanciones());
         cargarCancionesAListaGrafica(false);
+        lblCover.setIcon(new ImageIcon(icono));
     }
 
     private void crearListenerTitulosTabla() {
@@ -2168,7 +2180,7 @@ public class JPlay extends javax.swing.JFrame implements
             opAleatorio.setFont(fuente.deriveFont(Font.PLAIN, 13));
             opRepetirCancion.setFont(fuente.deriveFont(Font.PLAIN, 13));
 //            txtBuscar.setFont(fuente.deriveFont(Font.PLAIN, 13));
-            tabbedPane.setFont(fuente.deriveFont(Font.PLAIN, 13));
+            tabbedPrincipal.setFont(fuente.deriveFont(Font.PLAIN, 13));
             tablaBiblioteca.setFont(fuente.deriveFont(Font.PLAIN, 14));
             lblInfoCarga.setFont(fuente.deriveFont(Font.BOLD, 13));
             btnCancelarCarga.setFont(fuente.deriveFont(Font.PLAIN, 13));
@@ -2241,7 +2253,7 @@ public class JPlay extends javax.swing.JFrame implements
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                tabbedPane.setSelectedIndex(1);
+                tabbedPrincipal.setSelectedIndex(1);
                 if (dialogBuscar == null) {
                     dialogBuscar = new DgBuscar(JPlay.this, false);
                     dialogBuscar.setIbuscar(JPlay.this);
@@ -2356,7 +2368,7 @@ public class JPlay extends javax.swing.JFrame implements
     }
 
     private void initDragDropTabbedPane() {
-        tabbedPane.setDropTarget(new DropTarget(this, new DropTargetListener() {
+        tabbedPrincipal.setDropTarget(new DropTarget(this, new DropTargetListener() {
             @Override
             public void drop(DropTargetDropEvent dtde) {
 
@@ -2371,7 +2383,7 @@ public class JPlay extends javax.swing.JFrame implements
                         public void run() {
                             for (File f : archs) {
                                 try {
-                                    Log.add(f);
+                                    Log.add(f.toString());
                                     cargarCancionesABiblioteca(f);
                                     cargarCancionesABiblioteca(biblioteca.getCanciones());
                                     biblioteca.procesarAlbums();
@@ -2391,8 +2403,8 @@ public class JPlay extends javax.swing.JFrame implements
 
             @Override
             public void dragEnter(DropTargetDragEvent dtde) {
-                tabActual = tabbedPane.getSelectedIndex();
-                tabbedPane.setSelectedIndex(1);
+                tabActual = tabbedPrincipal.getSelectedIndex();
+                tabbedPrincipal.setSelectedIndex(1);
             }
 
             @Override
@@ -2405,7 +2417,7 @@ public class JPlay extends javax.swing.JFrame implements
 
             @Override
             public void dragExit(DropTargetEvent dte) {
-                tabbedPane.setSelectedIndex(tabActual);
+                tabbedPrincipal.setSelectedIndex(tabActual);
             }
         }));
     }
@@ -2423,12 +2435,25 @@ public class JPlay extends javax.swing.JFrame implements
 
     @Override
     public void updateLogUI(LogEntry newLogEntry) {
-        tableLogger.updateUI();
+        try {
+            tableLogger.updateUI();
+        } catch (NullPointerException e) {
+            
+        }
+        tabbedPrincipal.setTitleAt(4, "Logger ("+tableLogger.getRowCount()+")");
     }
 
     private void initLog() {
         Log.setUpdateLogUI(this);
         modelLog = new TMLog();
         tableLogger.setModel(modelLog);
+    }
+
+    private void initIconosTabs() {
+        tabbedPrincipal.setIconAt(0, CellRenderCancionLista.crearIcono(Ruta.IC_TAB_EXPLORER));
+        tabbedPrincipal.setIconAt(1, CellRenderCancionLista.crearIcono(Ruta.IC_TAB_BIBLIOTECA));
+        tabbedPrincipal.setIconAt(2, CellRenderCancionLista.crearIcono(Ruta.IC_TAB_LISTA));
+        tabbedPrincipal.setIconAt(3, CellRenderCancionLista.crearIcono(Ruta.IC_TAB_ESCUCHADAS));
+        tabbedPrincipal.setIconAt(4, CellRenderCancionLista.crearIcono(Ruta.IC_TAB_LOG));
     }
 }

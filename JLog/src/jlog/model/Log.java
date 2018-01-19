@@ -1,5 +1,6 @@
 package jlog.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
  *
  * @author prez
  */
-public class Log {
+public class Log implements Serializable{
     //
     private static List<LogEntry> log;
     private static UpdateLogUI update;
@@ -21,7 +22,7 @@ public class Log {
         Log.update = update;
     }
     
-    public static void add(Object mensaje){
+    public static void add(String mensaje){
         LogEntry nle = new LogEntry(new Date(), mensaje);
         Log.log.add(nle);
         Log.update.updateLogUI(nle);
@@ -30,4 +31,10 @@ public class Log {
     public static List<LogEntry> getEntrys(){
         return Log.log;
     }
+
+    public static void setLogEntries(List<LogEntry> le) {
+        Log.log = le;
+    }
+    
+    
 }

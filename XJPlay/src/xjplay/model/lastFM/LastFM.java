@@ -27,7 +27,7 @@ public class LastFM {
         List<CoverArt> covers = LastFM.getCovers(url);
         
         for (CoverArt cover : covers) {
-            Log.add(cover);
+            Log.add(cover.toString());
         }
         
         return getImage(covers.get(covers.size()-1));

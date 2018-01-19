@@ -61,7 +61,6 @@ public class NewJDialog extends javax.swing.JDialog {
 
             @Override
             public void keyReleased(java.awt.event.KeyEvent e) {
-                Log.add(e.getKeyCode());
                 comboKeyReleased(e);
             }
         });

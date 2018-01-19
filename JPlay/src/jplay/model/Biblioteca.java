@@ -147,7 +147,7 @@ public class Biblioteca implements Serializable{
 
     public void printAlbums() {
         for (Album album : albums) {
-            Log.add(album);
+            Log.add(album.toString());
             Log.add("Canciones: " + album.getCanciones().size());
         }
     }

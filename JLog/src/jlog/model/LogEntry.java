@@ -1,12 +1,13 @@
 package jlog.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author prez
  */
-public class LogEntry {
+public class LogEntry implements Serializable{
     private Date fecha;
     private Object mensaje;
 
