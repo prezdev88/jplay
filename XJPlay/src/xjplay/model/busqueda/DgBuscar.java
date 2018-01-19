@@ -7,6 +7,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import xjplay.model.log.Log;
 
 /**
  *
@@ -59,7 +60,7 @@ public class DgBuscar extends javax.swing.JDialog {
         try {
             ibuscar.search(cboBuscar.getEditor().getItem().toString().toLowerCase().trim());
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            Log.add(ex.getMessage());
         }
     }
 
@@ -145,7 +146,7 @@ public class DgBuscar extends javax.swing.JDialog {
         try {
             ibuscar.search(cboBuscar.getEditor().getItem().toString().toLowerCase().trim());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Log.add(e.getMessage());
         }
     }//GEN-LAST:event_cboBuscarItemStateChanged
 

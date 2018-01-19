@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import xjplay.model.log.Log;
 import xjplay.model.rules.Rules;
 /**
  *
@@ -46,7 +47,7 @@ public class HiloCover extends Thread {
                 }
             }
         } catch (InterruptedException ex) {
-            System.out.println("Hilo covert art interrumpido");
+            Log.add("Hilo covert art interrumpido");
         }
     }
     

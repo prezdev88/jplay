@@ -11,6 +11,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import xjplay.model.log.Log;
 import xjplay.model.rules.Rules;
 
 public class LastFM {
@@ -26,7 +27,7 @@ public class LastFM {
         List<CoverArt> covers = LastFM.getCovers(url);
         
         for (CoverArt cover : covers) {
-            System.out.println(cover);
+            Log.add(cover);
         }
         
         return getImage(covers.get(covers.size()-1));
@@ -39,7 +40,7 @@ public class LastFM {
      * @throws Exception 
      */
     private static String readUrl(String urlString) throws Exception {
-        System.out.println(urlString);
+        Log.add(urlString);
         BufferedReader reader = null;
         try {
             URL url = new URL(urlString);

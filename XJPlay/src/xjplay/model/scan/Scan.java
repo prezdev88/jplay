@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jplay.model.Biblioteca;
 import jplay.model.Cancion;
+import xjplay.model.log.Log;
 import xjplay.model.rules.Rules;
 import xjplay.utils.Validar;
 
@@ -25,30 +26,39 @@ public class Scan extends Thread {
     public void run() {
         try {
             while (true) {
-                System.out.println("PAUSE SCAN...");
+                Log.add("PAUSE SCAN...");
                 Thread.sleep(Rules.PAUSE_SCAN);
 
-                System.out.print("REMOVIENDO NO EXISTENTES...");
-                int cant = biblioteca.removerNoExistentes();
-                System.out.println("OK ("+cant+" removidos)");
-                scan();
-                
-                huboCambios = cant != 0; // si se removió alguna cancion, hubo cambios
-                
-                update.updateBibliotecaUI(huboCambios);
-                huboCambios = false;
+                scanner();
             }
         } catch (InterruptedException | IOException ex) {
             Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    /**
+     * Método que escanea las rutas de la biblioteca. Lo deje en un método
+     * para llamarlo desde la app principal pero sin un hilo.
+     * 
+     * @throws IOException 
+     */
+    public void scanner() throws IOException {
+        Log.add("REMOVIENDO NO EXISTENTES...");
+        int cant = biblioteca.removerNoExistentes();
+        Log.add("OK ("+cant+" removidos)");
 
-    private void scan() throws IOException {
         for (File f : biblioteca.getRutas()) {
-            System.out.print("SCAN [" + f + "]...");
+            Log.add("SCAN [" + f.getPath() + "]...");
             scan(f);
-            System.out.println("OK");
+            Log.add("OK");
         }
+
+        if(!huboCambios){
+            huboCambios = cant != 0; // si se removió alguna cancion, hubo cambios
+        }
+
+        update.updateBibliotecaUI(huboCambios);
+        huboCambios = false;
     }
 
     private void scan(File raiz) throws IOException {
@@ -70,9 +80,11 @@ public class Scan extends Thread {
             }
         }else{
             if(biblioteca.removerRuta(raiz)){
-                System.out.println("Ruta removida! ["+raiz+"]");
+                Log.add("Ruta removida! ["+raiz+"]");
                 huboCambios = true;
             }
         }
     }
+
+    
 }

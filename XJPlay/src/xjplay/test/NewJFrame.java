@@ -19,6 +19,7 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 import org.jdesktop.swingx.treetable.TreeTableModel;
 import xjplay.coverArt.HiloCover;
+import xjplay.model.log.Log;
 import xjplay.test.progress.WorkerStringProgress;
 import xjplay.test.progress.WorkerValueProgress;
 
@@ -50,7 +51,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("F3");
+                Log.add("F3");
                 if (p == null) {
                     p = new NewJDialog(NewJFrame.this, false);
                     //            p.setUndecorated(true);

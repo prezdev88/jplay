@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.util.List;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
+import xjplay.model.log.Log;
 import xjplay.recursos.Ruta;
 
 /**
@@ -51,7 +52,7 @@ public class WorkerStringProgress extends SwingWorker<Void, String> {
      * @param porcentaje 
      */
     public void cambiar(int porcentaje) {
-        System.out.println(porcentaje + "%");
+        Log.add(porcentaje + "%");
 
         if (porcentaje < 0) { // si el porcentaje es negativo, dejo los minutos y segundos en 0
             iniMin = 0;
@@ -65,8 +66,7 @@ public class WorkerStringProgress extends SwingWorker<Void, String> {
             iniSeg = iniSeg - (iniMin * 60);
 
         }
-        System.out.println(iniMin + ":" + iniSeg);
-
+        Log.add(iniMin + ":" + iniSeg);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class WorkerStringProgress extends SwingWorker<Void, String> {
         minutos = minutos * 60;
         segundos = Integer.parseInt(split[1]);
 
-        System.out.println("SEGUNDOS: " + (minutos + segundos));
+        Log.add("SEGUNDOS: " + (minutos + segundos));
 
         return (minutos + segundos);
     }

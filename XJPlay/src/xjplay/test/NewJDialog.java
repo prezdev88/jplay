@@ -11,6 +11,7 @@ import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListDataListener;
+import xjplay.model.log.Log;
 
 /**
  *
@@ -44,7 +45,7 @@ public class NewJDialog extends javax.swing.JDialog {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("F3 New JDialog");
+                Log.add("F3 New JDialog");
                 NewJDialog.this.setVisible(false);
             }
         });
@@ -60,7 +61,7 @@ public class NewJDialog extends javax.swing.JDialog {
 
             @Override
             public void keyReleased(java.awt.event.KeyEvent e) {
-                System.out.println(e.getKeyCode());
+                Log.add(e.getKeyCode());
                 comboKeyReleased(e);
             }
         });

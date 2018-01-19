@@ -64,6 +64,9 @@ import jplay.model.Album;
 import xjplay.model.busqueda.DgBuscar;
 import xjplay.model.busqueda.IBuscar;
 import xjplay.model.lastFM.LastFM;
+import xjplay.model.log.Log;
+import xjplay.model.log.LogEntry;
+import xjplay.model.log.TMLog;
 import xjplay.model.progress.WorkerStringProgress;
 import xjplay.model.rules.Rules;
 import xjplay.model.scan.Scan;
@@ -72,9 +75,11 @@ import xjplay.model.tree.CellRenderExplorer;
 import xjplay.model.tree.CellRenderCancionLista;
 import xjplay.model.tree.CellRenderCancionMasTocada;
 import xjplay.recursos.Recurso;
+import xjplay.model.log.UpdateLogUI;
 //import nicon.notify.core.Notification;
 
-public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IBuscar, UpdateBibliotecaUI {
+public class JPlay extends javax.swing.JFrame implements 
+        BasicPlayerListener, IBuscar, UpdateBibliotecaUI, UpdateLogUI {
 
     public static Reproductor reproductor;
     private Biblioteca biblioteca;
@@ -105,9 +110,14 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
 
     private int tabActual; // esto es para el drag and drop
     private boolean isMasEscuchadas; // variable para guardar si se esta escuchando las más escuchadas
+    
+    private TMLog modelLog;
 
     public JPlay() {
         initComponents();
+        
+        initLog();
+        
         canciones = new ArrayList<>();
         biblioteca = new Biblioteca();
 
@@ -190,6 +200,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
 
         initBuscar();
         initDragDropTabbedPane();
+        
     }
 
     // http://stackoverflow.com/questions/13516730/disable-enter-key-from-moving-down-a-row-in-jtable
@@ -229,6 +240,9 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
         jPanel2 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         treeMasTocadas = new javax.swing.JTree();
+        jPanel8 = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        tableLogger = new javax.swing.JTable();
         lblInfoCarga = new javax.swing.JLabel();
         btnCancelarCarga = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
@@ -414,6 +428,25 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
 
         tabbedPane.addTab("+ escuchadas", jPanel2);
 
+        jPanel8.setLayout(new java.awt.BorderLayout());
+
+        tableLogger.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane6.setViewportView(tableLogger);
+
+        jPanel8.add(jScrollPane6, java.awt.BorderLayout.CENTER);
+
+        tabbedPane.addTab("Logger", jPanel8);
+
         lblInfoCarga.setBackground(new java.awt.Color(254, 254, 254));
         lblInfoCarga.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -439,7 +472,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
+                .addComponent(tabbedPane)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblInfoCarga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1083,63 +1116,69 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
                 
                 biblioteca = (Biblioteca) IO.leerObjetoDesde(Ruta.BIBLIOTECA);
 
-                boolean e = true;
-
-                for (Cancion c : biblioteca.getCanciones()) {
-                    if (!c.exists()) {
-                        e = false;
-                        break;
-                    }
-                }
-
-                if (!e) {
-                    int cont = 0;
-                    if (JOptionPane.showConfirmDialog(this, "Se ha encontrado por lo menos 1 canción que no existe en la biblioteca. ¿Desea analizar la biblioteca completa?") == JOptionPane.YES_OPTION) {
-
-                        List<Cancion> cancBiblio = biblioteca.getCanciones();
-                        cargarCancionesABiblioteca(cancBiblio);
-                        for (Cancion c : cancBiblio) {
-                            if (!c.exists()) {
-                                cont++;
-                            }
-                        }
-
-                        if (JOptionPane.showConfirmDialog(this, "Se han encontrado " + cont + " canciones que no existen. ¿Desea eliminarlas?") == JOptionPane.YES_OPTION) {
-                            int cant = biblioteca.removerNoExistentes();
-                            JOptionPane.showMessageDialog(this, "Se han eliminado " + cant + " canciones de la biblioteca!", "Info", JOptionPane.INFORMATION_MESSAGE);
-
-                            Iterator<Cancion> iterator = canciones.iterator();
-
-                            Cancion c;
-                            cant = 0;
-                            while (iterator.hasNext()) {
-                                c = iterator.next();
-
-                                if (!biblioteca.estaCancion(c)) {
-                                    iterator.remove();
-                                    cant++;
-                                }
-                            }
-
-                            if (cant != 0) {
-                                JOptionPane.showMessageDialog(this, "Se han eliminado " + cant + " canciones de la lista principal!", "Info", JOptionPane.INFORMATION_MESSAGE);
-                            }
-
-                        }
-                    }
-                }
-
-                System.out.println("Cantidad de canciones cargadas del save: " + canciones.size());
+                Scan scan = new Scan(biblioteca, this);
+                scan.scanner();
+                
+                //<editor-fold defaultstate="collapsed" desc="Código de scaneo de biblioteca antiguo">
+                
+                
+//                boolean e = true;
+//
+//                for (Cancion c : biblioteca.getCanciones()) {
+//                    if (!c.exists()) {
+//                        e = false;
+//                        break;
+//                    }
+//                }
+//
+//                if (!e) {
+//                    int cont = 0;
+//                    if (JOptionPane.showConfirmDialog(this, "Se ha encontrado por lo menos 1 canción que no existe en la biblioteca. ¿Desea analizar la biblioteca completa?") == JOptionPane.YES_OPTION) {
+//
+//                        List<Cancion> cancBiblio = biblioteca.getCanciones();
+//                        cargarCancionesABiblioteca(cancBiblio);
+//                        for (Cancion c : cancBiblio) {
+//                            if (!c.exists()) {
+//                                cont++;
+//                            }
+//                        }
+//
+//                        if (JOptionPane.showConfirmDialog(this, "Se han encontrado " + cont + " canciones que no existen. ¿Desea eliminarlas?") == JOptionPane.YES_OPTION) {
+//                            int cant = biblioteca.removerNoExistentes();
+//                            JOptionPane.showMessageDialog(this, "Se han eliminado " + cant + " canciones de la biblioteca!", "Info", JOptionPane.INFORMATION_MESSAGE);
+//
+//                            Iterator<Cancion> iterator = canciones.iterator();
+//
+//                            Cancion c;
+//                            cant = 0;
+//                            while (iterator.hasNext()) {
+//                                c = iterator.next();
+//
+//                                if (!biblioteca.estaCancion(c)) {
+//                                    iterator.remove();
+//                                    cant++;
+//                                }
+//                            }
+//
+//                            if (cant != 0) {
+//                                JOptionPane.showMessageDialog(this, "Se han eliminado " + cant + " canciones de la lista principal!", "Info", JOptionPane.INFORMATION_MESSAGE);
+//                            }
+//
+//                        }
+//                    }
+//                }
+//              </editor-fold>
+                Log.add("Cantidad de canciones cargadas del save: " + canciones.size());
 //                indiceActual = g.indiceActual;
 //                System.out.println("Índice actual: " + indiceActual);
                 
-                System.out.println("isMasEscuchadas: "+isMasEscuchadas);
+                Log.add("isMasEscuchadas: "+isMasEscuchadas);
                 cargarCancionesAListaGrafica(isMasEscuchadas);
                 cargarCancionesABiblioteca(biblioteca.getCanciones());
                 imprimirTemaActual();
 
             } catch (InvalidClassException ex) {
-                System.out.println("EX: " + ex.getMessage());
+                Log.add("EX: " + ex.getMessage());
                 biblioteca = new Biblioteca();
                 canciones = biblioteca.getCanciones();
                 cargarDefault();
@@ -1270,11 +1309,13 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JLabel lblArtista;
     private javax.swing.JLabel lblCover;
     private javax.swing.JLabel lblInfoCarga;
@@ -1288,6 +1329,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
     private javax.swing.JTabbedPane tabbedPane;
     private javax.swing.JTable tablaBiblioteca;
     private javax.swing.JTable tablaCanciones;
+    private javax.swing.JTable tableLogger;
     private javax.swing.JToggleButton togVol;
     private javax.swing.JTree tree;
     private javax.swing.JTree treeMasTocadas;
@@ -1375,7 +1417,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
 
     @Override
     public void stateUpdated(BasicPlayerEvent bpe) {
-        System.out.println("STATE UPDATED: " + bpe.toString());
+        Log.add("STATE UPDATED: " + bpe.toString());
         switch (bpe.getCode()) {
             case BasicPlayerEvent.EOM:
                 /*
@@ -1391,7 +1433,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
                     reproducirCancionActual();
                 }
 
-                System.out.println("END_OF_MUSIC");
+                Log.add("END_OF_MUSIC");
                 break;
             case BasicPlayerEvent.STOPPED:
                 break;
@@ -1418,8 +1460,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
 
     @Override
     public void setController(BasicController bc) {
-        System.out.println("SET CONTROLLER: " + bc);
-
+        Log.add("SET CONTROLLER: " + bc);
     }
 
     private void setVolumen(int vol) {
@@ -1506,8 +1547,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
         }
 
         String rutaIcon = (isMasTocadas ? Ruta.ICONO_CORAZON : Ruta.ICONO_JPLAY);
-
-        System.out.println(rutaIcon);
 
         treeSong.setCellRenderer(
                 new CellRenderCancionLista()
@@ -1760,7 +1799,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
     private void cargarCancionesAListaGrafica(boolean isMasTocadas) {
 
         //ordenar acá
-        System.out.println("Se cargaron " + canciones.size() + " canciones a la lista principal");
+        Log.add("Se cargaron " + canciones.size() + " canciones a la lista principal");
         if (!isMasTocadas) {
             Collections.sort(canciones, new Comparator<File>() {
 
@@ -1804,7 +1843,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
 //        tablaBiblioteca.getTableHeader().setUI(null);
 //        tablaBiblioteca.setRowHeight(20);
         tablaBiblioteca.setModel(new TMCancionBiblioteca(lista));
-        System.out.println("Se cargaron " + lista.size() + " canciones en biblioteca");
+        Log.add("Se cargaron " + lista.size() + " canciones en biblioteca");
         lblInfoCarga.setText("Se cargaron " + lista.size() + " canciones en biblioteca");
 //        tablaBiblioteca.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 
@@ -1933,7 +1972,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
             public void mouseClicked(MouseEvent e) {
                 int col = tablaBiblioteca.columnAtPoint(e.getPoint());
                 String name = tablaBiblioteca.getColumnName(col);
-                System.out.println("Column index selected " + col + " " + name);
+                Log.add("Column index selected " + col + " " + name);
             }
         });
     }
@@ -2055,9 +2094,9 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
                 JOptionPane.showMessageDialog(this, "Se han eliminado " + cont + " canciones de la lista.", "Info", JOptionPane.INFORMATION_MESSAGE);
             }
         } else if (!album.hasImagenes()) { // si el Album NO tiene una lista de imagenes
-            System.out.println("La canción no tiene imágenes asociadas!");
+            Log.add("La canción no tiene imágenes asociadas!");
             List<ImageIcon> fotos = Recurso.getFotos(cancion);
-            System.out.println("Se han encontrado " + fotos.size() + " foto");
+            Log.add("Se han encontrado " + fotos.size() + " foto");
 
             if (!fotos.isEmpty()) {
                 /*
@@ -2065,7 +2104,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
                 para poder comenzar el hilo de las caratulas
                  */
                 album.setCovers(fotos);
-                System.out.println("Se añadió una lista de fotos a la cancion [" + fotos.size() + " fotos]");
+                Log.add("Se añadió una lista de fotos a la cancion [" + fotos.size() + " fotos]");
             } else { // no hay imagenes en la carpeta de la canción
                 List<ImageIcon> covers = new ArrayList<>();
                 try {
@@ -2079,7 +2118,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
                     covers.add(new ImageIcon(imLastFM));
                     
                     
-                    System.out.println("Se añadió una image desde LastFM!");
+                    Log.add("Se añadió una image desde LastFM!");
                 } catch (Exception ex) {
                     /*Establezco la caratula por defecto (el disco)*/
 //                        icono = icono.getScaledInstance(
@@ -2087,12 +2126,12 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
 //                                (int) Rules.COVER_DIMENSION.getHeight(),
 //                                Image.SCALE_SMOOTH);
                     covers.add(new ImageIcon(icono));
-                    System.out.println("Se añadió una caratula POR DEFECTO --> " + ex.getMessage());
+                    Log.add("Se añadió una caratula POR DEFECTO --> " + ex.getMessage());
                 }
                 album.setCovers(covers);
             }
         } else {
-            System.out.println("La canción tiene caratula!");
+            Log.add("La canción tiene caratula!");
         }
 
         
@@ -2224,7 +2263,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
     public void focusOn(String filtro) {
         try {
             if(filtro.startsWith("/")){
-                System.out.println("comando! "+filtro);
+                Log.add("comando! "+filtro);
                 
                 // si es un comando, despues cargo de nuevo la biblioteca
                 cargarCancionesABiblioteca(biblioteca.getCanciones());
@@ -2232,11 +2271,11 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
                 String text = "";
                 
                 if(filtro.equalsIgnoreCase("/rutas")){
-                    System.out.println("RUTAS:");
+                    Log.add("RUTAS:");
                     text += "RUTAS:\n";
                     
                     for (File ruta : biblioteca.getRutas()) {
-                        System.out.println("\t"+ruta.getPath());
+                        Log.add("\t"+ruta.getPath());
                         text += ruta.getPath() + "\n";
                     }
                     
@@ -2249,7 +2288,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
             tablaBiblioteca.setRowSelectionInterval(0, 0);
         } catch (Exception e) {
             // cae aca cuando no hay canciones en la tabla biblioteca
-            System.out.println(e.getMessage());
+            Log.add(e.getMessage());
         }
         
         
@@ -2295,7 +2334,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
                         hCover.start();
                     }
                 } catch (NullPointerException ex) {
-                    System.out.println("Objeto HCOVER es nulo");
+                    Log.add("Objeto HCOVER es nulo");
                 }
             }
         });
@@ -2332,7 +2371,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
                         public void run() {
                             for (File f : archs) {
                                 try {
-                                    System.out.println(f);
+                                    Log.add(f);
                                     cargarCancionesABiblioteca(f);
                                     cargarCancionesABiblioteca(biblioteca.getCanciones());
                                     biblioteca.procesarAlbums();
@@ -2378,7 +2417,18 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
             cargarCancionesABiblioteca(biblioteca.getCanciones());
             biblioteca.procesarAlbums();
         }else{
-            System.out.println("[No hubo cambios en la biblioteca]");
+            Log.add("[No hubo cambios en la biblioteca]");
         }
+    }
+
+    @Override
+    public void updateLogUI(LogEntry newLogEntry) {
+        tableLogger.updateUI();
+    }
+
+    private void initLog() {
+        Log.setUpdateLogUI(this);
+        modelLog = new TMLog();
+        tableLogger.setModel(modelLog);
     }
 }

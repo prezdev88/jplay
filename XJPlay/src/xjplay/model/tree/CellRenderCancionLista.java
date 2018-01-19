@@ -16,6 +16,7 @@ import javax.swing.tree.TreeCellRenderer;
 import jplay.model.Album;
 import xjplay.main.JPlay;
 import jplay.model.Cancion;
+import xjplay.model.log.Log;
 import xjplay.model.rules.Rules;
 import xjplay.recursos.Recurso;
 import xjplay.recursos.Ruta;
@@ -82,7 +83,7 @@ public class CellRenderCancionLista extends JLabel implements TreeCellRenderer {
                 if (ob instanceof Cancion) {
                     Cancion c = (Cancion) ob;
                     if (JPlay.reproductor.getCancionActual().equals(c)) {
-                        System.out.println("igual a " + c.getNombre());
+                        Log.add("igual a " + c.getNombre());
                         isCancionActual = true;
                     }
                 }

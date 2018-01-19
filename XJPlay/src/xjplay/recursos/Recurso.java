@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import xjplay.model.log.Log;
 import xjplay.model.rules.Rules;
 
 public class Recurso {
@@ -28,11 +29,11 @@ public class Recurso {
         Image image;
         ImageIcon imageIcon;
         for (File archivo : f.getParentFile().listFiles()) {
-            System.out.println(archivo.getName());
+            Log.add(archivo.getName());
             if (archivo.getName().contains(".jpg")
                     || archivo.getName().contains(".png")) {
                 image = new ImageIcon(archivo.getPath()).getImage();
-                System.out.println("RUTA FOTO: "+archivo.getPath());
+                Log.add("RUTA FOTO: "+archivo.getPath());
                 imageIcon = new ImageIcon(
                         image.getScaledInstance(
                                 (int)Rules.COVER_DIMENSION.getWidth(),
