@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jplay.model.Biblioteca;
 import jplay.model.Cancion;
-import xjplay.model.log.Log;
+import jlog.model.Log;
 import xjplay.model.rules.Rules;
 import xjplay.utils.Validar;
 

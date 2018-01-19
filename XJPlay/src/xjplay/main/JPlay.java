@@ -64,9 +64,9 @@ import jplay.model.Album;
 import xjplay.model.busqueda.DgBuscar;
 import xjplay.model.busqueda.IBuscar;
 import xjplay.model.lastFM.LastFM;
-import xjplay.model.log.Log;
-import xjplay.model.log.LogEntry;
-import xjplay.model.log.TMLog;
+import jlog.model.Log;
+import jlog.model.LogEntry;
+import jlog.model.TMLog;
 import xjplay.model.progress.WorkerStringProgress;
 import xjplay.model.rules.Rules;
 import xjplay.model.scan.Scan;
@@ -75,7 +75,7 @@ import xjplay.model.tree.CellRenderExplorer;
 import xjplay.model.tree.CellRenderCancionLista;
 import xjplay.model.tree.CellRenderCancionMasTocada;
 import xjplay.recursos.Recurso;
-import xjplay.model.log.UpdateLogUI;
+import jlog.model.UpdateLogUI;
 //import nicon.notify.core.Notification;
 
 public class JPlay extends javax.swing.JFrame implements 
@@ -120,6 +120,7 @@ public class JPlay extends javax.swing.JFrame implements
         
         canciones = new ArrayList<>();
         biblioteca = new Biblioteca();
+        biblioteca.setUpdateLogUI(this);
 
         isRandom = false;
 
@@ -200,7 +201,6 @@ public class JPlay extends javax.swing.JFrame implements
 
         initBuscar();
         initDragDropTabbedPane();
-        
     }
 
     // http://stackoverflow.com/questions/13516730/disable-enter-key-from-moving-down-a-row-in-jtable

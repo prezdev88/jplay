@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import xjplay.model.log.Log;
+import jlog.model.Log;
 import xjplay.model.rules.Rules;
 /**
  *

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
+import jlog.model.Log;
 
 public class Album implements Serializable {
 
@@ -24,7 +25,7 @@ public class Album implements Serializable {
     }
     
     public void removeImage(ImageIcon cover){
-        System.out.println("COVER REMOVIDO: "+covers.remove(cover));
+        Log.add("COVER REMOVIDO: "+covers.remove(cover));
     }
 
     public void setCovers(List<ImageIcon> covers) {

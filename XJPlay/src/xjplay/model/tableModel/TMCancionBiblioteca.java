@@ -1,7 +1,6 @@
 package xjplay.model.tableModel;
 
 import java.util.List;
-import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import jplay.model.Cancion;

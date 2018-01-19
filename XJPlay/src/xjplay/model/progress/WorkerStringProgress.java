@@ -9,7 +9,7 @@ import java.awt.Color;
 import java.util.List;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
-import xjplay.model.log.Log;
+import jlog.model.Log;
 import xjplay.recursos.Ruta;
 
 /**

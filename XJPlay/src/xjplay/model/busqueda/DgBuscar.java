@@ -7,7 +7,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
-import xjplay.model.log.Log;
+import jlog.model.Log;
 
 /**
  *

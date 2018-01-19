@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import jlog.model.Log;
+import jlog.model.UpdateLogUI;
 
 /**
  *
@@ -145,15 +147,15 @@ public class Biblioteca implements Serializable{
 
     public void printAlbums() {
         for (Album album : albums) {
-            System.out.println(album);
-            System.out.println("Canciones: " + album.getCanciones().size());
+            Log.add(album);
+            Log.add("Canciones: " + album.getCanciones().size());
         }
     }
 
     public Album getAlbum(Cancion c) {
         for (Album a : albums) {
             if (a.existCancion(c)) {
-                System.out.println("Album encontrado! : "+a);
+                Log.add("Album encontrado! : "+a);
                 return a;
             }
         }
@@ -180,6 +182,8 @@ public class Biblioteca implements Serializable{
         return albums;
     }
 
-    
+    public void setUpdateLogUI(UpdateLogUI update){
+        Log.setUpdateLogUI(update);
+    }
     
 }

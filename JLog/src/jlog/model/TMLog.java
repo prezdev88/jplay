@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package xjplay.model.log;
+package jlog.model;
 
 import java.util.List;
 import javax.swing.event.TableModelListener;

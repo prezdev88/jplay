@@ -19,7 +19,7 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 import org.jdesktop.swingx.treetable.TreeTableModel;
 import xjplay.coverArt.HiloCover;
-import xjplay.model.log.Log;
+import jlog.model.Log;
 import xjplay.test.progress.WorkerStringProgress;
 import xjplay.test.progress.WorkerValueProgress;
 

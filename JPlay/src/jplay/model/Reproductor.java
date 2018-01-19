@@ -17,7 +17,7 @@ public class Reproductor {
 
         player = new BasicPlayer();
         control = (BasicController) player;
-
+        
         for (BasicPlayerListener lis : listeners) {
             player.addBasicPlayerListener(lis);
         }

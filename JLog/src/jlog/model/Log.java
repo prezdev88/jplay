@@ -1,4 +1,4 @@
-package xjplay.model.log;
+package jlog.model;
 
 import java.util.ArrayList;
 import java.util.Date;

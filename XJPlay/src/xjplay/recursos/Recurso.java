@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.Image;
 import javax.swing.ImageIcon;
-import xjplay.model.log.Log;
+import jlog.model.Log;
 import xjplay.model.rules.Rules;
 
 public class Recurso {

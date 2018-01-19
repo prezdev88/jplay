@@ -11,7 +11,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import xjplay.model.log.Log;
+import jlog.model.Log;
 import xjplay.model.rules.Rules;
 
 public class LastFM {

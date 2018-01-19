@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import jlog.model.Log;
 import org.tritonus.share.sampled.file.TAudioFileFormat;
 
 public class Cancion extends File {
@@ -36,7 +37,7 @@ public class Cancion extends File {
      */
     public void aumentarContadorReproducciones() {
         cantidadReproducciones++;
-        System.out.println("Se ha aumentado el contador: "+cantidadReproducciones);
+        Log.add("Se ha aumentado el contador: "+cantidadReproducciones);
     }
 
     public int getCantidadReproducciones() {

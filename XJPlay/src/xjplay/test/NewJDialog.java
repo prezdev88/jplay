@@ -11,7 +11,7 @@ import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListDataListener;
-import xjplay.model.log.Log;
+import jlog.model.Log;
 
 /**
  *
