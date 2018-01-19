@@ -44,7 +44,7 @@ public class DgBuscar extends javax.swing.JDialog {
                     comboKeyReleased(e);
                 }else{
                     DgBuscar.this.setVisible(false);
-                    ibuscar.focusOn();
+                    ibuscar.focusOn(cboBuscar.getEditor().getItem().toString().toLowerCase().trim());
                 }
             }
 

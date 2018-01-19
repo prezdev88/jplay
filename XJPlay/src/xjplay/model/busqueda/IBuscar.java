@@ -8,6 +8,6 @@ import javax.swing.JComboBox;
  */
 public interface IBuscar {
     void search(String filtro);
-    void focusOn();
+    void focusOn(String filtro);
     void cargarComboDeBusqueda(JComboBox cbo);
 }

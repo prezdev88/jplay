@@ -3,6 +3,13 @@ package xjplay.model.rules;
 import java.awt.Dimension;
 
 public class Rules {
+    /*SCAN DE RUTAS DE BIBLIOTECAS*/
+    private static final int SEGUNDO                = 1;
+    private static final int MINUTO                 = 1000 * Rules.SEGUNDO;
+    private static final int MINUTOS_PAUSE_SCAN     = 5;
+    public static int PAUSE_SCAN                    = Rules.MINUTOS_PAUSE_SCAN * Rules.MINUTO;
+    /*SCAN DE RUTAS DE BIBLIOTECAS*/
+    
     public static final String NOMBRE               = "JPlay";
     public static final String VERSION              = "0.3a";
     

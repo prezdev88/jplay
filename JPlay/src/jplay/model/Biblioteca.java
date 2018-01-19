@@ -1,5 +1,6 @@
 package jplay.model;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,16 +12,32 @@ import java.util.List;
  *
  * @author pperezp
  */
-public class Biblioteca implements Serializable {
+public class Biblioteca implements Serializable{
 
     private List<Cancion> canciones;
     private List<Album> albums;
+    private List<File> rutas; // rutas para analizar
 
     public Biblioteca() {
         albums = new ArrayList<>();
         canciones = new ArrayList<>();
+        rutas = new ArrayList<>();
+    }
+    
+    public void addRuta(File ruta){
+        if(!rutas.contains(ruta)){
+            rutas.add(ruta);
+        }
     }
 
+    public List<File> getRutas() {
+        return rutas;
+    }
+    
+    public boolean removerRuta(File ruta){
+        return rutas.remove(ruta);
+    }
+    
     public void add(Cancion c) {
         if (!estaCancion(c)) {
             this.canciones.add(c);
@@ -163,4 +180,6 @@ public class Biblioteca implements Serializable {
         return albums;
     }
 
+    
+    
 }

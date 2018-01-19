@@ -53,7 +53,9 @@
             <file>file:/home/prez/Escritorio/GIT/jplay/XJPlay/src/xjplay/main/JPlay.java</file>
         </group>
         <group name="jplay">
-            <file>file:/home/prez/Escritorio/GIT/jplay/XJPlay/src/xjplay/model/tree/CellRenderCancionLista.java</file>
+            <file>file:/home/prez/Escritorio/GIT/jplay/XJPlay/src/xjplay/model/scan/Scan.java</file>
+            <file>file:/home/prez/Escritorio/GIT/jplay/XJPlay/src/xjplay/model/rules/Rules.java</file>
+            <file>file:/home/prez/Escritorio/GIT/jplay/XJPlay/bugs.txt</file>
             <file>file:/home/prez/Escritorio/GIT/jplay/XJPlay/src/xjplay/main/JPlay.java</file>
         </group>
     </open-files>

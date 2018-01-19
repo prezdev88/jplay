@@ -66,13 +66,15 @@ import xjplay.model.busqueda.IBuscar;
 import xjplay.model.lastFM.LastFM;
 import xjplay.model.progress.WorkerStringProgress;
 import xjplay.model.rules.Rules;
+import xjplay.model.scan.Scan;
+import xjplay.model.scan.UpdateBibliotecaUI;
 import xjplay.model.tree.CellRenderExplorer;
 import xjplay.model.tree.CellRenderCancionLista;
 import xjplay.model.tree.CellRenderCancionMasTocada;
 import xjplay.recursos.Recurso;
 //import nicon.notify.core.Notification;
 
-public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IBuscar {
+public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IBuscar, UpdateBibliotecaUI {
 
     public static Reproductor reproductor;
     private Biblioteca biblioteca;
@@ -102,6 +104,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
     private DgBuscar dialogBuscar;
 
     private int tabActual; // esto es para el drag and drop
+    private boolean isMasEscuchadas; // variable para guardar si se esta escuchando las más escuchadas
 
     public JPlay() {
         initComponents();
@@ -116,6 +119,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
         crearPopUpBiblioteca();
         crearPopUpCover();
 
+        isMasEscuchadas = false;
         btnCancelarCarga.setEnabled(false);
 //        indiceActual = -1;
         if (SAVE) {
@@ -894,8 +898,9 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
             try {
                 Guardar g = new Guardar();
 
-                g.canciones = canciones;
-//                g.indiceActual = indiceActual;
+                g.canciones         = canciones;
+                g.isMasEscuchadas   = isMasEscuchadas;
+                g.indexTab          = tabbedPane.getSelectedIndex();
 
                 IO.escribirObjetoEn(g, Ruta.SAVE);
                 IO.escribirObjetoEn(biblioteca, Ruta.BIBLIOTECA);
@@ -1045,6 +1050,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
                     Cancion c = (Cancion) o;
 
                     canciones = biblioteca.getCancionesMasReproducidas();
+                    isMasEscuchadas = true;
                     // true es que quiero reproducir las canciones mas tocadas
                     // esto hace que se cree sólo un disco gráfico en la lista actual
                     cargarCancionesAListaGrafica(true);
@@ -1071,7 +1077,10 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
 
                 Guardar g = (Guardar) IO.leerObjetoDesde(Ruta.SAVE);
 
-                canciones = g.canciones;
+                canciones       = g.canciones;
+                isMasEscuchadas = g.isMasEscuchadas;
+                tabbedPane.setSelectedIndex(g.indexTab);
+                
                 biblioteca = (Biblioteca) IO.leerObjetoDesde(Ruta.BIBLIOTECA);
 
                 boolean e = true;
@@ -1123,7 +1132,9 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
                 System.out.println("Cantidad de canciones cargadas del save: " + canciones.size());
 //                indiceActual = g.indiceActual;
 //                System.out.println("Índice actual: " + indiceActual);
-                cargarCancionesAListaGrafica(false);
+                
+                System.out.println("isMasEscuchadas: "+isMasEscuchadas);
+                cargarCancionesAListaGrafica(isMasEscuchadas);
                 cargarCancionesABiblioteca(biblioteca.getCanciones());
                 imprimirTemaActual();
 
@@ -1626,6 +1637,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
                             cargarCancionesABiblioteca(f);
                             cargarCancionesABiblioteca(biblioteca.getCanciones());
                             biblioteca.procesarAlbums();
+                            biblioteca.addRuta(f);
                         } catch (IOException ex) {
                             Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
                         } catch (InterruptedException ex) {
@@ -2163,7 +2175,6 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
 
     @Override
     public void search(String filtro) {
-
         lFiltrada = new ArrayList<>();
 
         int i = 1;
@@ -2208,9 +2219,40 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
         // </editor-fold>
     }
 
+    // este metodo se llama cuando apreta enter en buscar
     @Override
-    public void focusOn() {
-        tablaBiblioteca.setRowSelectionInterval(0, 0);
+    public void focusOn(String filtro) {
+        try {
+            if(filtro.startsWith("/")){
+                System.out.println("comando! "+filtro);
+                
+                // si es un comando, despues cargo de nuevo la biblioteca
+                cargarCancionesABiblioteca(biblioteca.getCanciones());
+                
+                String text = "";
+                
+                if(filtro.equalsIgnoreCase("/rutas")){
+                    System.out.println("RUTAS:");
+                    text += "RUTAS:\n";
+                    
+                    for (File ruta : biblioteca.getRutas()) {
+                        System.out.println("\t"+ruta.getPath());
+                        text += ruta.getPath() + "\n";
+                    }
+                    
+                    JOptionPane.showMessageDialog(this, text);
+                }else if(filtro.equalsIgnoreCase("/scan")){
+                    Scan s = new Scan(biblioteca, this);
+                    s.start();
+                }
+            }
+            tablaBiblioteca.setRowSelectionInterval(0, 0);
+        } catch (Exception e) {
+            // cae aca cuando no hay canciones en la tabla biblioteca
+            System.out.println(e.getMessage());
+        }
+        
+        
     }
 
     @Override
@@ -2294,6 +2336,7 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
                                     cargarCancionesABiblioteca(f);
                                     cargarCancionesABiblioteca(biblioteca.getCanciones());
                                     biblioteca.procesarAlbums();
+                                    biblioteca.addRuta(f);
                                 } catch (IOException | InterruptedException ex) {
                                     Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -2326,5 +2369,16 @@ public class JPlay extends javax.swing.JFrame implements BasicPlayerListener, IB
                 tabbedPane.setSelectedIndex(tabActual);
             }
         }));
+    }
+
+    /*Este método sirve para actualizar la tabla de biblioteca despues del scan (Clase Scan)*/
+    @Override
+    public void updateBibliotecaUI(boolean huboCambios) {
+        if(huboCambios){
+            cargarCancionesABiblioteca(biblioteca.getCanciones());
+            biblioteca.procesarAlbums();
+        }else{
+            System.out.println("[No hubo cambios en la biblioteca]");
+        }
     }
 }
