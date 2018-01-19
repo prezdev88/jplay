@@ -2083,6 +2083,7 @@ public class JPlay extends javax.swing.JFrame implements
     }
 
     private void procesarCover(Cancion cancion) {
+        lblCover.setIcon(new ImageIcon(icono));
         Album album = biblioteca.getAlbum(cancion);
         if (!cancion.exists()) { // si canción no existe
             if (JOptionPane.showConfirmDialog(
