@@ -225,30 +225,30 @@ public class JPlay extends javax.swing.JFrame implements
 
         dialogCanciones = new javax.swing.JDialog();
         jDialog1 = new javax.swing.JDialog();
-        jPanel1 = new javax.swing.JPanel();
+        mainPanel = new javax.swing.JPanel();
         pnlCoverArt = new javax.swing.JPanel();
         lblCover = new javax.swing.JLabel();
-        jPanel6 = new javax.swing.JPanel();
+        panelDeTabbed = new javax.swing.JPanel();
         tabbedPrincipal = new javax.swing.JTabbedPane();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tree = new javax.swing.JTree();
+        treeExplorer = new javax.swing.JTree();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaBiblioteca = new javax.swing.JTable();
-        jPanel3 = new javax.swing.JPanel();
+        panelListaActual = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaCanciones = new javax.swing.JTable();
         lblLimpiar = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         treeSong = new javax.swing.JTree();
-        jPanel2 = new javax.swing.JPanel();
+        panelMasEscuchadas = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         treeMasTocadas = new javax.swing.JTree();
-        jPanel8 = new javax.swing.JPanel();
+        panelLogger = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         tableLogger = new javax.swing.JTable();
         lblInfoCarga = new javax.swing.JLabel();
         btnCancelarCarga = new javax.swing.JButton();
-        jPanel7 = new javax.swing.JPanel();
+        statusPanel = new javax.swing.JPanel();
         progress = new javax.swing.JProgressBar();
         jPanel5 = new javax.swing.JPanel();
         lblTema = new javax.swing.JLabel();
@@ -283,7 +283,7 @@ public class JPlay extends javax.swing.JFrame implements
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(254, 254, 254));
+        mainPanel.setBackground(new java.awt.Color(254, 254, 254));
 
         pnlCoverArt.setBackground(new java.awt.Color(254, 254, 254));
         pnlCoverArt.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -293,8 +293,8 @@ public class JPlay extends javax.swing.JFrame implements
         lblCover.setText("[COVER]");
         pnlCoverArt.add(lblCover, java.awt.BorderLayout.CENTER);
 
-        jPanel6.setBackground(new java.awt.Color(254, 254, 254));
-        jPanel6.setOpaque(false);
+        panelDeTabbed.setBackground(new java.awt.Color(254, 254, 254));
+        panelDeTabbed.setOpaque(false);
 
         tabbedPrincipal.setToolTipText("");
         tabbedPrincipal.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -303,17 +303,17 @@ public class JPlay extends javax.swing.JFrame implements
             }
         });
 
-        tree.addMouseListener(new java.awt.event.MouseAdapter() {
+        treeExplorer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                treeMouseReleased(evt);
+                treeExplorerMouseReleased(evt);
             }
         });
-        tree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+        treeExplorer.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
             public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
-                treeValueChanged(evt);
+                treeExplorerValueChanged(evt);
             }
         });
-        jScrollPane3.setViewportView(tree);
+        jScrollPane3.setViewportView(treeExplorer);
 
         tabbedPrincipal.addTab("Explorer", jScrollPane3);
 
@@ -398,17 +398,17 @@ public class JPlay extends javax.swing.JFrame implements
         });
         jScrollPane4.setViewportView(treeSong);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout panelListaActualLayout = new javax.swing.GroupLayout(panelListaActual);
+        panelListaActual.setLayout(panelListaActualLayout);
+        panelListaActualLayout.setHorizontalGroup(
+            panelListaActualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lblLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1030, Short.MAX_VALUE)
             .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING)
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        panelListaActualLayout.setVerticalGroup(
+            panelListaActualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelListaActualLayout.createSequentialGroup()
                 .addComponent(jScrollPane4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -416,9 +416,9 @@ public class JPlay extends javax.swing.JFrame implements
                 .addComponent(lblLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        tabbedPrincipal.addTab("Lista actual", jPanel3);
+        tabbedPrincipal.addTab("Lista actual", panelListaActual);
 
-        jPanel2.setLayout(new java.awt.BorderLayout());
+        panelMasEscuchadas.setLayout(new java.awt.BorderLayout());
 
         treeMasTocadas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -427,11 +427,11 @@ public class JPlay extends javax.swing.JFrame implements
         });
         jScrollPane5.setViewportView(treeMasTocadas);
 
-        jPanel2.add(jScrollPane5, java.awt.BorderLayout.CENTER);
+        panelMasEscuchadas.add(jScrollPane5, java.awt.BorderLayout.CENTER);
 
-        tabbedPrincipal.addTab("+ escuchadas", jPanel2);
+        tabbedPrincipal.addTab("+ escuchadas", panelMasEscuchadas);
 
-        jPanel8.setLayout(new java.awt.BorderLayout());
+        panelLogger.setLayout(new java.awt.BorderLayout());
 
         tableLogger.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -446,9 +446,9 @@ public class JPlay extends javax.swing.JFrame implements
         ));
         jScrollPane6.setViewportView(tableLogger);
 
-        jPanel8.add(jScrollPane6, java.awt.BorderLayout.CENTER);
+        panelLogger.add(jScrollPane6, java.awt.BorderLayout.CENTER);
 
-        tabbedPrincipal.addTab("Logger (DEV)", jPanel8);
+        tabbedPrincipal.addTab("Logger (DEV)", panelLogger);
 
         lblInfoCarga.setBackground(new java.awt.Color(254, 254, 254));
         lblInfoCarga.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -462,29 +462,29 @@ public class JPlay extends javax.swing.JFrame implements
             }
         });
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelDeTabbedLayout = new javax.swing.GroupLayout(panelDeTabbed);
+        panelDeTabbed.setLayout(panelDeTabbedLayout);
+        panelDeTabbedLayout.setHorizontalGroup(
+            panelDeTabbedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelDeTabbedLayout.createSequentialGroup()
                 .addComponent(lblInfoCarga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCancelarCarga))
             .addComponent(tabbedPrincipal)
         );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
+        panelDeTabbedLayout.setVerticalGroup(
+            panelDeTabbedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelDeTabbedLayout.createSequentialGroup()
                 .addComponent(tabbedPrincipal)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(panelDeTabbedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblInfoCarga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnCancelarCarga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
-        jPanel7.setBackground(new java.awt.Color(254, 254, 254));
-        jPanel7.setOpaque(false);
+        statusPanel.setBackground(new java.awt.Color(254, 254, 254));
+        statusPanel.setOpaque(false);
 
         progress.setBackground(new java.awt.Color(254, 254, 254));
         progress.setOpaque(false);
@@ -660,64 +660,64 @@ public class JPlay extends javax.swing.JFrame implements
             }
         });
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
+        javax.swing.GroupLayout statusPanelLayout = new javax.swing.GroupLayout(statusPanel);
+        statusPanel.setLayout(statusPanelLayout);
+        statusPanelLayout.setHorizontalGroup(
+            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(statusPanelLayout.createSequentialGroup()
                 .addComponent(togVol, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(slideVol, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(statusPanelLayout.createSequentialGroup()
+                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(progress, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(3, 3, 3))
         );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
+        statusPanelLayout.setVerticalGroup(
+            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(statusPanelLayout.createSequentialGroup()
                 .addComponent(progress, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(togVol)
                     .addComponent(slideVol, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
+        mainPanel.setLayout(mainPanelLayout);
+        mainPanelLayout.setHorizontalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(pnlCoverArt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(statusPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelDeTabbed, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        mainPanelLayout.setVerticalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
                         .addComponent(pnlCoverArt, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(statusPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelDeTabbed, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+        getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -867,15 +867,15 @@ public class JPlay extends javax.swing.JFrame implements
 //        System.out.println("Wheel");
     }//GEN-LAST:event_slideVolMouseWheelMoved
 
-    private void treeMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treeMouseReleased
+    private void treeExplorerMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treeExplorerMouseReleased
         if (evt.getClickCount() == 2) {
             procesarCancionArbol();
         }
-    }//GEN-LAST:event_treeMouseReleased
+    }//GEN-LAST:event_treeExplorerMouseReleased
 
-    private void treeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_treeValueChanged
+    private void treeExplorerValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_treeExplorerValueChanged
         // acá cargo los subdirectorios cuando hago click
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) treeExplorer.getLastSelectedPathComponent();
 
         if (node != null) {
             if (node.getChildCount() == 0) {
@@ -891,7 +891,7 @@ public class JPlay extends javax.swing.JFrame implements
                 }
             }
         }
-    }//GEN-LAST:event_treeValueChanged
+    }//GEN-LAST:event_treeExplorerValueChanged
 
     private void btnCancelarCargaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarCargaActionPerformed
         hiloCargar.stop();
@@ -1312,14 +1312,8 @@ public class JPlay extends javax.swing.JFrame implements
     private javax.swing.JButton btnTocarSiguiente;
     private javax.swing.JDialog dialogCanciones;
     private javax.swing.JDialog jDialog1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -1331,17 +1325,23 @@ public class JPlay extends javax.swing.JFrame implements
     private javax.swing.JLabel lblInfoCarga;
     private javax.swing.JLabel lblLimpiar;
     private javax.swing.JLabel lblTema;
+    private javax.swing.JPanel mainPanel;
     private javax.swing.JCheckBox opAleatorio;
     private javax.swing.JCheckBox opRepetirCancion;
+    private javax.swing.JPanel panelDeTabbed;
+    private javax.swing.JPanel panelListaActual;
+    private javax.swing.JPanel panelLogger;
+    private javax.swing.JPanel panelMasEscuchadas;
     private javax.swing.JPanel pnlCoverArt;
     private javax.swing.JProgressBar progress;
     private javax.swing.JSlider slideVol;
+    private javax.swing.JPanel statusPanel;
     private javax.swing.JTabbedPane tabbedPrincipal;
     private javax.swing.JTable tablaBiblioteca;
     private javax.swing.JTable tablaCanciones;
     private javax.swing.JTable tableLogger;
     private javax.swing.JToggleButton togVol;
-    private javax.swing.JTree tree;
+    private javax.swing.JTree treeExplorer;
     private javax.swing.JTree treeMasTocadas;
     private javax.swing.JTree treeSong;
     // End of variables declaration//GEN-END:variables
@@ -1491,10 +1491,10 @@ public class JPlay extends javax.swing.JFrame implements
             raiz.add(new DefaultMutableTreeNode(disco));
         }
 
-        tree.setModel(new javax.swing.tree.DefaultTreeModel(raiz));
-        tree.setRootVisible(false);
+        treeExplorer.setModel(new javax.swing.tree.DefaultTreeModel(raiz));
+        treeExplorer.setRootVisible(false);
 
-        tree.setCellRenderer(new CellRenderExplorer(
+        treeExplorer.setCellRenderer(new CellRenderExplorer(
                 new ImageIcon(
                         CellRenderExplorer.crearIcono(
                                 Ruta.ICONO_MUSIC).getImage().
@@ -1596,18 +1596,18 @@ public class JPlay extends javax.swing.JFrame implements
             public void mousePressed(MouseEvent e) {
                 if (SwingUtilities.isRightMouseButton(e)) {
 
-                    int selRow = tree.getRowForLocation(e.getX(), e.getY());
-                    TreePath selPath = tree.getPathForLocation(e.getX(), e.getY());
-                    tree.setSelectionPath(selPath);
+                    int selRow = treeExplorer.getRowForLocation(e.getX(), e.getY());
+                    TreePath selPath = treeExplorer.getPathForLocation(e.getX(), e.getY());
+                    treeExplorer.setSelectionPath(selPath);
                     if (selRow > - 1) {
-                        tree.setSelectionRow(selRow);
-                        popUpTree.show(tree, e.getX() + 10, e.getY() + 10);
+                        treeExplorer.setSelectionRow(selRow);
+                        popUpTree.show(treeExplorer, e.getX() + 10, e.getY() + 10);
 //                       popup.show(tree, e.getX(), e.getY());
                     }
                 }
             }
         };
-        tree.addMouseListener(ml);
+        treeExplorer.addMouseListener(ml);
     }
 
     private void crearPopUpTree() {
@@ -1692,6 +1692,8 @@ public class JPlay extends javax.swing.JFrame implements
                         } catch (InterruptedException ex) {
                             Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
                         }
+                        
+                        System.out.println("HILO CARGAR BIBLIOTECA TERMINADO!");
                     }
                 });
 
@@ -1791,11 +1793,14 @@ public class JPlay extends javax.swing.JFrame implements
     }
 
     private File getSelectedTreeFile() {
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) treeExplorer.getLastSelectedPathComponent();
         if (node != null) {
             Object o = node.getUserObject();
             if (o instanceof File) {
-                return (File) o;
+//                return (File) o; 
+                return new File(((File)o).getPath());
+                /*POr una razon que desconozco, el objeto File guardaba una referencia a Jplay
+                por ende, cuando lo serializaba, enviaba un error.*/
             }
         }
         return null;
@@ -2384,7 +2389,8 @@ public class JPlay extends javax.swing.JFrame implements
                         public void run() {
                             for (File f : archs) {
                                 try {
-                                    Log.add(f.toString());
+//                                    Log.add(f.toString());
+
                                     cargarCancionesABiblioteca(f);
                                     cargarCancionesABiblioteca(biblioteca.getCanciones());
                                     biblioteca.procesarAlbums();
@@ -2393,6 +2399,8 @@ public class JPlay extends javax.swing.JFrame implements
                                     Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             }
+                            
+                            System.out.println("HILO CARGAR DROP TERMINADO!");
                         }
                     });
 
