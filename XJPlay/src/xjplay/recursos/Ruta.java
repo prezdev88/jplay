@@ -31,5 +31,6 @@ public class Ruta {
     public final static String IC_TAB_EXPLORER =    RECURSOS_TABS+"tab_explorer.png";
     public final static String IC_TAB_LISTA =       RECURSOS_TABS+"tab_lista.png";
     public final static String IC_TAB_LOG =         RECURSOS_TABS+"tab_log.png";
+    public final static String IC_TAB_FAVORITOS =   RECURSOS+"fav.png";
     /*Iconos de tabs*/
 }

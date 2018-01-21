@@ -33,4 +33,13 @@ public class Rules {
     public static int FONT_SIZE_EXPLORER                = 14;
     /*EXPLORER*/
     
+    public static class Tabs{
+        public static final int EXPLORER        = 0;
+        public static final int BIBLIOTECA      = 1;
+        public static final int LISTA_ACTUAL    = 2;
+        public static final int MAS_ESCUCHADAS  = 3;
+        public static final int FAVORITOS       = 4;
+        public static final int LOGGER          = 5;
+    }
+    
 }

@@ -76,6 +76,7 @@ import xjplay.model.tree.CellRenderCancionLista;
 import xjplay.model.tree.CellRenderCancionMasTocada;
 import xjplay.recursos.Recurso;
 import jlog.model.UpdateLogUI;
+import xjplay.model.tree.CellRenderFavoritos;
 //import nicon.notify.core.Notification;
 
 public class JPlay extends javax.swing.JFrame implements 
@@ -190,6 +191,7 @@ public class JPlay extends javax.swing.JFrame implements
 //        jSplitPane2.setDividerLocation(1);
 //        inicializarBarraProgreso();
         cargarArbolConCancionesMasEscuchadas();
+        cargarArbolConFavoritos();
         initFonts();
 //        Properties properties = System.getProperties();
 //        Set<Map.Entry<Object, Object>> entrySet = properties.entrySet();
@@ -243,6 +245,9 @@ public class JPlay extends javax.swing.JFrame implements
         panelMasEscuchadas = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         treeMasTocadas = new javax.swing.JTree();
+        panelFavoritos = new javax.swing.JPanel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        treeFavoritos = new javax.swing.JTree();
         panelLogger = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         tableLogger = new javax.swing.JTable();
@@ -261,6 +266,7 @@ public class JPlay extends javax.swing.JFrame implements
         btnExaminar = new javax.swing.JButton();
         opAleatorio = new javax.swing.JCheckBox();
         opRepetirCancion = new javax.swing.JCheckBox();
+        btnFav = new javax.swing.JToggleButton();
         togVol = new javax.swing.JToggleButton();
         slideVol = new javax.swing.JSlider();
 
@@ -431,6 +437,19 @@ public class JPlay extends javax.swing.JFrame implements
 
         tabbedPrincipal.addTab("+ escuchadas", panelMasEscuchadas);
 
+        panelFavoritos.setLayout(new java.awt.BorderLayout());
+
+        treeFavoritos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                treeFavoritosMouseReleased(evt);
+            }
+        });
+        jScrollPane7.setViewportView(treeFavoritos);
+
+        panelFavoritos.add(jScrollPane7, java.awt.BorderLayout.CENTER);
+
+        tabbedPrincipal.addTab("Favoritos", panelFavoritos);
+
         panelLogger.setLayout(new java.awt.BorderLayout());
 
         tableLogger.setModel(new javax.swing.table.DefaultTableModel(
@@ -588,6 +607,13 @@ public class JPlay extends javax.swing.JFrame implements
             }
         });
 
+        btnFav.setIcon(new javax.swing.ImageIcon(getClass().getResource("/xjplay/recursos/iconos/fav.png"))); // NOI18N
+        btnFav.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFavActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -609,18 +635,22 @@ public class JPlay extends javax.swing.JFrame implements
                         .addComponent(opAleatorio)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(opRepetirCancion)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnFav, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnTocarSiguiente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnPause, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnTocarAnterior, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnExaminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnFav, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btnTocarSiguiente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnPause, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnTocarAnterior, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnExaminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(opRepetirCancion)
@@ -1095,7 +1125,7 @@ public class JPlay extends javax.swing.JFrame implements
 
                     reproducir(c);
 
-                    tabbedPrincipal.setSelectedIndex(2);
+                    tabbedPrincipal.setSelectedIndex(Rules.Tabs.LISTA_ACTUAL);
                 }
             }
         }
@@ -1109,6 +1139,39 @@ public class JPlay extends javax.swing.JFrame implements
         }
     }//GEN-LAST:event_tabbedPrincipalMouseReleased
 
+    private void btnFavActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFavActionPerformed
+        if(reproductor.getCancionActual() != null){
+            if(btnFav.isSelected()){
+                biblioteca.addFavorita(reproductor.getCancionActual());
+            }else{
+                biblioteca.removeFavorita(reproductor.getCancionActual());
+            }
+            cargarArbolConFavoritos();
+        }
+    }//GEN-LAST:event_btnFavActionPerformed
+
+    private void treeFavoritosMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treeFavoritosMouseReleased
+        if (evt.getClickCount() == 2) {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) treeFavoritos.getLastSelectedPathComponent();
+            if (node != null) {
+                Object o = node.getUserObject();
+                if (o instanceof Cancion) {
+                    Cancion c = (Cancion) o;
+
+                    canciones = biblioteca.getFavoritos();
+                    isMasEscuchadas = false;
+                    // true es que quiero reproducir las canciones mas tocadas
+                    // esto hace que se cree sólo un disco gráfico en la lista actual
+                    cargarCancionesAListaGrafica(true);
+
+                    reproducir(c);
+
+                    tabbedPrincipal.setSelectedIndex(Rules.Tabs.LISTA_ACTUAL);
+                }
+            }
+        }
+    }//GEN-LAST:event_treeFavoritosMouseReleased
+
     private void cargarSave() {
         if (new File(Ruta.SAVE).exists()) {
             try {
@@ -1120,7 +1183,7 @@ public class JPlay extends javax.swing.JFrame implements
                 tabbedPrincipal.setSelectedIndex(g.indexTab);
                 
                 Log.setLogEntries(g.logEntries);
-                tabbedPrincipal.setTitleAt(4, "Logger ("+tableLogger.getRowCount()+")");
+                tabbedPrincipal.setTitleAt(Rules.Tabs.LOGGER, "Logger ("+tableLogger.getRowCount()+")");
                 
                 lblCover.setIcon(g.cover);
                 
@@ -1306,6 +1369,7 @@ public class JPlay extends javax.swing.JFrame implements
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelarCarga;
     private javax.swing.JButton btnExaminar;
+    private javax.swing.JToggleButton btnFav;
     private javax.swing.JButton btnPause;
     private javax.swing.JButton btnStop;
     private javax.swing.JButton btnTocarAnterior;
@@ -1320,6 +1384,7 @@ public class JPlay extends javax.swing.JFrame implements
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JLabel lblArtista;
     private javax.swing.JLabel lblCover;
     private javax.swing.JLabel lblInfoCarga;
@@ -1329,6 +1394,7 @@ public class JPlay extends javax.swing.JFrame implements
     private javax.swing.JCheckBox opAleatorio;
     private javax.swing.JCheckBox opRepetirCancion;
     private javax.swing.JPanel panelDeTabbed;
+    private javax.swing.JPanel panelFavoritos;
     private javax.swing.JPanel panelListaActual;
     private javax.swing.JPanel panelLogger;
     private javax.swing.JPanel panelMasEscuchadas;
@@ -1342,6 +1408,7 @@ public class JPlay extends javax.swing.JFrame implements
     private javax.swing.JTable tableLogger;
     private javax.swing.JToggleButton togVol;
     private javax.swing.JTree treeExplorer;
+    private javax.swing.JTree treeFavoritos;
     private javax.swing.JTree treeMasTocadas;
     private javax.swing.JTree treeSong;
     // End of variables declaration//GEN-END:variables
@@ -1585,7 +1652,29 @@ public class JPlay extends javax.swing.JFrame implements
                 )
         );
 
-        tabbedPrincipal.setTitleAt(3, "+ escuchadas (" + masRepro.size() + ")");
+        tabbedPrincipal.setTitleAt(Rules.Tabs.MAS_ESCUCHADAS, "+ escuchadas (" + masRepro.size() + ")");
+    }
+    
+    private void cargarArbolConFavoritos() {
+        DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("raiz");
+
+        List<Cancion> favoritos = biblioteca.getFavoritos();
+
+        for (Cancion c : favoritos) {
+            DefaultMutableTreeNode disco = new DefaultMutableTreeNode(c);
+
+            raiz.add(disco);
+        }
+
+        treeFavoritos.setModel(new javax.swing.tree.DefaultTreeModel(raiz));
+        treeFavoritos.setRootVisible(false);
+//        treeSong.expandRow(0);
+
+        treeFavoritos.setCellRenderer(
+                new CellRenderFavoritos()
+        );
+
+        tabbedPrincipal.setTitleAt(Rules.Tabs.FAVORITOS, "Favoritos (" + favoritos.size() + ")");
     }
 
     private void listenerClickDerechoSobreArbol() {
@@ -1739,7 +1828,7 @@ public class JPlay extends javax.swing.JFrame implements
                 
                 cargarArbolConCanciones(false);
                 reproducir(canciones.get(0));
-                tabbedPrincipal.setSelectedIndex(2);
+                tabbedPrincipal.setSelectedIndex(Rules.Tabs.LISTA_ACTUAL);
             }
         });
         
@@ -1858,7 +1947,7 @@ public class JPlay extends javax.swing.JFrame implements
 //        tablaBiblioteca.getTableHeader().setUI(null);
 //        tablaBiblioteca.setRowHeight(20);
         tablaBiblioteca.setModel(new TMCancionBiblioteca(lista));
-        tabbedPrincipal.setTitleAt(1, "Biblioteca ("+lista.size()+")");
+        tabbedPrincipal.setTitleAt(Rules.Tabs.BIBLIOTECA, "Biblioteca ("+lista.size()+")");
         Log.add("Se cargaron " + lista.size() + " canciones en biblioteca");
         lblInfoCarga.setText("Se cargaron " + lista.size() + " canciones en biblioteca");
 //        tablaBiblioteca.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
@@ -1881,6 +1970,9 @@ public class JPlay extends javax.swing.JFrame implements
     }
 
     private void reproducir(final Cancion cancion) {
+        
+        btnFav.setSelected(biblioteca.isFavorita(cancion));
+        
         try {
             new Thread(new Runnable() {
                 @Override
@@ -2259,7 +2351,7 @@ public class JPlay extends javax.swing.JFrame implements
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                tabbedPrincipal.setSelectedIndex(1);
+                tabbedPrincipal.setSelectedIndex(Rules.Tabs.BIBLIOTECA);
                 if (dialogBuscar == null) {
                     dialogBuscar = new DgBuscar(JPlay.this, false);
                     dialogBuscar.setIbuscar(JPlay.this);
@@ -2301,6 +2393,11 @@ public class JPlay extends javax.swing.JFrame implements
                 }else if(filtro.equalsIgnoreCase("/scan")){
                     Scan s = new Scan(biblioteca, this);
                     s.start();
+                }else if(filtro.equalsIgnoreCase("/favs")){
+                    Log.add("Canciones favoritas:");
+                    for (Cancion c : biblioteca.getFavoritos()) {
+                        Log.add(c.toString());
+                    }
                 }
             }
             tablaBiblioteca.setRowSelectionInterval(0, 0);
@@ -2413,7 +2510,7 @@ public class JPlay extends javax.swing.JFrame implements
             @Override
             public void dragEnter(DropTargetDragEvent dtde) {
                 tabActual = tabbedPrincipal.getSelectedIndex();
-                tabbedPrincipal.setSelectedIndex(1);
+                tabbedPrincipal.setSelectedIndex(Rules.Tabs.BIBLIOTECA);
             }
 
             @Override
@@ -2449,7 +2546,7 @@ public class JPlay extends javax.swing.JFrame implements
         } catch (NullPointerException e) {
             
         }
-        tabbedPrincipal.setTitleAt(4, "Logger ("+tableLogger.getRowCount()+")");
+        tabbedPrincipal.setTitleAt(Rules.Tabs.LOGGER, "Logger ("+tableLogger.getRowCount()+")");
     }
 
     private void initLog() {
@@ -2459,10 +2556,11 @@ public class JPlay extends javax.swing.JFrame implements
     }
 
     private void initIconosTabs() {
-        tabbedPrincipal.setIconAt(0, CellRenderCancionLista.crearIcono(Ruta.IC_TAB_EXPLORER));
-        tabbedPrincipal.setIconAt(1, CellRenderCancionLista.crearIcono(Ruta.IC_TAB_BIBLIOTECA));
-        tabbedPrincipal.setIconAt(2, CellRenderCancionLista.crearIcono(Ruta.IC_TAB_LISTA));
-        tabbedPrincipal.setIconAt(3, CellRenderCancionLista.crearIcono(Ruta.IC_TAB_ESCUCHADAS));
-        tabbedPrincipal.setIconAt(4, CellRenderCancionLista.crearIcono(Ruta.IC_TAB_LOG));
+        tabbedPrincipal.setIconAt(Rules.Tabs.EXPLORER,          CellRenderCancionLista.crearIcono(Ruta.IC_TAB_EXPLORER));
+        tabbedPrincipal.setIconAt(Rules.Tabs.BIBLIOTECA,        CellRenderCancionLista.crearIcono(Ruta.IC_TAB_BIBLIOTECA));
+        tabbedPrincipal.setIconAt(Rules.Tabs.LISTA_ACTUAL,      CellRenderCancionLista.crearIcono(Ruta.IC_TAB_LISTA));
+        tabbedPrincipal.setIconAt(Rules.Tabs.MAS_ESCUCHADAS,    CellRenderCancionLista.crearIcono(Ruta.IC_TAB_ESCUCHADAS));
+        tabbedPrincipal.setIconAt(Rules.Tabs.LOGGER,            CellRenderCancionLista.crearIcono(Ruta.IC_TAB_LOG));
+        tabbedPrincipal.setIconAt(Rules.Tabs.FAVORITOS,         new ImageIcon(CellRenderCancionLista.crearIcono(Ruta.IC_TAB_FAVORITOS).getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
     }
 }

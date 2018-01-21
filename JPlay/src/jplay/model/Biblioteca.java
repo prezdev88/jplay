@@ -17,13 +17,33 @@ import jlog.model.UpdateLogUI;
 public class Biblioteca implements Serializable{
 
     private List<Cancion> canciones;
+    private List<Cancion> favoritos;
     private List<Album> albums;
     private List<File> rutas; // rutas para analizar
 
     public Biblioteca() {
         albums = new ArrayList<>();
         canciones = new ArrayList<>();
+        favoritos = new ArrayList<>();
         rutas = new ArrayList<>();
+    }
+    
+    public void addFavorita(Cancion c){
+        favoritos.add(c);
+        Log.add("Añadida a favoritos: "+c);
+    }
+    
+    public void removeFavorita(Cancion c){
+        favoritos.remove(c);
+        Log.add("Removido de favoritos: "+c);
+    }
+    
+    public boolean isFavorita(Cancion c){
+        return favoritos.contains(c);
+    }
+
+    public List<Cancion> getFavoritos() {
+        return favoritos;
     }
     
     public void addRuta(File ruta){
