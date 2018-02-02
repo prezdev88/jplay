@@ -66,8 +66,8 @@ public class TMCancionBiblioteca implements TableModel {
                 }
             case 1:
                 return c.getAutor();
-            case 2:
-                return c.getAlbum();
+            case 2:;
+                return c.getAnio()+c.getAlbum();
             case 3:
                 return c;
             case 4:

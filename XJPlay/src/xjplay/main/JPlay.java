@@ -1,6 +1,7 @@
 package xjplay.main;
 
 //iconos https://www.iconfinder.com/iconsets/snipicons
+import cl.jespxml.JespXML;
 import xjplay.save.Guardar;
 import xjplay.recursos.Ruta;
 import jplay.model.Reproductor;
@@ -11,6 +12,7 @@ import xjplay.utils.Validar;
 import xjplay.save.IO;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -29,6 +31,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InvalidClassException;
 import java.util.ArrayList;
@@ -57,6 +60,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+import javax.xml.bind.JAXBException;
 import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
@@ -1051,7 +1055,7 @@ public class JPlay extends javax.swing.JFrame implements
                     canciones = biblioteca.getCancionesMasReproducidas();
                     
                     /*Ahora debo poner las canciones en un album*/
-                    Album a = new Album("JPLAY", "Canciones más escuchadas!");
+                    Album a = new Album(Rules.NOMBRE, "Canciones más escuchadas!", null);
 
                     for (Cancion can : canciones) {
                         a.addCancion(can);
@@ -1105,7 +1109,7 @@ public class JPlay extends javax.swing.JFrame implements
                     canciones = biblioteca.getFavoritos();
                     
                     /*Ahora debo poner las canciones en un album*/
-                    Album a = new Album("JPLAY", "Favoritas!");
+                    Album a = new Album(Rules.NOMBRE, "Favoritas!", null);
 
                     for (Cancion can : canciones) {
                         a.addCancion(can);
@@ -2309,7 +2313,7 @@ public class JPlay extends javax.swing.JFrame implements
                 }
             }
             tablaBiblioteca.setRowSelectionInterval(0, 0);
-        } catch (Exception e) {
+        } catch (HeadlessException e) {
             // cae aca cuando no hay canciones en la tabla biblioteca
             Log.add(e.getMessage());
         }

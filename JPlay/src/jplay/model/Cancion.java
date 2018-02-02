@@ -14,6 +14,7 @@ public class Cancion extends File {
     private String nombre;
     private String autor;
     private String album;
+    private String anio;
     private int track;
     private long microseconds;
 //    private File coverFile;
@@ -114,12 +115,32 @@ public class Cancion extends File {
         } catch (Exception ex) {
 
         }
+        
+        try {
+            anio = get("date").toString();
+        } catch (Exception ex) {
+
+        }
     }
 
     public String getNombre() {
         return nombre;
     }
 
+    public String getAnio() {
+        if (anio != null) {
+            try {
+                int an = Integer.parseInt(anio.trim());
+                
+                return "[" + an + "] ";
+            } catch (NumberFormatException e) {
+                return "[           ] ";
+            }
+        }else{
+            return "[           ] ";
+        }
+    }
+    
     public String getAutor() {
         return autor;
     }

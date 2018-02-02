@@ -12,20 +12,36 @@ public class Album implements Serializable {
     private String name;
     private final List<Cancion> canciones;
     private List<ImageIcon> covers;
+    private String anio;
 
-    public Album(String artist, String name) {
+    public Album(String artist, String name, String anio) {
         this.artist = artist;
         this.name = name;
+        this.anio = anio;
         this.canciones = new ArrayList<>();
         covers = new ArrayList<>();
+    }
+
+    public String getAnio() {
+        if (anio != null) {
+            try {
+                int an = Integer.parseInt(anio.trim());
+                
+                return "[" + an + "] ";
+            } catch (NumberFormatException e) {
+                return "[           ] ";
+            }
+        }else{
+            return "[           ] ";
+        }
     }
 
     public boolean hasImagenes() {
         return !covers.isEmpty();
     }
-    
-    public void removeImage(ImageIcon cover){
-        Log.add("COVER REMOVIDO: "+covers.remove(cover));
+
+    public void removeImage(ImageIcon cover) {
+        Log.add("COVER REMOVIDO: " + covers.remove(cover));
     }
 
     public void setCovers(List<ImageIcon> covers) {
@@ -35,7 +51,7 @@ public class Album implements Serializable {
     public List<ImageIcon> getCovers() {
         return covers;
     }
-    
+
     public boolean existCancion(Cancion c) {
         return this.canciones.contains(c);
     }

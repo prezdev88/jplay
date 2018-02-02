@@ -20,7 +20,7 @@ public class Biblioteca implements Serializable{
     private List<Cancion> favoritos;
     private List<Album> albums;
     private List<File> rutas; // rutas para analizar
-
+        
     public Biblioteca() {
         albums = new ArrayList<>();
         canciones = new ArrayList<>();
@@ -158,7 +158,7 @@ public class Biblioteca implements Serializable{
         }
 
         if (!encontrado) {
-            Album a = new Album(c.getAutor(), c.getAlbum());
+            Album a = new Album(c.getAutor(), c.getAlbum(), c.getAnio());
             a.addCancion(c);
 
             albums.add(a);
