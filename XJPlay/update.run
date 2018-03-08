@@ -1,0 +1,8 @@
+cp /home/prez/Desktop/GIT/jplay/XJPlay/dist/XJPlay.jar /home/prez/jplay
+echo "[XJPlay.jar] Actualizado!"
+cp /home/prez/Desktop/GIT/jplay/XJPlay/dist/lib/JPlay.jar /home/prez/jplay/lib
+echo "[JPlay.jar] Actualizado!"
+cp /home/prez/Desktop/GIT/jplay/XJPlay/dist/lib/JLog.jar /home/prez/jplay/lib
+echo "[JLog.jar] Actualizado!"
+
+

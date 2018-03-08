@@ -48,7 +48,7 @@ public class CellRenderCancionLista extends JLabel implements TreeCellRenderer {
                 this.setIcon(null);
             } else if (ob instanceof Album) { // es un disco
                 Album album = (Album) ob;
-                this.setText(album.getAnio() + ob.toString());
+                this.setText(album.getAnio() + " " +ob.toString());
 
                 try {// intento colocar el cover que tenga el album
                     Image im = album.getCovers().get(0).getImage().getScaledInstance(

@@ -201,11 +201,11 @@ public class DgBuscar extends javax.swing.JDialog {
     private void init() {
         /*Con escape, f3 y control f se desaparece el dialogo*/
         this.getRootPane().getInputMap(JRootPane.WHEN_IN_FOCUSED_WINDOW)
-                .put(KeyStroke.getKeyStroke(com.sun.glass.events.KeyEvent.VK_F3, 0), "buscar");
+                .put(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0), "buscar");
         this.getRootPane().getInputMap(JRootPane.WHEN_IN_FOCUSED_WINDOW)
-                .put(KeyStroke.getKeyStroke(com.sun.glass.events.KeyEvent.VK_ESCAPE, 0), "buscar");
+                .put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "buscar");
         this.getRootPane().getInputMap(JRootPane.WHEN_IN_FOCUSED_WINDOW)
-                .put(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK), "buscar");
+                .put(KeyStroke.getKeyStroke(KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK), "buscar");
         /*Con escape, f3 y control f se desaparece el dialogo*/
 
         this.getRootPane().getActionMap().put("buscar", new AbstractAction() {

@@ -43,22 +43,26 @@ public class Scan extends Thread {
      * @throws IOException 
      */
     public void scanner() throws IOException {
-        Log.add("REMOVIENDO NO EXISTENTES...");
-        int cant = biblioteca.removerNoExistentes();
-        Log.add("OK ("+cant+" removidos)");
+        try {
+            Log.add("REMOVIENDO NO EXISTENTES...");
+            int cant = biblioteca.removerNoExistentes();
+            Log.add("OK ("+cant+" removidos)");
 
-        for (File f : biblioteca.getRutas()) {
-            Log.add("SCAN [" + f.getPath() + "]...");
-            scan(f);
-            Log.add("OK");
+            for (File f : biblioteca.getRutas()) {
+                Log.add("SCAN [" + f.getPath() + "]...");
+                scan(f);
+                Log.add("OK");
+            }
+
+            if(!huboCambios){
+                huboCambios = cant != 0; // si se removió alguna cancion, hubo cambios
+            }
+
+            update.updateBibliotecaUI(huboCambios);
+            huboCambios = false;
+        } catch (java.util.ConcurrentModificationException e) {
+            System.out.println("concurrent exception: "+e.getMessage());
         }
-
-        if(!huboCambios){
-            huboCambios = cant != 0; // si se removió alguna cancion, hubo cambios
-        }
-
-        update.updateBibliotecaUI(huboCambios);
-        huboCambios = false;
     }
 
     private void scan(File raiz) throws IOException {

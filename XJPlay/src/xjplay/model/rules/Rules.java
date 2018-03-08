@@ -11,7 +11,7 @@ public class Rules {
     /*SCAN DE RUTAS DE BIBLIOTECAS*/
     
     public static final String NOMBRE               = "JPlay";
-    public static final String VERSION              = "0.5r";
+    public static final String VERSION              = "0.52r";
     
     public static int PAUSE_MOVER                   = 3;         // el pause para mover la x de la foto
     public static int PAUSE_ENTRE_FOTOS             = 10000;     // pause entre cada fotos;

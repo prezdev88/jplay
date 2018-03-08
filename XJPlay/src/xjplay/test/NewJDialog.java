@@ -1,7 +1,7 @@
 package xjplay.test;
 
-import com.sun.glass.events.KeyEvent;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;

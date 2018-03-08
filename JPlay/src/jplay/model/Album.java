@@ -23,6 +23,8 @@ public class Album implements Serializable {
     }
 
     public String getAnio() {
+        return anio.trim();
+        /*
         if (anio != null) {
             try {
                 int an = Integer.parseInt(anio.trim());
@@ -34,6 +36,7 @@ public class Album implements Serializable {
         }else{
             return "[           ] ";
         }
+        */
     }
 
     public boolean hasImagenes() {

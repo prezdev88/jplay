@@ -1,7 +1,6 @@
 package xjplay.main;
 
 //iconos https://www.iconfinder.com/iconsets/snipicons
-import cl.jespxml.JespXML;
 import xjplay.save.Guardar;
 import xjplay.recursos.Ruta;
 import jplay.model.Reproductor;
@@ -31,7 +30,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InvalidClassException;
 import java.util.ArrayList;
@@ -60,7 +58,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-import javax.xml.bind.JAXBException;
 import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
@@ -151,6 +148,7 @@ public class JPlay extends javax.swing.JFrame implements
 
         btnCancelarCarga.setEnabled(false);
 //        indiceActual = -1;
+
         if (SAVE) {
             cargarSave();
         }
@@ -1136,9 +1134,11 @@ public class JPlay extends javax.swing.JFrame implements
     private void cargarSave() {
         if (new File(Ruta.SAVE).exists()) {
             try {
-
+                
+                
                 Guardar g = (Guardar) IO.leerObjetoDesde(Ruta.SAVE);
-
+                
+                
                 canciones       = g.canciones;
                 tabbedPrincipal.setSelectedIndex(g.indexTab);
                 
@@ -1148,9 +1148,11 @@ public class JPlay extends javax.swing.JFrame implements
                 lblCover.setIcon(g.cover);
                 
                 biblioteca = (Biblioteca) IO.leerObjetoDesde(Ruta.BIBLIOTECA);
+                
 
-                Scan scan = new Scan(biblioteca, this);
-                scan.scanner();
+//                Scan scan = new Scan(biblioteca, this);
+//                scan.scanner();
+                
                 
                 //<editor-fold defaultstate="collapsed" desc="Código de scaneo de biblioteca antiguo">
                 
@@ -2099,7 +2101,7 @@ public class JPlay extends javax.swing.JFrame implements
                     this,
                     cancion.exists() + "[" + cancion.getNombre() + "] no encontrada. "
                     + "¿Desea analizar la lista completa para eliminar los no encontrados?", "Error",
-                    JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 Iterator<Cancion> iterator = canciones.iterator();
 
                 Cancion c;
