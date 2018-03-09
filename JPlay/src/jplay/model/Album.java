@@ -23,20 +23,21 @@ public class Album implements Serializable {
     }
 
     public String getAnio() {
-        return anio.trim();
-        /*
+        
+        
         if (anio != null) {
             try {
-                int an = Integer.parseInt(anio.trim());
-                
-                return "[" + an + "] ";
+//                int an = Integer.parseInt(anio.trim());
+//                
+//                return "[" + an + "] ";
+                return anio.trim();
             } catch (NumberFormatException e) {
                 return "[           ] ";
             }
         }else{
             return "[           ] ";
         }
-        */
+        
     }
 
     public boolean hasImagenes() {

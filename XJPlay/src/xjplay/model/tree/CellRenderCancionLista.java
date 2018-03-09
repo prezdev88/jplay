@@ -16,7 +16,6 @@ import javax.swing.tree.TreeCellRenderer;
 import jplay.model.Album;
 import xjplay.main.JPlay;
 import jplay.model.Cancion;
-import jlog.model.Log;
 import xjplay.model.rules.Rules;
 import xjplay.recursos.Recurso;
 import xjplay.recursos.Ruta;
