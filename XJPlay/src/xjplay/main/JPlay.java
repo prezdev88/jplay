@@ -842,6 +842,7 @@ public class JPlay extends javax.swing.JFrame implements
                 g.logEntries        = Log.getEntrys();
                 g.cover             = lblCover.getIcon();
                 g.albums            = albums;
+                g.volume            = slideVol.getValue();
 
                 IO.escribirObjetoEn(g, Ruta.SAVE);
                 IO.escribirObjetoEn(biblioteca, Ruta.BIBLIOTECA);
@@ -1082,6 +1083,18 @@ public class JPlay extends javax.swing.JFrame implements
                 
                 
                 canciones       = g.canciones;
+                
+                /*Recuperando el volumen del usuario*/
+                slideVol.setValue(g.volume);
+                setVolumen(slideVol.getValue());
+                
+                if (slideVol.getValue() == 0) {
+                    togVol.setIcon(new javax.swing.ImageIcon(getClass().getResource(Ruta.VOL_OFF)));
+                } else {
+                    togVol.setIcon(new javax.swing.ImageIcon(getClass().getResource(Ruta.VOL)));
+                }
+                /*Recuperando el volumen del usuario*/
+                
                 tabbedPrincipal.setSelectedIndex(g.indexTab);
                 
                 Log.setLogEntries(g.logEntries);
