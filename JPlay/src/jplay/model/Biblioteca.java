@@ -16,26 +16,48 @@ import jlog.model.UpdateLogUI;
  */
 public class Biblioteca implements Serializable{
 
-    private List<Cancion> canciones;
-    private List<Cancion> favoritos;
-    private List<Album> albums;
-    private List<File> rutas; // rutas para analizar
-        
+    private List<Cancion>   canciones;
+    private List<Cancion>   favoritos;
+    private List<Album>     albums;
+    private List<File>      rutas; // rutas para analizar
+    
+    private long            msBiblioteca;
+    private long            msMasEscuchadas;
+    private long            msFavoritos;
+
     public Biblioteca() {
-        albums = new ArrayList<>();
-        canciones = new ArrayList<>();
-        favoritos = new ArrayList<>();
-        rutas = new ArrayList<>();
+        albums              = new ArrayList<>();
+        canciones           = new ArrayList<>();
+        favoritos           = new ArrayList<>();
+        rutas               = new ArrayList<>();
+        
+        msBiblioteca     = 0;
+        msMasEscuchadas  = 0;
+        msFavoritos      = 0;
+    }
+    
+    public String getDuracionBiblioteca(){
+        return "Biblioteca --> "+getDuracion(msBiblioteca);
+    }
+    
+    public String getDuracionFavoritos(){
+        return "Favoritos --> "+getDuracion(msFavoritos);
+    }
+    
+    public String getDuracionMasEscuchadas(){
+        return "Más escuchadas --> "+getDuracion(msMasEscuchadas);
     }
     
     public void addFavorita(Cancion c){
         favoritos.add(c);
         Log.add("Añadida a favoritos: "+c);
+        msFavoritos += c.getDuracionEnMilis();
     }
     
     public void removeFavorita(Cancion c){
         favoritos.remove(c);
         Log.add("Removido de favoritos: "+c);
+        msFavoritos -= c.getDuracionEnMilis();
     }
     
     public boolean isFavorita(Cancion c){
@@ -63,6 +85,7 @@ public class Biblioteca implements Serializable{
     public void add(Cancion c) {
         if (!estaCancion(c)) {
             this.canciones.add(c);
+            msBiblioteca += c.getDuracionEnMilis();
         }
     }
 
@@ -96,10 +119,12 @@ public class Biblioteca implements Serializable{
 
     public List<Cancion> getCancionesMasReproducidas() {
         List<Cancion> topCanciones = new ArrayList<>();
+        msMasEscuchadas = 0;
 
         for (Cancion c : canciones) {
             if (c.getCantidadReproducciones() != 0) {
                 topCanciones.add(c);
+                msMasEscuchadas += c.getDuracionEnMilis();
             }
         }
 
@@ -118,7 +143,7 @@ public class Biblioteca implements Serializable{
             }
         });
         /*------ Proceso de ordenado de lista ------*/
-
+        
         return topCanciones;
     }
 //    
@@ -205,5 +230,54 @@ public class Biblioteca implements Serializable{
     public void setUpdateLogUI(UpdateLogUI update){
         Log.setUpdateLogUI(update);
     }
-    
+
+    public void setMilisBiblioteca(long milisBiblioteca) {
+        this.msBiblioteca = milisBiblioteca;
+    }
+
+    public void setMilisMasEscuchadas(long milisMasEscuchadas) {
+        this.msMasEscuchadas = milisMasEscuchadas;
+    }
+
+    public void setMilisFavoritos(long milisFavoritos) {
+        this.msFavoritos = milisFavoritos;
+    }
+
+    /**
+     * Este método le pasamos milisegundos y lo entrega como dias, horas, 
+     * minutos, segundos como String
+     * @param ms
+     * @return 
+     */
+    public String getDuracion(long ms) {
+        long resto = ms;
+        
+        long dias, horas, minutos, segundos;
+        
+        dias = ms / 86400000;
+        
+        if(dias != 0){
+            resto = ms % 86400000;
+        }
+        
+        horas = resto / 3600000;
+        
+        if(horas != 0){
+            resto = resto % 3600000;
+        }
+        
+        minutos = resto / 60000;
+        
+        if(minutos != 0){
+            resto = resto % 60000;
+        }
+        
+        segundos = resto / 1000;
+        
+        if(segundos != 0){
+            ms = resto % 1000;
+        }
+        
+        return "["+dias +"d. "+horas+"h. "+minutos+"m. "+segundos+"s. "+ms+" ms.] ";
+    }
 }

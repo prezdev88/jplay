@@ -21,7 +21,7 @@ public class Rules {
     public static int FONT_SIZE_NORMAL              = 14;
     public static int TRACK_NUMBER_COLUMN_SIZE      = 15;
     public static int ARTIST_COLUMN_SIZE            = 100;
-    public static int ALBUM_COLUMN_SIZE             = 100;
+    public final static int ALBUM_COLUMN_SIZE             = 100;
     public static int NAME_COLUMN_SIZE              = 300;
     public static String API_KEY                    = "e4af175c34493321a0df649859069c40";
     public static final Dimension COVER_DIMENSION   = new Dimension(101, 101);

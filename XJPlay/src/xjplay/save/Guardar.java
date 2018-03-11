@@ -14,6 +14,5 @@ public class Guardar implements Serializable{
     public int              indexTab;
     public List<LogEntry>   logEntries;
     public Icon             cover;
-    public int              volume;
-    
+    public int              volume;    
 }
