@@ -11,7 +11,7 @@ public class Rule {
     /*SCAN DE RUTAS DE BIBLIOTECAS*/
     
     public static final String NOMBRE               = "JPlay";
-    public static final String VERSION              = "rev. 0.6";
+    public static final String VERSION              = "rev. 0.6.2";
     
     public static int PAUSE_MOVER                   = 3;         // el pause para mover la x de la foto
     public static int PAUSE_ENTRE_FOTOS             = 10000;     // pause entre cada fotos;
@@ -24,7 +24,8 @@ public class Rule {
     public final static int ALBUM_COLUMN_SIZE             = 100;
     public static int NAME_COLUMN_SIZE              = 300;
     public static String API_KEY                    = "e4af175c34493321a0df649859069c40";
-    public static final Dimension COVER_DIMENSION   = new Dimension(155, 155);
+    // No es final, porque en el constructor de JPlay se establece según el jlabel del cover
+    public static Dimension COVER_DIMENSION;
     public static final Dimension MINI_CARATULA     = new Dimension(48, 48);
     
     /*EXPLORER*/
@@ -42,8 +43,8 @@ public class Rule {
         public static final int LOGGER          = 5;
     }
     
-    public static final int ANCHO               = 1024;
-    public static final int ALTO                = 502;
+    public static final int ANCHO               = 800;
+    public static final int ALTO                = 600;
     
     
 }
