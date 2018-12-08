@@ -18,13 +18,13 @@ public class Rule {
     public static int FONT_SIZE_SEARCH              = 13;
     
     public static int FONT_SIZE_CANCIONES           = 14;
-    public static int FONT_SIZE_NORMAL              = 14;
+    public static int FONT_SIZE_NORMAL              = 17;
     public static int TRACK_NUMBER_COLUMN_SIZE      = 15;
     public static int ARTIST_COLUMN_SIZE            = 100;
     public final static int ALBUM_COLUMN_SIZE             = 100;
     public static int NAME_COLUMN_SIZE              = 300;
     public static String API_KEY                    = "e4af175c34493321a0df649859069c40";
-    public static final Dimension COVER_DIMENSION   = new Dimension(101, 101);
+    public static final Dimension COVER_DIMENSION   = new Dimension(155, 155);
     public static final Dimension MINI_CARATULA     = new Dimension(48, 48);
     
     /*EXPLORER*/
@@ -41,5 +41,9 @@ public class Rule {
         public static final int FAVORITOS       = 4;
         public static final int LOGGER          = 5;
     }
+    
+    public static final int ANCHO               = 1024;
+    public static final int ALTO                = 502;
+    
     
 }

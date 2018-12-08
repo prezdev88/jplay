@@ -1,16 +1,18 @@
 package xjplay.coverArt;
 
+import java.awt.Image;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import jlog.model.Log;
 import xjplay.rules.Rule;
+
 /**
  *
- * @author pperezp
- * -Dsun.java2d.opengl=true
+ * @author pperezp -Dsun.java2d.opengl=true
  */
 public class HiloCover extends Thread {
+
     private final JLabel lbl;
     private final List<ImageIcon> covers;
     private ImageIcon actualCover;
@@ -23,7 +25,7 @@ public class HiloCover extends Thread {
         ya hacia esta conversión de tamaños
         
         VER: método getFotos(de Recurso.java)
-        */
+         */
 //        this.covers = new ArrayList<>();
 //        ImageIcon ii;
 //        for (ImageIcon im : covers) {
@@ -31,16 +33,16 @@ public class HiloCover extends Thread {
 //            this.covers.add(ii);
 //        }
     }
-    
+
     @Override
     public void run() {
-        
+
         try {
 //            lbl1.setIcon(imagenes.get(0));
             while (true) {
                 for (int i = 0; i < covers.size(); i++) {
                     actualCover = covers.get(i);
-                    lbl.setIcon(actualCover);
+                    lbl.setIcon(new ImageIcon(getActualCover()));
                     Thread.sleep(Rule.PAUSE_ENTRE_FOTOS);
                 }
             }
@@ -48,9 +50,13 @@ public class HiloCover extends Thread {
             Log.add("Hilo covert art interrumpido");
         }
     }
-    
-    public ImageIcon getActualCover(){
-        return this.actualCover;
+
+    public Image getActualCover() {
+        return this.actualCover.getImage().getScaledInstance(
+                (int) Rule.COVER_DIMENSION.getWidth(),
+                (int) Rule.COVER_DIMENSION.getHeight(),
+                Image.SCALE_SMOOTH
+        );
     }
-    
+
 }
