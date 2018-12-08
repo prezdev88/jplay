@@ -12,14 +12,14 @@ import javax.imageio.ImageIO;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import jlog.model.Log;
-import xjplay.model.rules.Rules;
+import xjplay.rules.Rule;
 
 public class LastFM {
 
     public static Image getImage(String artist, String album) throws Exception {
         String url = "http://ws.audioscrobbler.com/2.0/?"
                 + "method=album.getinfo&"
-                + "api_key=" + Rules.API_KEY + "&"
+                + "api_key=" + Rule.API_KEY + "&"
                 + "artist=" + artist + "&"
                 + "album=" + album + "&"
                 + "format=json";

@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import jplay.model.Biblioteca;
 import jplay.model.Cancion;
 import jlog.model.Log;
-import xjplay.model.rules.Rules;
+import xjplay.rules.Rule;
 import xjplay.utils.Validar;
 
 public class Scan extends Thread {
@@ -27,7 +27,7 @@ public class Scan extends Thread {
         try {
             while (true) {
                 Log.add("PAUSE SCAN...");
-                Thread.sleep(Rules.PAUSE_SCAN);
+                Thread.sleep(Rule.PAUSE_SCAN);
 
                 scanner();
             }

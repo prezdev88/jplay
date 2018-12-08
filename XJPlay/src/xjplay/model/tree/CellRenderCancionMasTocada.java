@@ -13,7 +13,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import jplay.model.Cancion;
-import xjplay.model.rules.Rules;
+import xjplay.rules.Rule;
 import xjplay.recursos.Recurso;
 
 /**
@@ -38,7 +38,7 @@ public class CellRenderCancionMasTocada extends JLabel implements TreeCellRender
 
             Font fuente;
             fuente = Font.createFont(Font.TRUETYPE_FONT, Recurso.FUENTE_ROBOTO);
-            fuente = fuente.deriveFont(Font.PLAIN, Rules.FONT_SIZE_CANCIONES);
+            fuente = fuente.deriveFont(Font.PLAIN, Rule.FONT_SIZE_CANCIONES);
 
             this.setFont(fuente);
             DefaultMutableTreeNode v = (DefaultMutableTreeNode) value;
@@ -81,13 +81,13 @@ public class CellRenderCancionMasTocada extends JLabel implements TreeCellRender
 ////                }
 //                setIcon(playIcon);
 //                
-//                this.setFont(fuente.deriveFont(Font.BOLD, Rules.FONT_SIZE_CANCIONES));
+//                this.setFont(fuente.deriveFont(Font.BOLD, Rule.FONT_SIZE_CANCIONES));
 //                this.setText(this.getText().trim() + "");
 //                
 //            }
 
 //            if (isDiscoActual) {
-//                this.setFont(fuente.deriveFont(Font.BOLD, Rules.FONT_SIZE_CANCIONES));
+//                this.setFont(fuente.deriveFont(Font.BOLD, Rule.FONT_SIZE_CANCIONES));
 //            }
 
         } catch (FontFormatException | IOException ex) {

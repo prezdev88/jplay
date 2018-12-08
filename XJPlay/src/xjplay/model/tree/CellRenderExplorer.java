@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
-import xjplay.model.rules.Rules;
+import xjplay.rules.Rule;
 import xjplay.recursos.Recurso;
 
 /**
@@ -39,7 +39,7 @@ public class CellRenderExplorer extends JLabel implements TreeCellRenderer{
             this.setOpaque(true);
             
             Font fuente = Font.createFont(Font.TRUETYPE_FONT, Recurso.FUENTE_ROBOTO);
-            fuente = fuente.deriveFont(Font.PLAIN, Rules.FONT_SIZE_EXPLORER);
+            fuente = fuente.deriveFont(Font.PLAIN, Rule.FONT_SIZE_EXPLORER);
             
             
             DefaultMutableTreeNode v = (DefaultMutableTreeNode)value;

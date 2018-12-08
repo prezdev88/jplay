@@ -1,12 +1,10 @@
 package xjplay.coverArt;
 
-import java.awt.Image;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import jlog.model.Log;
-import xjplay.model.rules.Rules;
+import xjplay.rules.Rule;
 /**
  *
  * @author pperezp
@@ -29,7 +27,7 @@ public class HiloCover extends Thread {
 //        this.covers = new ArrayList<>();
 //        ImageIcon ii;
 //        for (ImageIcon im : covers) {
-//            ii = new ImageIcon(im.getImage().getScaledInstance(Rules.COVER_DIMENSION.width, Rules.COVER_DIMENSION.height, Image.SCALE_SMOOTH));
+//            ii = new ImageIcon(im.getImage().getScaledInstance(Rule.COVER_DIMENSION.width, Rule.COVER_DIMENSION.height, Image.SCALE_SMOOTH));
 //            this.covers.add(ii);
 //        }
     }
@@ -43,7 +41,7 @@ public class HiloCover extends Thread {
                 for (int i = 0; i < covers.size(); i++) {
                     actualCover = covers.get(i);
                     lbl.setIcon(actualCover);
-                    Thread.sleep(Rules.PAUSE_ENTRE_FOTOS);
+                    Thread.sleep(Rule.PAUSE_ENTRE_FOTOS);
                 }
             }
         } catch (InterruptedException ex) {

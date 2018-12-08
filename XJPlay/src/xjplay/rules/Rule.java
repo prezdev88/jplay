@@ -1,17 +1,17 @@
-package xjplay.model.rules;
+package xjplay.rules;
 
 import java.awt.Dimension;
 
-public class Rules {
+public class Rule {
     /*SCAN DE RUTAS DE BIBLIOTECAS*/
     private static final int SEGUNDO                = 1;
-    private static final int MINUTO                 = 1000 * Rules.SEGUNDO;
+    private static final int MINUTO                 = 1000 * Rule.SEGUNDO;
     private static final int MINUTOS_PAUSE_SCAN     = 5;
-    public static int PAUSE_SCAN                    = Rules.MINUTOS_PAUSE_SCAN * Rules.MINUTO;
+    public static int PAUSE_SCAN                    = Rule.MINUTOS_PAUSE_SCAN * Rule.MINUTO;
     /*SCAN DE RUTAS DE BIBLIOTECAS*/
     
     public static final String NOMBRE               = "JPlay";
-    public static final String VERSION              = "rev. 0.5.4";
+    public static final String VERSION              = "rev. 0.6";
     
     public static int PAUSE_MOVER                   = 3;         // el pause para mover la x de la foto
     public static int PAUSE_ENTRE_FOTOS             = 10000;     // pause entre cada fotos;

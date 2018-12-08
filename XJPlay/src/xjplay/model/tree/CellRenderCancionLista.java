@@ -16,9 +16,10 @@ import javax.swing.tree.TreeCellRenderer;
 import jplay.model.Album;
 import xjplay.main.JPlay;
 import jplay.model.Cancion;
-import xjplay.model.rules.Rules;
+import xjplay.rules.Rule;
 import xjplay.recursos.Recurso;
 import xjplay.recursos.Ruta;
+import xjplay.utils.Util;
 
 /**
  *
@@ -29,11 +30,14 @@ public class CellRenderCancionLista extends JLabel implements TreeCellRenderer {
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         try {
+            tree.setBackground(Util.COLOR_FONDO.brighter());
+            this.setBackground(Util.COLOR_FONDO.brighter());
+            
             this.setOpaque(true);
 
             Font fuente;
             fuente = Font.createFont(Font.TRUETYPE_FONT, Recurso.FUENTE_ROBOTO);
-            fuente = fuente.deriveFont(Font.PLAIN, Rules.FONT_SIZE_CANCIONES);
+            fuente = fuente.deriveFont(Font.PLAIN, Rule.FONT_SIZE_CANCIONES);
 
             this.setFont(fuente);
             DefaultMutableTreeNode v = (DefaultMutableTreeNode) value;
@@ -50,17 +54,15 @@ public class CellRenderCancionLista extends JLabel implements TreeCellRenderer {
                 this.setText(album.getAnio() + " " +ob.toString());
 
                 try {// intento colocar el cover que tenga el album
-                    Image im = album.getCovers().get(0).getImage().getScaledInstance(
-                        (int) Rules.MINI_CARATULA.getWidth(),
-                        (int) Rules.MINI_CARATULA.getHeight(),
+                    Image im = album.getCovers().get(0).getImage().getScaledInstance((int) Rule.MINI_CARATULA.getWidth(),
+                        (int) Rule.MINI_CARATULA.getHeight(),
                         Image.SCALE_SMOOTH);
                     setIcon(new ImageIcon(im));
                 } catch (IndexOutOfBoundsException e) {
                     // si no hay cover, cargo el icono de la app
                     setIcon(new ImageIcon(
-                        CellRenderCancionLista.crearIcono(Ruta.ICONO_JPLAY).getImage().getScaledInstance(
-                            (int) Rules.MINI_CARATULA.getWidth(),
-                            (int) Rules.MINI_CARATULA.getHeight(),
+                        CellRenderCancionLista.crearIcono(Ruta.ICONO_JPLAY).getImage().getScaledInstance((int) Rule.MINI_CARATULA.getWidth(),
+                            (int) Rule.MINI_CARATULA.getHeight(),
                             Image.SCALE_SMOOTH)
                         )
                     );
@@ -82,43 +84,32 @@ public class CellRenderCancionLista extends JLabel implements TreeCellRenderer {
                 if (ob instanceof Cancion) {
                     Cancion c = (Cancion) ob;
                     if (JPlay.reproductor.getCancionActual().equals(c)) {
-//                        Log.add("igual a " + c.getNombre());
                         isCancionActual = true;
                     }
                 }
             }
 
+            Color colorFondo = Util.COLOR_FONDO.darker().darker();
+            Color colorFore = Util.getForeGroundColorBasedOnBGBrightness(colorFondo);
+            
             if (selected) {
-//                this.setForeground(Color.white);
-                this.setBackground(new Color(217, 238, 208));
+                this.setForeground(colorFore);
+                this.setBackground(colorFondo);
             } else {
-                this.setForeground(Color.black);
-                this.setBackground(Color.white);
+                this.setForeground(Util.getForeGroundColorBasedOnBGBrightness(Util.COLOR_FONDO.brighter()));
+                this.setBackground(Util.COLOR_FONDO.brighter());
             }
 
             if (isCancionActual) {
-//                this.setForeground(Color.red);
-//                
-//                if (actualDiscIcon == null) {
-//                    setIcon(playIcon);
-//                }
-//                setIcon(playIcon);
-//                
-//                this.setFont(fuente.deriveFont(Font.BOLD, Rules.FONT_SIZE_CANCIONES));
-//                this.setText(this.getText().trim() + "");
-                this.setBackground(Color.black);
-                this.setForeground(Color.white);
+                this.setForeground(colorFore);
+                this.setBackground(colorFondo);
             }
 
             if (isDiscoActual) {
-                this.setBackground(Color.black);
-                this.setForeground(Color.white);
-//                this.setFont(fuente.deriveFont(Font.BOLD, Rules.FONT_SIZE_CANCIONES));
+                this.setForeground(colorFore);
+                this.setBackground(colorFondo);
             }
-
-        } catch (FontFormatException ex) {
-            Logger.getLogger(CellRenderCancionLista.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (FontFormatException | IOException ex) {
             Logger.getLogger(CellRenderCancionLista.class.getName()).log(Level.SEVERE, null, ex);
         }
 

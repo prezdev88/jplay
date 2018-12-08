@@ -6,7 +6,7 @@ import java.util.List;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import jlog.model.Log;
-import xjplay.model.rules.Rules;
+import xjplay.rules.Rule;
 
 public class Recurso {
 
@@ -35,9 +35,8 @@ public class Recurso {
                 image = new ImageIcon(archivo.getPath()).getImage();
                 Log.add("RUTA FOTO: "+archivo.getPath());
                 imageIcon = new ImageIcon(
-                        image.getScaledInstance(
-                                (int)Rules.COVER_DIMENSION.getWidth(),
-                                (int)Rules.COVER_DIMENSION.getHeight(),
+                        image.getScaledInstance((int)Rule.COVER_DIMENSION.getWidth(),
+                                (int)Rule.COVER_DIMENSION.getHeight(),
                                 Image.SCALE_SMOOTH)
                 );
                 fotos.add(imageIcon);
