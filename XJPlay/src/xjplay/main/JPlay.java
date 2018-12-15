@@ -49,7 +49,6 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -59,7 +58,7 @@ import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -481,8 +480,6 @@ public class JPlay extends javax.swing.JFrame implements
         jScrollPane1.setViewportView(tablaBiblioteca);
 
         tabbedPrincipal.addTab("Biblioteca", jScrollPane1);
-
-        jScrollPane2.setBorder(null);
 
         tablaCanciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1229,24 +1226,25 @@ public class JPlay extends javax.swing.JFrame implements
 
     public static void main(String args[]) {
 
-//        try {
-//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//            
+        try {    
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
                 new JPlay().setVisible(true);
             }
         });
-//        } catch (ClassNotFoundException ex) {
-//            Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (UnsupportedLookAndFeelException ex) {
-//            Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
