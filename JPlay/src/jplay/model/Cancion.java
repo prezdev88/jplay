@@ -127,7 +127,7 @@ public class Cancion extends File {
         return nombre;
     }
 
-    public String getAnio() {
+    public String getAnioFormatted() {
         if (anio != null) {
             try {
                 int an = Integer.parseInt(anio.trim());
@@ -195,6 +195,10 @@ public class Cancion extends File {
     @Override
     public String toString() {
         return this.getNombre();
+    }
+
+    public String getAnio() {
+        return anio;
     }
 
 }

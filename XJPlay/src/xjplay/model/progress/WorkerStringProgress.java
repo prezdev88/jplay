@@ -7,10 +7,10 @@ package xjplay.model.progress;
 
 import java.awt.Color;
 import java.util.List;
+import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 import jlog.model.Log;
-import xjplay.recursos.Ruta;
 
 /**
  *
@@ -18,23 +18,22 @@ import xjplay.recursos.Ruta;
  */
 public class WorkerStringProgress extends SwingWorker<Void, String> {
 
-    private JProgressBar progressBar;
-    private String maxString;
-    private int totalSegundos;
+    private final JLabel lblDuracion;
+    private final String maxDuracionCancion;
+    private final int totalSegundos;
 
     private int iniMin;
     private int iniSeg;
     private boolean pausado;
 
-    public WorkerStringProgress(JProgressBar progressBar, String max) {
-        this.progressBar = progressBar;
-        maxString = max;
+    public WorkerStringProgress(JLabel lblDuracion, String max) {
+        this.lblDuracion = lblDuracion;
+        maxDuracionCancion = max;
         this.totalSegundos = getTotalSegundos();
 
         iniMin = 0;
         iniSeg = 0;
         
-        progressBar.setForeground(new Color(76,175,80));
         pausado = false;
     }
     
@@ -86,11 +85,11 @@ public class WorkerStringProgress extends SwingWorker<Void, String> {
 
     @Override
     protected void process(List<String> chunks) {
-        progressBar.setString(chunks.get(0));
+        lblDuracion.setText(chunks.get(0) + " - "+maxDuracionCancion);
     }
 
     private int getTotalSegundos() {
-        String[] split = maxString.split(":");
+        String[] split = maxDuracionCancion.split(":");
 
         int minutos, segundos;
 

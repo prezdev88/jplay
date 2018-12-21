@@ -183,7 +183,7 @@ public class Biblioteca implements Serializable{
         }
 
         if (!encontrado) {
-            Album a = new Album(c.getAutor(), c.getAlbum(), c.getAnio());
+            Album a = new Album(c.getAutor(), c.getAlbum(), c.getAnioFormatted());
             a.addCancion(c);
 
             albums.add(a);

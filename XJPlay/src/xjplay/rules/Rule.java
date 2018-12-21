@@ -17,9 +17,9 @@ public class Rule {
     public static int PAUSE_ENTRE_FOTOS             = 10000;     // pause entre cada fotos;
     public static int FONT_SIZE_SEARCH              = 13;
     
-    public static int FONT_SIZE_CANCIONES           = 14;
-    public static int FONT_SIZE_NORMAL              = 17;
-    public static int TRACK_NUMBER_COLUMN_SIZE      = 15;
+    public static int FONT_SIZE_CANCIONES           = 12;
+    public static int FONT_SIZE_NORMAL              = 12;
+    public static int TRACK_NUMBER_COLUMN_SIZE      = 12;
     public static int ARTIST_COLUMN_SIZE            = 100;
     public final static int ALBUM_COLUMN_SIZE             = 100;
     public static int NAME_COLUMN_SIZE              = 300;
@@ -29,9 +29,9 @@ public class Rule {
     public static final Dimension MINI_CARATULA     = new Dimension(48, 48);
     
     /*EXPLORER*/
-    public static final int ICON_EXPLORER_SIZE          = 20;
-    public static final int ICON_EXPLORER_MUSIC_SIZE    = 20;
-    public static int FONT_SIZE_EXPLORER                = 14;
+    public static final int ICON_EXPLORER_SIZE          = 14;
+    public static final int ICON_EXPLORER_MUSIC_SIZE    = 14;
+    public static int FONT_SIZE_EXPLORER                = 12;
     /*EXPLORER*/
     
     public static class Tabs{
@@ -43,7 +43,7 @@ public class Rule {
         public static final int LOGGER          = 5;
     }
     
-    public static final int ANCHO               = 800;
+    public static final int ANCHO               = 900;
     public static final int ALTO                = 600;
     
     

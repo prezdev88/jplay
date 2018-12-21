@@ -1,6 +1,7 @@
 package xjplay.main;
 
 //iconos https://www.iconfinder.com/iconsets/snipicons
+// https://github.com/pperezp/jplay
 import java.awt.Color;
 import java.awt.Dimension;
 import xjplay.save.Guardar;
@@ -134,7 +135,7 @@ public class JPlay extends javax.swing.JFrame implements
 
     public JPlay() {
         initComponents();
-        
+
         Rule.COVER_DIMENSION = new Dimension(lblCover.getWidth(), lblCover.getHeight());
 
         icono = Recurso.ICONO_JPLAY;
@@ -202,7 +203,7 @@ public class JPlay extends javax.swing.JFrame implements
         setLocationRelativeTo(null);
         hCover = null;
 
-        progress.setStringPainted(true);
+//        progress.setStringPainted(true);
         lblCover.requestFocus();
 //        jSplitPane1.setDividerLocation(0.0);
 //        jSplitPane2.setDividerLocation(1);
@@ -228,8 +229,7 @@ public class JPlay extends javax.swing.JFrame implements
 
         setBounds(0, 0, Rule.ANCHO, Rule.ALTO);
         setLocationRelativeTo(null);
-        
-        
+
     }
 
     // http://stackoverflow.com/questions/13516730/disable-enter-key-from-moving-down-a-row-in-jtable
@@ -254,16 +254,6 @@ public class JPlay extends javax.swing.JFrame implements
         mainPanel = new javax.swing.JPanel();
         panelPrincipal = new javax.swing.JPanel();
         lblCover = new javax.swing.JLabel();
-        btnTocarAnterior = new javax.swing.JButton();
-        btnPause = new javax.swing.JButton();
-        btnTocarSiguiente = new javax.swing.JButton();
-        jPanel5 = new javax.swing.JPanel();
-        lblTema = new javax.swing.JLabel();
-        lblArtista = new javax.swing.JLabel();
-        btnFav = new javax.swing.JToggleButton();
-        opRepetirCancion = new javax.swing.JCheckBox();
-        opAleatorio = new javax.swing.JCheckBox();
-        slideVol = new javax.swing.JSlider();
         tabbedPrincipal = new javax.swing.JTabbedPane();
         jScrollPane3 = new javax.swing.JScrollPane();
         treeExplorer = new javax.swing.JTree();
@@ -287,6 +277,16 @@ public class JPlay extends javax.swing.JFrame implements
         progress = new javax.swing.JProgressBar();
         lblInfoCarga = new javax.swing.JLabel();
         btnCancelarCarga = new javax.swing.JButton();
+        lblNombreCancion = new javax.swing.JLabel();
+        lblArtista = new javax.swing.JLabel();
+        slideVol = new javax.swing.JSlider();
+        btnFav = new javax.swing.JToggleButton();
+        opRepetirCancion = new javax.swing.JCheckBox();
+        opAleatorio = new javax.swing.JCheckBox();
+        lblDuracion = new javax.swing.JLabel();
+        lblAnterior = new javax.swing.JLabel();
+        lblPlay = new javax.swing.JLabel();
+        lblSiguiente = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -308,129 +308,7 @@ public class JPlay extends javax.swing.JFrame implements
         });
 
         lblCover.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblCover.setText("[COVER]");
-
-        btnTocarAnterior.setBackground(new java.awt.Color(63, 81, 181));
-        btnTocarAnterior.setIcon(new javax.swing.ImageIcon(getClass().getResource("/xjplay/recursos/iconos/material/ic_skip_previous_white_24dp_1x.png"))); // NOI18N
-        btnTocarAnterior.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTocarAnteriorActionPerformed(evt);
-            }
-        });
-
-        btnPause.setBackground(new java.awt.Color(76, 175, 80));
-        btnPause.setIcon(new javax.swing.ImageIcon(getClass().getResource("/xjplay/recursos/iconos/material/ic_play_arrow_white_24dp_1x.png"))); // NOI18N
-        btnPause.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPauseActionPerformed(evt);
-            }
-        });
-
-        btnTocarSiguiente.setBackground(new java.awt.Color(63, 81, 181));
-        btnTocarSiguiente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/xjplay/recursos/iconos/material/ic_skip_next_white_24dp_1x.png"))); // NOI18N
-        btnTocarSiguiente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTocarSiguienteActionPerformed(evt);
-            }
-        });
-
-        jPanel5.setBackground(new java.awt.Color(254, 254, 254));
-        jPanel5.setOpaque(false);
-
-        lblTema.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
-        lblTema.setText("Artista / Canción");
-
-        lblArtista.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
-        lblArtista.setText("Artista / Canción");
-
-        btnFav.setIcon(new javax.swing.ImageIcon(getClass().getResource("/xjplay/recursos/iconos/fav.png"))); // NOI18N
-        btnFav.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFavActionPerformed(evt);
-            }
-        });
-
-        opRepetirCancion.setBackground(new java.awt.Color(254, 254, 254));
-        opRepetirCancion.setText("Repetir Canción");
-        opRepetirCancion.setOpaque(false);
-        opRepetirCancion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                opRepetirCancionActionPerformed(evt);
-            }
-        });
-
-        opAleatorio.setBackground(new java.awt.Color(254, 254, 254));
-        opAleatorio.setText("Shuffle");
-        opAleatorio.setOpaque(false);
-        opAleatorio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                opAleatorioActionPerformed(evt);
-            }
-        });
-
-        slideVol.setBackground(new java.awt.Color(255, 255, 255));
-        slideVol.setMaximum(40);
-        slideVol.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                slideVolMouseDragged(evt);
-            }
-        });
-        slideVol.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
-            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
-                slideVolMouseWheelMoved(evt);
-            }
-        });
-        slideVol.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                slideVolMousePressed(evt);
-            }
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                slideVolMouseReleased(evt);
-            }
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                slideVolMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblTema, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblArtista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnFav))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(opRepetirCancion, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(opAleatorio)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(slideVol, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnFav)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(lblTema, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblArtista)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(opRepetirCancion)
-                        .addComponent(opAleatorio))
-                    .addComponent(slideVol, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
+        lblCover.setText("[cv]");
 
         tabbedPrincipal.setToolTipText("");
         tabbedPrincipal.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -539,13 +417,13 @@ public class JPlay extends javax.swing.JFrame implements
         panelListaActualLayout.setHorizontalGroup(
             panelListaActualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lblLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 850, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 723, Short.MAX_VALUE)
             .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         panelListaActualLayout.setVerticalGroup(
             panelListaActualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelListaActualLayout.createSequentialGroup()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -614,7 +492,7 @@ public class JPlay extends javax.swing.JFrame implements
 
         lblInfoCarga.setBackground(new java.awt.Color(254, 254, 254));
         lblInfoCarga.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
-        lblInfoCarga.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblInfoCarga.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblInfoCarga.setText("[lblInfo]");
 
         btnCancelarCarga.setText("X");
@@ -624,55 +502,159 @@ public class JPlay extends javax.swing.JFrame implements
             }
         });
 
+        lblNombreCancion.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
+        lblNombreCancion.setText("Artista / Canción");
+
+        lblArtista.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
+        lblArtista.setText("Artista / Canción");
+
+        slideVol.setBackground(new java.awt.Color(255, 255, 255));
+        slideVol.setMaximum(40);
+        slideVol.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                slideVolMouseDragged(evt);
+            }
+        });
+        slideVol.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                slideVolMouseWheelMoved(evt);
+            }
+        });
+        slideVol.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                slideVolMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                slideVolMouseReleased(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                slideVolMouseClicked(evt);
+            }
+        });
+
+        btnFav.setIcon(new javax.swing.ImageIcon(getClass().getResource("/xjplay/recursos/iconos/fav.png"))); // NOI18N
+        btnFav.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFavActionPerformed(evt);
+            }
+        });
+
+        opRepetirCancion.setBackground(new java.awt.Color(254, 254, 254));
+        opRepetirCancion.setText("Repetir Canción");
+        opRepetirCancion.setOpaque(false);
+        opRepetirCancion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opRepetirCancionActionPerformed(evt);
+            }
+        });
+
+        opAleatorio.setBackground(new java.awt.Color(254, 254, 254));
+        opAleatorio.setText("Shuffle");
+        opAleatorio.setOpaque(false);
+        opAleatorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opAleatorioActionPerformed(evt);
+            }
+        });
+
+        lblDuracion.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
+        lblDuracion.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblDuracion.setText("0:00 - 0:00");
+
+        lblAnterior.setIcon(new javax.swing.ImageIcon(getClass().getResource("/xjplay/recursos/iconos/material/ic_anterior_negro.png"))); // NOI18N
+        lblAnterior.setText("A");
+        lblAnterior.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                lblAnteriorMouseReleased(evt);
+            }
+        });
+
+        lblPlay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/xjplay/recursos/iconos/material/ic_play_negro.png"))); // NOI18N
+        lblPlay.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                lblPlayMouseReleased(evt);
+            }
+        });
+
+        lblSiguiente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/xjplay/recursos/iconos/material/ic_siguiente_negro.png"))); // NOI18N
+        lblSiguiente.setText("A");
+        lblSiguiente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                lblSiguienteMouseReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelPrincipalLayout = new javax.swing.GroupLayout(panelPrincipal);
         panelPrincipal.setLayout(panelPrincipalLayout);
         panelPrincipalLayout.setHorizontalGroup(
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabbedPrincipal)
             .addGroup(panelPrincipalLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(5, 5, 5)
                 .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(panelPrincipalLayout.createSequentialGroup()
-                            .addComponent(btnTocarAnterior, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(btnTocarSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(lblCover, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnPause, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(tabbedPrincipal)
                     .addGroup(panelPrincipalLayout.createSequentialGroup()
-                        .addComponent(lblInfoCarga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblAnterior, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancelarCarga, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(progress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(lblPlay, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblCover, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelPrincipalLayout.createSequentialGroup()
+                                .addComponent(lblArtista, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(progress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblNombreCancion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(5, 5, 5))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPrincipalLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnCancelarCarga)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblInfoCarga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(opAleatorio)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(opRepetirCancion)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(slideVol, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnFav, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         panelPrincipalLayout.setVerticalGroup(
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPrincipalLayout.createSequentialGroup()
-                .addComponent(tabbedPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(5, 5, 5)
+                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panelPrincipalLayout.createSequentialGroup()
-                        .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblCover, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblNombreCancion, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnPause, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelPrincipalLayout.createSequentialGroup()
-                        .addGap(117, 117, 117)
-                        .addComponent(progress, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblArtista)
+                            .addComponent(lblDuracion))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(progress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblCover, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblPlay, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblAnterior, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tabbedPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btnFav, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(slideVol, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnCancelarCarga)
                         .addComponent(lblInfoCarga, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnCancelarCarga))
-                    .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnTocarAnterior, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnTocarSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addComponent(opAleatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(opRepetirCancion, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(5, 5, 5))
         );
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
@@ -690,39 +672,6 @@ public class JPlay extends javax.swing.JFrame implements
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnPauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPauseActionPerformed
-        try {
-            if (reproductor != null) {
-                if (isPlay) {
-                    isPlay = false;
-                    btnPause.setIcon(new javax.swing.ImageIcon(getClass().getResource(Ruta.PLAY)));
-                    reproductor.pause();
-
-                } else {
-                    isPlay = true;
-                    btnPause.setIcon(new javax.swing.ImageIcon(getClass().getResource(Ruta.PAUSE)));
-                    if (isStop) {
-                        reproducirCancionActual();
-                        isPlay = true;
-                        isStop = false;
-                    } else {
-                        reproductor.resume();
-                    }
-                }
-            }
-//            else if (indiceActual != -1) {
-////                r = new Reproductor(canciones.get(indiceActual), this);
-////                r.play();      
-//                reproducir(canciones.get(indiceActual));
-//                isPlay = true;
-//                isStop = false;
-//                btnPause.setIcon(new javax.swing.ImageIcon(getClass().getResource(Ruta.PAUSE)));
-//            }
-        } catch (BasicPlayerException ex) {
-            Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnPauseActionPerformed
 
     private void slideVolMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_slideVolMouseDragged
         setVolumen(slideVol.getValue());
@@ -771,30 +720,6 @@ public class JPlay extends javax.swing.JFrame implements
         btnCancelarCarga.setEnabled(false);
         cargarArbolConCanciones(getDiscos(canciones));
     }//GEN-LAST:event_btnCancelarCargaActionPerformed
-
-    private void btnTocarAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTocarAnteriorActionPerformed
-        if (!canciones.isEmpty()) {
-            if (isRandom) {
-                reproducirRandom();
-            } else if (repetirCancion) {
-                reproducirCancionActual();
-            } else {
-                reproducirAnterior();
-            }
-        }
-    }//GEN-LAST:event_btnTocarAnteriorActionPerformed
-
-    private void btnTocarSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTocarSiguienteActionPerformed
-        if (!canciones.isEmpty()) {
-            if (isRandom) {
-                reproducirRandom();
-            } else if (repetirCancion) {
-                reproducirCancionActual();
-            } else {
-                reproducirSiguiente();
-            }
-        }
-    }//GEN-LAST:event_btnTocarSiguienteActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         if (SAVE) {
@@ -854,16 +779,9 @@ public class JPlay extends javax.swing.JFrame implements
                 if (o instanceof Cancion) {
                     Cancion c = (Cancion) o;
 
-//                    indiceActual = canciones.indexOf(c);
-//                    System.out.println("Índice actual: " + indiceActual);
                     reproducir(c);
                 }
             }
-//            TMCancion model = (TMCancion) tablaCanciones.getModel();
-//            indiceActual = tablaCanciones.getSelectedRow();
-//            Cancion c = (Cancion) model.getValueAt(indiceActual, 0);
-//
-//            reproducir(c);
 
         }
     }//GEN-LAST:event_treeSongMouseReleased
@@ -1030,6 +948,71 @@ public class JPlay extends javax.swing.JFrame implements
             }
         }
     }//GEN-LAST:event_treeFavoritosMouseReleased
+
+    private void lblPlayMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblPlayMouseReleased
+        try {
+            if (reproductor != null) {
+                if (isPlay) {
+                    isPlay = false;
+                    if(Util.COLOR_FOREGROUND == Color.black){
+                        lblPlay.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_PLAY_NEGRO)));
+                    }else{
+                        lblPlay.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_PLAY_BLANCO)));
+                    }
+                    reproductor.pause();
+
+                } else {
+                    isPlay = true;
+                    if(Util.COLOR_FOREGROUND == Color.black){
+                        lblPlay.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_PAUSE_NEGRO)));
+                    }else{
+                        lblPlay.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_PAUSE_BLANCO)));
+                    }
+                    if (isStop) {
+                        reproducirCancionActual();
+                        isPlay = true;
+                        isStop = false;
+                    } else {
+                        reproductor.resume();
+                    }
+                }
+            }
+//            else if (indiceActual != -1) {
+////                r = new Reproductor(canciones.get(indiceActual), this);
+////                r.play();      
+//                reproducir(canciones.get(indiceActual));
+//                isPlay = true;
+//                isStop = false;
+//                btnPause.setIcon(new javax.swing.ImageIcon(getClass().getResource(Ruta.IC_PAUSE_BLANCO)));
+//            }
+        } catch (BasicPlayerException ex) {
+            Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_lblPlayMouseReleased
+
+    private void lblAnteriorMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAnteriorMouseReleased
+        if (!canciones.isEmpty()) {
+            if (isRandom) {
+                reproducirRandom();
+            } else if (repetirCancion) {
+                reproducirCancionActual();
+            } else {
+                reproducirAnterior();
+            }
+        }
+    }//GEN-LAST:event_lblAnteriorMouseReleased
+
+    private void lblSiguienteMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSiguienteMouseReleased
+        if (!canciones.isEmpty()) {
+            if (isRandom) {
+                reproducirRandom();
+            } else if (repetirCancion) {
+                reproducirCancionActual();
+            } else {
+                reproducirSiguiente();
+            }
+        }
+    }//GEN-LAST:event_lblSiguienteMouseReleased
 
     private void cargarSave() {
         if (new File(Ruta.SAVE).exists()) {
@@ -1226,7 +1209,7 @@ public class JPlay extends javax.swing.JFrame implements
 
     public static void main(String args[]) {
 
-        try {    
+        try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
@@ -1237,7 +1220,7 @@ public class JPlay extends javax.swing.JFrame implements
         } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -1250,12 +1233,8 @@ public class JPlay extends javax.swing.JFrame implements
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelarCarga;
     private javax.swing.JToggleButton btnFav;
-    private javax.swing.JButton btnPause;
-    private javax.swing.JButton btnTocarAnterior;
-    private javax.swing.JButton btnTocarSiguiente;
     private javax.swing.JDialog dialogCanciones;
     private javax.swing.JDialog jDialog1;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -1263,11 +1242,15 @@ public class JPlay extends javax.swing.JFrame implements
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JLabel lblAnterior;
     private javax.swing.JLabel lblArtista;
     private javax.swing.JLabel lblCover;
+    private javax.swing.JLabel lblDuracion;
     private javax.swing.JLabel lblInfoCarga;
     private javax.swing.JLabel lblLimpiar;
-    private javax.swing.JLabel lblTema;
+    private javax.swing.JLabel lblNombreCancion;
+    private javax.swing.JLabel lblPlay;
+    private javax.swing.JLabel lblSiguiente;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JCheckBox opAleatorio;
     private javax.swing.JCheckBox opRepetirCancion;
@@ -1810,7 +1793,7 @@ public class JPlay extends javax.swing.JFrame implements
         btnCancelarCarga.setEnabled(false);
     }
 
-    private void reproducir(final Cancion cancion) {
+    private void reproducir(Cancion cancion) {
 
         btnFav.setSelected(biblioteca.isFavorita(cancion));
 
@@ -1836,7 +1819,14 @@ public class JPlay extends javax.swing.JFrame implements
 //            lblTemaActual.setText(c.getAutor()+" / "+c.getNombre() + " ("+c.getDuracionAsString()+")");
 
 //            btnPause.setText("Pause");
-            btnPause.setIcon(new ImageIcon(getClass().getResource(Ruta.PAUSE)));
+
+            if(Util.COLOR_FOREGROUND == Color.white){
+                lblPlay.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_PAUSE_BLANCO)));
+            }else{
+                lblPlay.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_PAUSE_NEGRO)));
+            }
+
+            
             isPlay = true;
             isStop = false;
 
@@ -1861,7 +1851,7 @@ public class JPlay extends javax.swing.JFrame implements
                 this.workerStringProgress.cancel(true);
             }
 
-            this.workerStringProgress = new WorkerStringProgress(progress, cancion.getDuracionAsString());
+            this.workerStringProgress = new WorkerStringProgress(lblDuracion, cancion.getDuracionAsString());
 
             this.workerStringProgress.execute();
 
@@ -1886,25 +1876,11 @@ public class JPlay extends javax.swing.JFrame implements
 ////        System.out.println("Agregando "+cancion);
 //    }
     private void imprimirTemaActual() {
-        String durActual = "0:00";
-        String durTotal = "()";
-
         if (reproductor != null) {
-//            if(milis != 0){
-//                durActual = r.getCancionActual().getDuracionAsString(milis) + " / "+ r.getCancionActual().getDuracionAsString();
-//            }else{
-//                durActual = "0:00 / "+ r.getCancionActual().getDuracionAsString();
-//            }
-
-            lblArtista.setText(reproductor.getCancionActual().getAutor());
-            lblTema.setText(reproductor.getCancionActual().getNombre() + " (" + reproductor.getCancionActual().getDuracionAsString() + ")");
+            Cancion cancionActual = reproductor.getCancionActual();
+            lblArtista.setText(cancionActual.getAutor() + " - "+cancionActual.getAlbum() + " ("+cancionActual.getAnio()+")");
+            lblNombreCancion.setText(cancionActual.getNombre() + " (" + cancionActual.getDuracionAsString() + ")");
         }
-//        else if (indiceActual != -1) {
-//            Cancion c = canciones.get(indiceActual);
-//            durActual = "0:00 / " + c.getDuracionAsString();
-//            lblArtista.setText(c.getAutor());
-//            lblTema.setText(c.getNombre() + " (" + durActual + ")");
-//        }
     }
 
     private void cargarDefault() {
@@ -2115,7 +2091,7 @@ public class JPlay extends javax.swing.JFrame implements
         try {
             Font fuente = Font.createFont(Font.TRUETYPE_FONT, Recurso.FUENTE_ROBOTO);
 
-            lblTema.setFont(fuente.deriveFont(Font.BOLD, Rule.FONT_SIZE_NORMAL));
+            lblNombreCancion.setFont(fuente.deriveFont(Font.BOLD, Rule.FONT_SIZE_NORMAL));
             lblArtista.setFont(fuente.deriveFont(Font.PLAIN, 11));
             opAleatorio.setFont(fuente.deriveFont(Font.PLAIN, 13));
             opRepetirCancion.setFont(fuente.deriveFont(Font.PLAIN, 13));
@@ -2412,11 +2388,12 @@ public class JPlay extends javax.swing.JFrame implements
 
         panelPrincipal.setBackground(Util.COLOR_FONDO);
         slideVol.setBackground(Util.COLOR_FONDO);
-        lblTema.setForeground(Util.COLOR_FOREGROUND);
+        lblNombreCancion.setForeground(Util.COLOR_FOREGROUND);
         lblArtista.setForeground(Util.COLOR_FOREGROUND);
         opRepetirCancion.setForeground(Util.COLOR_FOREGROUND);
         opAleatorio.setForeground(Util.COLOR_FOREGROUND);
         lblInfoCarga.setForeground(Util.COLOR_FOREGROUND);
+        lblDuracion.setForeground(Util.COLOR_FOREGROUND);
 
         progress.setUI(new BasicProgressBarUI() {
             @Override
@@ -2429,10 +2406,23 @@ public class JPlay extends javax.swing.JFrame implements
                 return Util.COLOR_FOREGROUND;
             }
         });
+        
+        progress.setForeground(new Color(76,175,80));
 
-        Color c = Util.COLOR_FONDO.darker().darker();
-        tabbedPrincipal.setBackground(c);
-        tabbedPrincipal.setForeground(Util.getForeGroundColorBasedOnBGBrightness(c));
+        Color color = Util.COLOR_FONDO.darker().darker();
+        tabbedPrincipal.setBackground(color);
+        tabbedPrincipal.setForeground(Util.getForeGroundColorBasedOnBGBrightness(color));
+        
+        // Acá cambio los iconos según color
+        if(Util.COLOR_FOREGROUND == Color.white){
+            lblPlay.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_PLAY_BLANCO)));
+            lblSiguiente.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_SIGUIENTE_BLANCO)));
+            lblAnterior.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_ANTERIOR_BLANCO)));
+        }else{
+            lblPlay.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_PLAY_NEGRO)));
+            lblSiguiente.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_SIGUIENTE_NEGRO)));
+            lblAnterior.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_ANTERIOR_NEGRO)));
+        }
     }
 
     private void setCover(Icon cover) {
@@ -2458,5 +2448,5 @@ public class JPlay extends javax.swing.JFrame implements
         )
         );
     }
-    
+
 }
