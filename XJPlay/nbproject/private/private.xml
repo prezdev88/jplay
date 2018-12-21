@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="29">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="32">
         <file>
             <url>src/jplay/main/JPlay.java</url>
             <bookmark id="8">
@@ -34,6 +34,21 @@
             <bookmark id="28">
                 <name/>
                 <line>0</line>
+                <key/>
+            </bookmark>
+            <bookmark id="30">
+                <name/>
+                <line>956</line>
+                <key/>
+            </bookmark>
+            <bookmark id="32">
+                <name/>
+                <line>1828</line>
+                <key/>
+            </bookmark>
+            <bookmark id="31">
+                <name/>
+                <line>2416</line>
                 <key/>
             </bookmark>
         </file>
