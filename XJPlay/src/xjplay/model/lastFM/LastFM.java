@@ -1,3 +1,4 @@
+// https://www.last.fm/api
 package xjplay.model.lastFM;
 
 import java.awt.Image;
@@ -12,6 +13,7 @@ import javax.imageio.ImageIO;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import jlog.model.Log;
+import xjplay.recursos.Recurso;
 import xjplay.rules.Rule;
 
 public class LastFM {
@@ -31,7 +33,7 @@ public class LastFM {
         for (CoverArt cover : covers) {
             Log.add(cover.toString());
         }
-        
+
         int ultimoIndice = covers.size() - 1;
         return getImage(covers.get(ultimoIndice));
     }
@@ -142,9 +144,13 @@ public class LastFM {
 //        }
 //    }
     private static Image getImage(CoverArt ca) throws MalformedURLException, IOException {
-        URL url = new URL(ca.getUrl());
-        Image image = ImageIO.read(url);
+        try {
+            URL url = new URL(ca.getUrl());
+            Image image = ImageIO.read(url);
 
-        return image;
+            return image;
+        } catch (Exception e) {
+            return Recurso.ICONO_JPLAY;
+        }
     }
 }

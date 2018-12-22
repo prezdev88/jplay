@@ -16,7 +16,7 @@ public class Album implements Serializable {
     private String name;
     private final List<Cancion> canciones;
     private List<ImageIcon> covers;
-    private String anio;
+    private final String anio;
 
     public Album(String artist, String name, String anio) {
         this.artist = artist;
@@ -25,7 +25,7 @@ public class Album implements Serializable {
         this.canciones = new ArrayList<>();
         covers = new ArrayList<>();
     }
-
+    
     public String getAnio() {
 
         if (anio != null) {
@@ -57,6 +57,14 @@ public class Album implements Serializable {
 
     public List<ImageIcon> getCovers() {
         return covers;
+    }
+    
+    public Image getLastCover(){
+        if(hasImagenes()){
+            return covers.get(covers.size()-1).getImage();
+        }else {
+            return null;
+        }
     }
 
     public boolean existCancion(Cancion c) {

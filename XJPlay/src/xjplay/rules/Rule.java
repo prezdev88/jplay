@@ -27,6 +27,7 @@ public class Rule {
     // No es final, porque en el constructor de JPlay se establece según el jlabel del cover
     public static Dimension COVER_DIMENSION;
     public static final Dimension MINI_CARATULA     = new Dimension(48, 48);
+    public static final Dimension ARTISTA_COVER     = new Dimension(200, 200);
     
     /*EXPLORER*/
     public static final int ICON_EXPLORER_SIZE          = 14;

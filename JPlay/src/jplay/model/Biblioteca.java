@@ -183,7 +183,7 @@ public class Biblioteca implements Serializable{
         }
 
         if (!encontrado) {
-            Album a = new Album(c.getAutor(), c.getAlbum(), c.getAnioFormatted());
+            Album a = new Album(c.getAutor(), c.getAlbum(), c.getAnio());
             a.addCancion(c);
 
             albums.add(a);
@@ -205,6 +205,17 @@ public class Biblioteca implements Serializable{
             }
         }
         return null;
+    }
+    
+    public List<Album> getAlbumsByArtist(String nombreArtista) {
+        List<Album> lista = new ArrayList<>();
+        for (Album a : albums) {
+            if (a.getArtist().equalsIgnoreCase(nombreArtista)) {
+                Log.add("Album encontrado! : "+a);
+                lista.add(a);
+            }
+        }
+        return lista;
     }
 
     public List<String> getArtistas() {
