@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="32">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="34">
         <file>
             <url>src/jplay/main/JPlay.java</url>
             <bookmark id="8">
@@ -16,39 +16,9 @@
         </file>
         <file>
             <url>src/xjplay/main/JPlay.java</url>
-            <bookmark id="26">
+            <bookmark id="34">
                 <name/>
-                <line>0</line>
-                <key/>
-            </bookmark>
-            <bookmark id="27">
-                <name/>
-                <line>0</line>
-                <key/>
-            </bookmark>
-            <bookmark id="29">
-                <name/>
-                <line>0</line>
-                <key/>
-            </bookmark>
-            <bookmark id="28">
-                <name/>
-                <line>0</line>
-                <key/>
-            </bookmark>
-            <bookmark id="30">
-                <name/>
-                <line>956</line>
-                <key/>
-            </bookmark>
-            <bookmark id="32">
-                <name/>
-                <line>1828</line>
-                <key/>
-            </bookmark>
-            <bookmark id="31">
-                <name/>
-                <line>2416</line>
+                <line>1051</line>
                 <key/>
             </bookmark>
         </file>
@@ -69,14 +39,11 @@
         <group name="jplay">
             <file>file:/home/prez/Escritorio/GIT/jplay/XJPlay/src/xjplay/main/JPlay.java</file>
         </group>
-        <group>
-            <file>file:/home/prez/Desktop/GIT/jplay/XJPlay/src/xjplay/model/rules/Rules.java</file>
-            <file>file:/home/prez/Desktop/GIT/jplay/XJPlay/src/xjplay/main/JPlay.java</file>
-        </group>
         <group name="Proyectos personales">
             <file>file:/home/prez/Desktop/GIT/jplay/XJPlay/src/xjplay/model/rules/Rules.java</file>
             <file>file:/home/prez/Desktop/GIT/jplay/XJPlay/src/xjplay/main/JPlay.java</file>
         </group>
         <group name="POO"/>
+        <group/>
     </open-files>
 </project-private>
