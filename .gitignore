@@ -26,3 +26,6 @@
 /JLog/build/
 /JLog/dist/
 /XJPlay/dist/
+/maven-projects/jlog/target/
+/maven-projects/jplay/target/
+/maven-projects/xjplay/target/
