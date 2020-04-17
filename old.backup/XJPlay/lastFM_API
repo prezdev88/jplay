@@ -1,0 +1,9 @@
+https://www.last.fm/api
+
+Application name	JPlay
+API key	e4af175c34493321a0df649859069c40
+Shared secret	38c1b37dac73572b82c7c88424781a0e
+Registered to	patodeath
+
+Ejemplo de llamada al servicio
+http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=e4af175c34493321a0df649859069c40&artist=Criminal&album=dead%20soul&format=json

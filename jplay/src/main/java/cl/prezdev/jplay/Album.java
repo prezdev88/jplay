@@ -1,0 +1,155 @@
+package cl.prezdev.jplay;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.ImageIcon;
+import cl.prezdev.jlog.Log;
+
+public class Album implements Serializable {
+
+    private String artist;
+    private String name;
+    private final List<Song> songs;
+    private List<ImageIcon> covers;
+    private final String year;
+
+    public Album(String artist, String name, String anio) {
+        this.artist = artist;
+        this.name = name;
+        this.year = anio;
+        this.songs = new ArrayList<>();
+        covers = new ArrayList<>();
+    }
+    
+    public String getYear() {
+        if (year != null) {
+            try {
+                return year.trim();
+            } catch (NumberFormatException e) {
+                return "[           ] ";
+            }
+        } else {
+            return "[           ] ";
+        }
+
+    }
+
+    public boolean hasCovers() {
+        return !covers.isEmpty();
+    }
+
+    public void removeCover(ImageIcon cover) {
+        Log.add("COVER REMOVIDO: " + covers.remove(cover));
+    }
+
+    public void setCovers(List<ImageIcon> covers) {
+        this.covers = covers;
+    }
+
+    public List<ImageIcon> getCovers() {
+        return covers;
+    }
+    
+    public Image getLastCover(){
+        if(hasCovers()){
+            return covers.get(covers.size()-1).getImage();
+        }else {
+            return null;
+        }
+    }
+
+    public boolean songExist(Song song) {
+        return this.songs.contains(song);
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void addSong(Song song) {
+        this.songs.add(song);
+    }
+
+    public List<Song> getSongs() {
+        return songs;
+    }
+
+    // @TODO: Desacoplar este método
+    // https://www.rgagnon.com/javadetails/java-0601.html
+    public static BufferedImage imageToBufferedImage(Image image) {
+        BufferedImage bufferedImage = new BufferedImage(
+            image.getWidth(null), 
+            image.getHeight(null), 
+            BufferedImage.TYPE_INT_RGB
+        );
+        
+        Graphics graphics = bufferedImage.getGraphics();
+        
+        graphics.drawImage(image, 0, 0, null);
+        graphics.dispose();
+        
+        return bufferedImage;
+    }
+
+    // @TODO: Desacoplar este método
+    public Color getAverageColor() {
+        if (this.hasCovers()) {
+            BufferedImage bufferedImage = imageToBufferedImage(
+                this.getCovers().get(0).getImage()
+            );
+
+            int redSum = 0, greenSum = 0, blueSum = 0;
+            int height = bufferedImage.getHeight();
+            int width = bufferedImage.getWidth();
+            int totalPixels = height * width;
+            int color;
+            int red;
+            int green;
+            int blue;
+
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    color     = bufferedImage.getRGB(i, j);
+                    red     = (color & 0x00ff0000) >> 16;
+                    green   = (color & 0x0000ff00) >> 8;
+                    blue    = color & 0x000000ff;
+
+                    redSum += red;
+                    greenSum += green;
+                    blueSum += blue;
+                }
+            }
+
+            int redAverage = redSum / totalPixels;
+            int greenAverage = greenSum / totalPixels;
+            int blueAverage = blueSum / totalPixels;
+
+            return new Color(redAverage, greenAverage, blueAverage);
+        } else {
+            return Color.white;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return artist + " - " + name;
+    }
+
+}
