@@ -1,7 +1,7 @@
 package cl.prezdev.xjplay.model.scan;
 
 import cl.prezdev.jlog.Log;
-import cl.prezdev.jplay.Biblioteca;
+import cl.prezdev.jplay.MusicLibrary;
 import cl.prezdev.jplay.Song;
 import cl.prezdev.xjplay.rules.Rule;
 import cl.prezdev.xjplay.utils.Validar;
@@ -12,11 +12,11 @@ import java.util.logging.Logger;
 
 public class Scan extends Thread {
 
-    private Biblioteca biblioteca;
+    private MusicLibrary biblioteca;
     private UpdateBibliotecaUI update;
     private boolean huboCambios;
 
-    public Scan(Biblioteca biblioteca, UpdateBibliotecaUI update) {
+    public Scan(MusicLibrary biblioteca, UpdateBibliotecaUI update) {
         this.biblioteca = biblioteca;
         this.update = update;
         this.huboCambios = false;
@@ -45,10 +45,10 @@ public class Scan extends Thread {
     public void scanner() throws IOException {
         try {
             Log.add("REMOVIENDO NO EXISTENTES...");
-            int cant = biblioteca.removerNoExistentes();
+            int cant = biblioteca.cleanLibrary();
             Log.add("OK ("+cant+" removidos)");
 
-            for (File f : biblioteca.getRutas()) {
+            for (File f : biblioteca.getPaths()) {
                 Log.add("SCAN [" + f.getPath() + "]...");
                 scan(f);
                 Log.add("OK");
@@ -73,17 +73,17 @@ public class Scan extends Thread {
                         scan(a);
                     } else if (Validar.isCancion(a)) {
                         Song c = new Song(a.getPath());
-                        biblioteca.add(c);
+                        biblioteca.addSong(c);
                         huboCambios = true;
                     }
                 }
             } else {
                 Song c = new Song(raiz.getPath());
-                biblioteca.add(c);
+                biblioteca.addSong(c);
                 huboCambios = true;
             }
         }else{
-            if(biblioteca.removerRuta(raiz)){
+            if(biblioteca.removePath(raiz)){
                 Log.add("Ruta removida! ["+raiz+"]");
                 huboCambios = true;
             }

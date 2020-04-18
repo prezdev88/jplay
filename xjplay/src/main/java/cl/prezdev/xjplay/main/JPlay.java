@@ -1,24 +1,22 @@
 package cl.prezdev.xjplay.main;
 
 //iconos https://www.iconfinder.com/iconsets/snipicons
-// https://github.com/pperezp/jplay
 import cl.prezdev.jlog.Log;
 import cl.prezdev.jlog.LogEntry;
 import cl.prezdev.jlog.TMLog;
 import cl.prezdev.jlog.UpdateLogUI;
 import cl.prezdev.jplay.Album;
-import cl.prezdev.jplay.Biblioteca;
+import cl.prezdev.jplay.MusicLibrary;
 import cl.prezdev.jplay.Song;
-import cl.prezdev.jplay.Reproductor;
-import cl.prezdev.xjplay.coverArt.HiloCover;
-import cl.prezdev.xjplay.listaArtistas.AtrasAlbum;
-import cl.prezdev.xjplay.listaArtistas.CellRenderAlbum;
-import cl.prezdev.xjplay.listaArtistas.CellRenderArtista;
-import cl.prezdev.xjplay.listaArtistas.CoverArtista;
-import cl.prezdev.xjplay.listaArtistas.LMAlbum;
-import cl.prezdev.xjplay.listaArtistas.LMArtista;
-import cl.prezdev.xjplay.model.busqueda.DgBuscar;
-import cl.prezdev.xjplay.model.busqueda.IBuscar;
+import cl.prezdev.jplay.MusicPlayer;
+import cl.prezdev.xjplay.cover.art.CoverArtThread;
+import cl.prezdev.xjplay.artist.list.BackAlbum;
+import cl.prezdev.xjplay.list.cellrenderer.AlbumListCellRenderer;
+import cl.prezdev.xjplay.list.cellrenderer.ArtistListCellRenderer;
+import cl.prezdev.xjplay.artist.list.ArtistCoverArt;
+import cl.prezdev.xjplay.list.model.AlbumListModel;
+import cl.prezdev.xjplay.list.model.ArtistListModel;
+import cl.prezdev.xjplay.model.search.SearchDialog;
 import cl.prezdev.xjplay.model.lastFM.LastFM;
 import cl.prezdev.xjplay.model.progress.WorkerStringProgress;
 import cl.prezdev.xjplay.model.scan.Scan;
@@ -38,8 +36,6 @@ import cl.prezdev.xjplay.utils.Util;
 import cl.prezdev.xjplay.utils.Validar;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.datatransfer.DataFlavor;
@@ -93,13 +89,12 @@ import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
-//import nicon.notify.core.Notification;
-
+import cl.prezdev.xjplay.model.search.SearchListener;
 public class JPlay extends javax.swing.JFrame implements
-        BasicPlayerListener, IBuscar, UpdateBibliotecaUI, UpdateLogUI {
+        BasicPlayerListener, SearchListener, UpdateBibliotecaUI, UpdateLogUI {
 
-    public static Reproductor reproductor;
-    private Biblioteca biblioteca;
+    public static MusicPlayer reproductor;
+    private MusicLibrary biblioteca;
     private List<Song> canciones; // son las canciones de la lista de reproducción actual
     private Thread hiloRep;
     private Thread hiloCargar;
@@ -109,14 +104,14 @@ public class JPlay extends javax.swing.JFrame implements
 
     private final boolean SAVE = true; // ESTO ES SOLO PARA DEBUGGING
     private List<Song> lFiltrada;
-    private List<CoverArtista> coversArtistas;
+    private List<ArtistCoverArt> coversArtistas;
     private boolean isPlay;
     private boolean isStop;
     private boolean isRandom;
     private boolean repetirCancion;
     private int nextRandom;
     private Image icono;
-    private HiloCover hCover; // hilo para animación de caratulas
+    private CoverArtThread hCover; // hilo para animación de caratulas
 
     private int totalBytes; // GUARDA EL TOTAL DE DURACIÓN DE LA CANCION EN MILIS
 
@@ -124,7 +119,7 @@ public class JPlay extends javax.swing.JFrame implements
     private WorkerStringProgress workerStringProgress; // para pintar los minutos en la barra
     private boolean imprimirBarraDeProgreso;
 
-    private DgBuscar dialogBuscar;
+    private SearchDialog dialogBuscar;
 
     private int tabActual; // esto es para el drag and drop
 
@@ -156,7 +151,7 @@ public class JPlay extends javax.swing.JFrame implements
 
         canciones = new ArrayList<>();
         albums = new ArrayList<>();
-        biblioteca = new Biblioteca();
+        biblioteca = new MusicLibrary();
         biblioteca.setUpdateLogUI(this);
 
         isRandom = false;
@@ -868,7 +863,7 @@ public class JPlay extends javax.swing.JFrame implements
                 if (o instanceof Song) {
                     Song c = (Song) o;
 
-                    canciones = biblioteca.getCancionesMasReproducidas();
+                    canciones = biblioteca.getMostListenedSongs();
 
                     /*Ahora debo poner las canciones en un album*/
                     Album a = new Album(Rule.NOMBRE, "Canciones más escuchadas!", null);
@@ -898,38 +893,38 @@ public class JPlay extends javax.swing.JFrame implements
     private void tabbedPrincipalMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabbedPrincipalMouseReleased
         if (evt.getClickCount() == 2) {
             if (tabbedPrincipal.getSelectedIndex() == 1) {
-                cargarCancionesABiblioteca(biblioteca.getCanciones());
+                cargarCancionesABiblioteca(biblioteca.getSongs());
             }
         }
 
         switch (tabbedPrincipal.getSelectedIndex()) {
             case Rule.Tabs.BIBLIOTECA:
-                lblInfoCarga.setText(biblioteca.getDuracionBiblioteca());
+                lblInfoCarga.setText(biblioteca.getLibraryDuration());
                 break;
             case Rule.Tabs.EXPLORER:
-                lblInfoCarga.setText(biblioteca.getDuracionBiblioteca());
+                lblInfoCarga.setText(biblioteca.getLibraryDuration());
                 break;
             case Rule.Tabs.FAVORITOS:
-                lblInfoCarga.setText(biblioteca.getDuracionFavoritos());
+                lblInfoCarga.setText(biblioteca.getFavoritesDuration());
                 break;
             case Rule.Tabs.LISTA_ACTUAL:
-                lblInfoCarga.setText("Lista actual --> " + biblioteca.getDuracion(msListaActual));
+                lblInfoCarga.setText("Lista actual --> " + biblioteca.getFormattedDuration(msListaActual));
                 break;
             case Rule.Tabs.LOGGER:
-                lblInfoCarga.setText(biblioteca.getDuracionBiblioteca());
+                lblInfoCarga.setText(biblioteca.getLibraryDuration());
                 break;
             case Rule.Tabs.MAS_ESCUCHADAS:
-                lblInfoCarga.setText(biblioteca.getDuracionMasEscuchadas());
+                lblInfoCarga.setText(biblioteca.getMostListenedDuration());
                 break;
         }
     }//GEN-LAST:event_tabbedPrincipalMouseReleased
 
     private void btnFavActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFavActionPerformed
-        if (reproductor.getCancionActual() != null) {
+        if (reproductor.getCurrentSong() != null) {
             if (btnFav.isSelected()) {
-                biblioteca.addFavorita(reproductor.getCancionActual());
+                biblioteca.addFavoriteSong(reproductor.getCurrentSong());
             } else {
-                biblioteca.removeFavorita(reproductor.getCancionActual());
+                biblioteca.removeFavoriteSong(reproductor.getCurrentSong());
             }
             cargarArbolConFavoritos();
         }
@@ -943,7 +938,7 @@ public class JPlay extends javax.swing.JFrame implements
                 if (o instanceof Song) {
                     Song c = (Song) o;
 
-                    canciones = biblioteca.getFavoritos();
+                    canciones = biblioteca.getFavoritesSongs();
 
                     /*Ahora debo poner las canciones en un album*/
                     Album a = new Album(Rule.NOMBRE, "Favoritas!", null);
@@ -1039,17 +1034,17 @@ public class JPlay extends javax.swing.JFrame implements
         if (evt.getClickCount() == 2) {
             Object ob = listArtistas.getSelectedValue();
 
-            if (ob instanceof CoverArtista) {
-                CoverArtista ca = (CoverArtista) ob;
-                List<Album> albumsByArtista = biblioteca.getAlbumsByArtist(ca.getArtista());
-                albumsByArtista.add(0, new AtrasAlbum());
+            if (ob instanceof ArtistCoverArt) {
+                ArtistCoverArt ca = (ArtistCoverArt) ob;
+                List<Album> albumsByArtista = biblioteca.getAlbumsByArtist(ca.getArtistName());
+                albumsByArtista.add(0, new BackAlbum());
 
-                listArtistas.setCellRenderer(new CellRenderAlbum(albumsByArtista));
-                listArtistas.setModel(new LMAlbum(albumsByArtista));
-            } else if (ob instanceof AtrasAlbum) {
+                listArtistas.setCellRenderer(new AlbumListCellRenderer(albumsByArtista));
+                listArtistas.setModel(new AlbumListModel(albumsByArtista));
+            } else if (ob instanceof BackAlbum) {
                 // quiere ir atrás, o sea a los artistas
-                listArtistas.setCellRenderer(new CellRenderArtista(coversArtistas));
-                listArtistas.setModel(new LMArtista(coversArtistas));
+                listArtistas.setCellRenderer(new ArtistListCellRenderer(coversArtistas));
+                listArtistas.setModel(new ArtistListModel(coversArtistas));
             }
         }
     }//GEN-LAST:event_listArtistasMouseReleased
@@ -1074,7 +1069,7 @@ public class JPlay extends javax.swing.JFrame implements
 
                 setCover(g.cover);
 
-                biblioteca = (Biblioteca) IO.leerObjetoDesde(Ruta.BIBLIOTECA);
+                biblioteca = (MusicLibrary) IO.leerObjetoDesde(Ruta.BIBLIOTECA);
 
 //                Scan scan = new Scan(biblioteca, this);
 //                scan.scanner();
@@ -1130,13 +1125,13 @@ public class JPlay extends javax.swing.JFrame implements
 //                System.out.println("Índice actual: " + indiceActual);
 
                 cargarArbolConCanciones(g.albums);
-                cargarCancionesABiblioteca(biblioteca.getCanciones());
+                cargarCancionesABiblioteca(biblioteca.getSongs());
                 imprimirTemaActual();
 
             } catch (InvalidClassException ex) {
                 Log.add("EX: " + ex.getMessage());
-                biblioteca = new Biblioteca();
-                canciones = biblioteca.getCanciones();
+                biblioteca = new MusicLibrary();
+                canciones = biblioteca.getSongs();
                 coversArtistas = new ArrayList<>();
                 cargarDefault();
             } catch (ClassNotFoundException | IOException ex) {
@@ -1148,22 +1143,22 @@ public class JPlay extends javax.swing.JFrame implements
 
         switch (tabbedPrincipal.getSelectedIndex()) {
             case Rule.Tabs.BIBLIOTECA:
-                lblInfoCarga.setText(biblioteca.getDuracionBiblioteca());
+                lblInfoCarga.setText(biblioteca.getLibraryDuration());
                 break;
             case Rule.Tabs.EXPLORER:
-                lblInfoCarga.setText(biblioteca.getDuracionBiblioteca());
+                lblInfoCarga.setText(biblioteca.getLibraryDuration());
                 break;
             case Rule.Tabs.FAVORITOS:
-                lblInfoCarga.setText(biblioteca.getDuracionFavoritos());
+                lblInfoCarga.setText(biblioteca.getFavoritesDuration());
                 break;
             case Rule.Tabs.LISTA_ACTUAL:
-                lblInfoCarga.setText("Lista actual --> " + biblioteca.getDuracion(msListaActual));
+                lblInfoCarga.setText("Lista actual --> " + biblioteca.getFormattedDuration(msListaActual));
                 break;
             case Rule.Tabs.LOGGER:
-                lblInfoCarga.setText(biblioteca.getDuracionBiblioteca());
+                lblInfoCarga.setText(biblioteca.getLibraryDuration());
                 break;
             case Rule.Tabs.MAS_ESCUCHADAS:
-                lblInfoCarga.setText(biblioteca.getDuracionMasEscuchadas());
+                lblInfoCarga.setText(biblioteca.getMostListenedDuration());
                 break;
         }
     }
@@ -1225,13 +1220,13 @@ public class JPlay extends javax.swing.JFrame implements
                     cargarCancionesABiblioteca(a);
                 } else if (Validar.isCancion(a)) {
                     Song c = new Song(a.getPath());
-                    biblioteca.add(c);
+                    biblioteca.addSong(c);
                     lblInfoCarga.setText("Agregando " + c);
                 }
             }
         } else {
             Song c = new Song(raiz.getPath());
-            biblioteca.add(c);
+            biblioteca.addSong(c);
             lblInfoCarga.setText("Agregando " + c);
         }
     }
@@ -1430,7 +1425,7 @@ public class JPlay extends javax.swing.JFrame implements
             case BasicPlayerEvent.OPENED:
                 // el indice es -1 cuando cargo desde la biblioteca
 //            if (indiceActual != -1) {
-                setSlideTime((int) reproductor.getCancionActual().length());
+                setSlideTime((int) reproductor.getCurrentSong().length());
 //            }
                 break;
             default:
@@ -1446,7 +1441,7 @@ public class JPlay extends javax.swing.JFrame implements
     private void setVolumen(int vol) {
         try {
             if (reproductor != null) {
-                reproductor.setVol(vol);
+                reproductor.setVolume(vol);
             }
         } catch (BasicPlayerException ex) {
             Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
@@ -1534,13 +1529,13 @@ public class JPlay extends javax.swing.JFrame implements
             msListaActual += c.getMilisDuration();
         }
 
-        lblInfoCarga.setText("Lista actual --> " + biblioteca.getDuracion(msListaActual));
+        lblInfoCarga.setText("Lista actual --> " + biblioteca.getFormattedDuration(msListaActual));
     }
 
     private void cargarArbolConCancionesMasEscuchadas() {
         DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("raiz");
 
-        List<Song> masRepro = biblioteca.getCancionesMasReproducidas();
+        List<Song> masRepro = biblioteca.getMostListenedSongs();
 
         for (Song c : masRepro) {
             DefaultMutableTreeNode disco = new DefaultMutableTreeNode(c);
@@ -1565,7 +1560,7 @@ public class JPlay extends javax.swing.JFrame implements
     private void cargarArbolConFavoritos() {
         DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("raiz");
 
-        List<Song> favoritos = biblioteca.getFavoritos();
+        List<Song> favoritos = biblioteca.getFavoritesSongs();
 
         for (Song c : favoritos) {
             DefaultMutableTreeNode disco = new DefaultMutableTreeNode(c);
@@ -1676,9 +1671,9 @@ public class JPlay extends javax.swing.JFrame implements
                     File f = getSelectedTreeFile();
 
                     cargarCancionesABiblioteca(f);
-                    cargarCancionesABiblioteca(biblioteca.getCanciones());
-                    biblioteca.procesarAlbums();
-                    biblioteca.addRuta(f);
+                    cargarCancionesABiblioteca(biblioteca.getSongs());
+                    biblioteca.processAlbum();
+                    biblioteca.addPath(f);
                     initListaCoversArtistas();
                 } catch (IOException | InterruptedException ex) {
                     Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
@@ -1770,10 +1765,10 @@ public class JPlay extends javax.swing.JFrame implements
                 }
 
                 for (Song c : canciones) {
-                    biblioteca.remover(c);
+                    biblioteca.removeSong(c);
                 }
 
-                cargarCancionesABiblioteca(biblioteca.getCanciones());
+                cargarCancionesABiblioteca(biblioteca.getSongs());
             }
         });
 
@@ -1811,7 +1806,7 @@ public class JPlay extends javax.swing.JFrame implements
 //        Log.add("Se cargaron " + lista.size() + " canciones en biblioteca");
 //        lblInfoCarga.setText("Se cargaron " + lista.size() + " canciones en biblioteca");
 
-        Log.add(biblioteca.getDuracionBiblioteca());
+        Log.add(biblioteca.getLibraryDuration());
 //        lblInfoCarga.setText(biblioteca.getDuracionBiblioteca());
 //        tablaBiblioteca.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 
@@ -1830,12 +1825,12 @@ public class JPlay extends javax.swing.JFrame implements
         /**/
 
         btnCancelarCarga.setEnabled(false);
-        biblioteca.procesarAlbums();
+        biblioteca.processAlbum();
     }
 
     private void reproducir(Song cancion) {
 
-        btnFav.setSelected(biblioteca.isFavorita(cancion));
+        btnFav.setSelected(biblioteca.isFavoriteSong(cancion));
 
         try {
             new Thread(() -> {
@@ -1848,7 +1843,7 @@ public class JPlay extends javax.swing.JFrame implements
                 reproductor.stop();
             }
 
-            reproductor = new Reproductor(cancion, this);
+            reproductor = new MusicPlayer(cancion, this);
 
             reproductor.play();
 
@@ -1908,7 +1903,7 @@ public class JPlay extends javax.swing.JFrame implements
     }
 
     private void reproducirCancionActual() {
-        reproducir(canciones.get(canciones.indexOf(reproductor.getCancionActual())));
+        reproducir(canciones.get(canciones.indexOf(reproductor.getCurrentSong())));
     }
 
 //    private int getIndice(File f) {
@@ -1921,14 +1916,14 @@ public class JPlay extends javax.swing.JFrame implements
 //    }
     private void imprimirTemaActual() {
         if (reproductor != null) {
-            Song cancionActual = reproductor.getCancionActual();
+            Song cancionActual = reproductor.getCurrentSong();
             lblArtista.setText(cancionActual.getAuthor() + " - " + cancionActual.getAlbum() + " (" + cancionActual.getYear() + ")");
             lblNombreCancion.setText(cancionActual.getName() + " (" + cancionActual.getDurationAsString() + ")");
         }
     }
 
     private void cargarDefault() {
-        cargarCancionesABiblioteca(biblioteca.getCanciones());
+        cargarCancionesABiblioteca(biblioteca.getSongs());
         cargarArbolConCanciones(null);
 //        lblCover.setIcon(new ImageIcon(icono));
         setCover(icono);
@@ -2078,7 +2073,7 @@ public class JPlay extends javax.swing.JFrame implements
             } else { // no hay imagenes en la carpeta de la canción
                 List<ImageIcon> covers = new ArrayList<>();
                 try {
-                    Image imLastFM = LastFM.getImage(cancion.getAuthor(), cancion.getAlbum());
+                    Image imLastFM = LastFM.getCoverArt(cancion.getAuthor(), cancion.getAlbum());
                     imLastFM = imLastFM.getScaledInstance((int) Rule.COVER_DIMENSION.getWidth(),
                             (int) Rule.COVER_DIMENSION.getHeight(),
                             Image.SCALE_SMOOTH);
@@ -2112,7 +2107,7 @@ public class JPlay extends javax.swing.JFrame implements
 
         setColorFondo(album);
 
-        hCover = new HiloCover(lblCover, album.getCovers());
+        hCover = new CoverArtThread(lblCover, album.getCovers());
         hCover.start();
 
         setIconImage(album.getCovers().get(0).getImage());
@@ -2158,7 +2153,7 @@ public class JPlay extends javax.swing.JFrame implements
      * Reproduce el siguiente, si es el último reproduce el primero
      */
     private void reproducirSiguiente() {
-        int indexActual = canciones.indexOf(reproductor.getCancionActual());
+        int indexActual = canciones.indexOf(reproductor.getCurrentSong());
         indexActual++;
         if (indexActual < canciones.size()) {
             reproducir(canciones.get(indexActual));
@@ -2171,7 +2166,7 @@ public class JPlay extends javax.swing.JFrame implements
      * Reproduce el anterior, si es el primero reproduce el último
      */
     private void reproducirAnterior() {
-        int indexActual = canciones.indexOf(reproductor.getCancionActual());
+        int indexActual = canciones.indexOf(reproductor.getCurrentSong());
         indexActual--;
         if (indexActual >= 0) {
             reproducir(canciones.get(indexActual));
@@ -2190,7 +2185,7 @@ public class JPlay extends javax.swing.JFrame implements
         lFiltrada = new ArrayList<>();
 
         int i = 1;
-        for (Song c : biblioteca.getCanciones()) {
+        for (Song c : biblioteca.getSongs()) {
             if (c.getAuthor().toLowerCase().contains(filtro)
                     || c.getAlbum().toLowerCase().contains(filtro)
                     || c.getName().toLowerCase().contains(filtro)) {
@@ -2216,8 +2211,8 @@ public class JPlay extends javax.swing.JFrame implements
             public void actionPerformed(ActionEvent e) {
                 tabbedPrincipal.setSelectedIndex(Rule.Tabs.BIBLIOTECA);
                 if (dialogBuscar == null) {
-                    dialogBuscar = new DgBuscar(JPlay.this, false);
-                    dialogBuscar.setIbuscar(JPlay.this);
+                    dialogBuscar = new SearchDialog(JPlay.this, false);
+                    dialogBuscar.setSearchable(JPlay.this);
                     dialogBuscar.setBounds(JPlay.this.getX(), JPlay.this.getY(), JPlay.this.getWidth(), dialogBuscar.getHeight());
                     dialogBuscar.setVisible(true);
                 } else {
@@ -2239,7 +2234,7 @@ public class JPlay extends javax.swing.JFrame implements
                 Log.add("comando! " + filtro);
 
                 // si es un comando, despues cargo de nuevo la biblioteca
-                cargarCancionesABiblioteca(biblioteca.getCanciones());
+                cargarCancionesABiblioteca(biblioteca.getSongs());
 
                 String text = "";
 
@@ -2247,7 +2242,7 @@ public class JPlay extends javax.swing.JFrame implements
                     Log.add("RUTAS:");
                     text += "RUTAS:\n";
 
-                    for (File ruta : biblioteca.getRutas()) {
+                    for (File ruta : biblioteca.getPaths()) {
                         Log.add("\t" + ruta.getPath());
                         text += ruta.getPath() + "\n";
                     }
@@ -2258,7 +2253,7 @@ public class JPlay extends javax.swing.JFrame implements
                     s.start();
                 } else if (filtro.equalsIgnoreCase("/favs")) {
                     Log.add("Canciones favoritas:");
-                    for (Song c : biblioteca.getFavoritos()) {
+                    for (Song c : biblioteca.getFavoritesSongs()) {
                         Log.add(c.toString());
                     }
                 }
@@ -2272,12 +2267,12 @@ public class JPlay extends javax.swing.JFrame implements
     }
 
     @Override
-    public void cargarComboDeBusqueda(JComboBox cbo) {
+    public void loadSearchCombobox(JComboBox cbo) {
 
         cbo.removeAllItems();
         cbo.addItem("");
 
-        for (String artista : biblioteca.getArtistas()) {
+        for (String artista : biblioteca.getArtistNames()) {
             cbo.addItem(artista);
         }
 
@@ -2299,15 +2294,15 @@ public class JPlay extends javax.swing.JFrame implements
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (hCover.isAlive()) {
-                        Image actualCover = hCover.getActualCover();
+                        Image actualCover = hCover.getCurrentCoverArt();
 
                         hCover.interrupt();
 
-                        Album a = biblioteca.getAlbum(reproductor.getCancionActual());
+                        Album a = biblioteca.getAlbum(reproductor.getCurrentSong());
 
                         a.removeCover(new ImageIcon(actualCover));
 
-                        hCover = new HiloCover(lblCover, a.getCovers());
+                        hCover = new CoverArtThread(lblCover, a.getCovers());
                         hCover.start();
                     }
                 } catch (NullPointerException ex) {
@@ -2351,9 +2346,9 @@ public class JPlay extends javax.swing.JFrame implements
 //                                    Log.add(f.toString());
 
                                     cargarCancionesABiblioteca(f);
-                                    cargarCancionesABiblioteca(biblioteca.getCanciones());
-                                    biblioteca.procesarAlbums();
-                                    biblioteca.addRuta(f);
+                                    cargarCancionesABiblioteca(biblioteca.getSongs());
+                                    biblioteca.processAlbum();
+                                    biblioteca.addPath(f);
                                 } catch (IOException | InterruptedException ex) {
                                     Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -2394,8 +2389,8 @@ public class JPlay extends javax.swing.JFrame implements
     @Override
     public void updateBibliotecaUI(boolean huboCambios) {
         if (huboCambios) {
-            cargarCancionesABiblioteca(biblioteca.getCanciones());
-            biblioteca.procesarAlbums();
+            cargarCancionesABiblioteca(biblioteca.getSongs());
+            biblioteca.processAlbum();
         } else {
             Log.add("[No hubo cambios en la biblioteca]");
         }
@@ -2498,18 +2493,18 @@ public class JPlay extends javax.swing.JFrame implements
 
         if (coversArtistas == null) {
             coversArtistas = new ArrayList<>();
-            biblioteca.getArtistas().forEach((artista) -> {
+            biblioteca.getArtistNames().forEach((artista) -> {
                 try {
-                    coversArtistas.add(new CoverArtista(artista));
+                    coversArtistas.add(new ArtistCoverArt(artista));
                 } catch (Exception ex) {
                     Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
         } else {
-            for (String artista : biblioteca.getArtistas()) {
+            for (String artista : biblioteca.getArtistNames()) {
                 if (!estaArtista(artista)) {
                     try {
-                        coversArtistas.add(new CoverArtista(artista));
+                        coversArtistas.add(new ArtistCoverArt(artista));
                     } catch (Exception ex) {
                         Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -2518,16 +2513,16 @@ public class JPlay extends javax.swing.JFrame implements
         }
 
         /*Ordena descendente los artistas*/
-        Collections.sort(coversArtistas, new Comparator<CoverArtista>() {
+        Collections.sort(coversArtistas, new Comparator<ArtistCoverArt>() {
             @Override
-            public int compare(CoverArtista c1, CoverArtista c2) {
-                return c1.getArtista().compareTo(c2.getArtista());
+            public int compare(ArtistCoverArt c1, ArtistCoverArt c2) {
+                return c1.getArtistName().compareTo(c2.getArtistName());
             }
         });
 
         try {
-            listArtistas.setCellRenderer(new CellRenderArtista(coversArtistas));
-            listArtistas.setModel(new LMArtista(coversArtistas));
+            listArtistas.setCellRenderer(new ArtistListCellRenderer(coversArtistas));
+            listArtistas.setModel(new ArtistListModel(coversArtistas));
             listArtistas.setLayoutOrientation(JList.HORIZONTAL_WRAP);
             listArtistas.setVisibleRowCount(-1);
         } catch (Exception e) {
@@ -2536,7 +2531,7 @@ public class JPlay extends javax.swing.JFrame implements
     }
 
     public boolean estaArtista(String artista) {
-        boolean estado = coversArtistas.stream().anyMatch((ca) -> (ca.getArtista().equals(artista)));
+        boolean estado = coversArtistas.stream().anyMatch((ca) -> (ca.getArtistName().equals(artista)));
         System.out.println("ARTISTA [" + artista + "] --> " + estado);
         return estado;
     }

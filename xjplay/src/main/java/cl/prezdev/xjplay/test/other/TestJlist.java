@@ -18,7 +18,7 @@ public class TestJlist extends javax.swing.JFrame {
             lista.setLayoutOrientation(JList.HORIZONTAL_WRAP);
             lista.setVisibleRowCount(-1);
             
-            Image image = LastFM.getImage("animals as leaders");
+            Image image = LastFM.getCoverArt("animals as leaders");
             
             jLabel1.setIcon(new ImageIcon(image.getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
         } catch (Exception ex) {

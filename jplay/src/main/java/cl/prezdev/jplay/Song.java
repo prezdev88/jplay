@@ -30,7 +30,7 @@ public class Song extends File {
         author = "Sin autor";
         album = "Sin album";
         trackNumber = -1;
-        load();
+        loadMetaDataSong();
 //        coverFile = null;
         
         playCount = 0;
@@ -75,32 +75,33 @@ public class Song extends File {
 //    }
 //
 
-    private void load() {
+    private void loadMetaDataSong() {
         try {
-            name = get("title").toString().trim();
+            name = getMetaData("title").toString().trim();
         } catch (NullPointerException e) {}
 
         try {
-            author = get("author").toString().trim();
+            author = getMetaData("author").toString().trim();
         } catch (NullPointerException e) {}
 
         try {
-            album = get("album").toString().trim();
+            album = getMetaData("album").toString().trim();
         } catch (NullPointerException e) {}
 
         try {
-            trackNumber = Integer.parseInt(get("mp3.id3tag.track").toString().trim());
+            trackNumber = Integer.parseInt(getMetaData("mp3.id3tag.track").toString().trim());
         } catch (Exception ex) {}
 
         try {
-            microseconds = (Long) get("duration");
+            microseconds = (Long) getMetaData("duration");
         } catch (Exception ex) {}
         
         try {
-            year = get("date").toString();
+            year = getMetaData("date").toString();
         } catch (Exception ex) {}
     }
 
+    // @TODO: Desacoplar
     public String getFormattedYear() {
         if (year != null) {
             try {
@@ -115,33 +116,34 @@ public class Song extends File {
         }
     }
     
-
+    // @TODO: Desacoplar
     public String getDurationAsString() {
-        int mili = (int) (microseconds / 1000);
-        int sec = (mili / 1000) % 60;
-        int min = (mili / 1000) / 60;
-        return min + ":" + (sec < 10 ? "0" + sec : sec);
+        int milliseconds = (int) (microseconds / 1000);
+        int seconds = (milliseconds / 1000) % 60;
+        int minutes = (milliseconds / 1000) / 60;
+        return minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
     }
 
+    // @TODO: Desacoplar
     public String getDurationAsString(int actualEnMilis) {
         int sec = (actualEnMilis / 1000) % 60;
         int min = (actualEnMilis / 1000) / 60;
         return min + ":" + (sec < 10 ? "0" + sec : sec);
     }
 
-
     public int getMilisDuration() {
         return (int) (microseconds / 1000);
     }
 
-    private Object get(String key) {
+    // @TODO: Desacoplar
+    private Object getMetaData(String key) {
         try {
             //http://www.javazoom.net/mp3spi/documents.html
             //http://www.javazoom.net/jlgui/developerguide.html
-            AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(this);
+            AudioFileFormat audioFileFormat = AudioSystem.getAudioFileFormat(this);
             
-            if (fileFormat instanceof TAudioFileFormat) {
-                Map<?, ?> properties = ((TAudioFileFormat) fileFormat).properties();
+            if (audioFileFormat instanceof TAudioFileFormat) {
+                Map<?, ?> properties = ((TAudioFileFormat) audioFileFormat).properties();
 
                 return properties.get(key);
             } else {

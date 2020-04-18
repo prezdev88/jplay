@@ -1,14 +1,15 @@
-package cl.prezdev.xjplay.listaArtistas;
+package cl.prezdev.xjplay.list.model;
 
+import cl.prezdev.xjplay.artist.list.ArtistCoverArt;
 import java.util.List;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 
-public class LMArtista implements ListModel<CoverArtista>{
+public class ArtistListModel implements ListModel<ArtistCoverArt>{
     
-    private final List<CoverArtista> coverArtistas;
+    private final List<ArtistCoverArt> coverArtistas;
 
-    public LMArtista(List<CoverArtista> coverArtistas) {
+    public ArtistListModel(List<ArtistCoverArt> coverArtistas) {
         this.coverArtistas = coverArtistas;
     }
     
@@ -18,7 +19,7 @@ public class LMArtista implements ListModel<CoverArtista>{
     }
 
     @Override
-    public CoverArtista getElementAt(int i) {
+    public ArtistCoverArt getElementAt(int i) {
         return coverArtistas.get(i);
     }
 

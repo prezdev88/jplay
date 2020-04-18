@@ -1,15 +1,15 @@
-package cl.prezdev.xjplay.listaArtistas;
+package cl.prezdev.xjplay.list.model;
 
 import cl.prezdev.jplay.Album;
 import java.util.List;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 
-public class LMAlbum implements ListModel<Album>{
+public class AlbumListModel implements ListModel<Album>{
     
     private final List<Album> albums;
 
-    public LMAlbum(List<Album> albums) {
+    public AlbumListModel(List<Album> albums) {
         this.albums = albums;
     }
     

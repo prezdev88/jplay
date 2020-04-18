@@ -65,7 +65,7 @@ public class CellRenderCancionLista extends JLabel implements TreeCellRenderer {
                 }
 
                 if (JPlay.reproductor != null) {
-                    Song actual = JPlay.reproductor.getCancionActual();
+                    Song actual = JPlay.reproductor.getCurrentSong();
                     String disco = ob.toString();
 
                     if (disco.equalsIgnoreCase(actual.getAuthor() + " - " + actual.getAlbum())) {
@@ -79,7 +79,7 @@ public class CellRenderCancionLista extends JLabel implements TreeCellRenderer {
             if (JPlay.reproductor != null) {
                 if (ob instanceof Song) {
                     Song c = (Song) ob;
-                    if (JPlay.reproductor.getCancionActual().equals(c)) {
+                    if (JPlay.reproductor.getCurrentSong().equals(c)) {
                         isCancionActual = true;
                     }
                 }

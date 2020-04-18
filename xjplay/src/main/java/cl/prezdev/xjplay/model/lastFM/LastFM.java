@@ -16,29 +16,31 @@ import javax.imageio.ImageIO;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+// @TODO: Pensar en externalizar esto en un proyecto
 public class LastFM {
 
-    public static Image getImage(String artist, String album) throws Exception {
-        String url = "http://ws.audioscrobbler.com/2.0/?"
-                + "method=album.getinfo&"
-                + "api_key=" + Rule.API_KEY + "&"
-                + "artist=" + artist + "&"
-                + "album=" + album + "&"
-                + "format=json";
+    public static Image getCoverArt(String artist, String album) throws Exception {
+        final String API_URL = 
+            "http://ws.audioscrobbler.com/2.0/?" + 
+            "method=album.getinfo&" + 
+            "api_key=" + Rule.API_KEY + "&" + 
+            "artist=" + artist + "&" + 
+            "album=" + album + "&" + 
+            "format=json";
 
-        System.out.println(url);
+        System.out.println(API_URL);
 
-        List<CoverArt> covers = LastFM.getCovers(url, "album");
+        List<CoverArt> coversArt = LastFM.getCoversArt(API_URL, "album");
 
-        for (CoverArt cover : covers) {
-            Log.add(cover.toString());
+        for (CoverArt coverArt : coversArt) {
+            Log.add(coverArt);
         }
 
-        int ultimoIndice = covers.size() - 1;
-        return getImage(covers.get(ultimoIndice));
+        int lastIndex = coversArt.size() - 1;
+        return getCoverArt(coversArt.get(lastIndex));
     }
 
-    public static Image getImage(String artist) throws Exception {
+    public static Image getCoverArt(String artist) throws Exception {
         String url = "http://ws.audioscrobbler.com/2.0/?"
                 + "method=artist.getinfo&"
                 + "api_key=" + Rule.API_KEY + "&"
@@ -47,15 +49,16 @@ public class LastFM {
 
         System.out.println(url);
 
-        List<CoverArt> covers = LastFM.getCovers(url, "artist");
+        List<CoverArt> covers = LastFM.getCoversArt(url, "artist");
 
 //        for (CoverArt cover : covers) {
 //            System.out.println(cover.toString());
 //        }
         int ultimoIndice = covers.size() - 1;
-        return getImage(covers.get(ultimoIndice));
+        return getCoverArt(covers.get(ultimoIndice));
     }
 
+    // @TODO: Consumir API con una librería apta para ello
     /**
      * Transforma una URL en un String JSON
      *
@@ -87,39 +90,17 @@ public class LastFM {
     /**
      * Obtiene una lista de CoverArt a partir de una URL de LastFM API
      *
-     * @param url
-     * @param parametro puede ser album o artist
+     * @param apiUrl
+     * @param parameter puede ser album o artist
      * @return Una lista de CoverArt
      * @throws Exception
      */
-    private static List<CoverArt> getCovers(String url, String parametro) throws Exception {
-        String jsonText = LastFM.readUrl(url);
+    private static List<CoverArt> getCoversArt(String apiUrl, String parameter) throws Exception {
+        String jsonText = LastFM.readUrl(apiUrl);
 
-        JSONObject jo = new JSONObject(jsonText);
+        JSONObject jsonObject = new JSONObject(jsonText);
 
-        JSONArray jsonArray = jo.getJSONObject(parametro).getJSONArray("image");
-
-        List<CoverArt> covers = new ArrayList<>();
-
-        for (int i = 0; i < jsonArray.length(); i++) {
-            covers.add(
-                    new CoverArt(
-                            jsonArray.getJSONObject(i).get("#text").toString(),
-                            jsonArray.getJSONObject(i).get("size").toString()
-                    )
-            );
-        }
-        return covers;
-
-        //https://stackoverflow.com/questions/19966672/java-json-with-gson
-    }
-
-    private static List<CoverArt> getArtistCovers(String url) throws Exception {
-        String jsonText = LastFM.readUrl(url);
-
-        JSONObject jo = new JSONObject(jsonText);
-
-        JSONArray jsonArray = jo.getJSONObject("artist").getJSONArray("image");
+        JSONArray jsonArray = jsonObject.getJSONObject(parameter).getJSONArray("image");
 
         List<CoverArt> covers = new ArrayList<>();
 
@@ -136,16 +117,9 @@ public class LastFM {
         //https://stackoverflow.com/questions/19966672/java-json-with-gson
     }
 
-//    public static void main(String[] args) {
-//        try {
-//            LastFM.getImage("Cannibal Corpse", "Tomb of the mutilated");
-//        } catch (Exception ex) {
-//            System.out.println("EX: "+ex.getMessage());
-//        }
-//    }
-    private static Image getImage(CoverArt ca) throws MalformedURLException, IOException {
+    private static Image getCoverArt(CoverArt coverArt) throws MalformedURLException, IOException {
         try {
-            URL url = new URL(ca.getUrl());
+            URL url = new URL(coverArt.getUrl());
             Image image = ImageIO.read(url);
 
             return image;

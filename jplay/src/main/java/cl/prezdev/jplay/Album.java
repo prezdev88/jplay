@@ -30,7 +30,7 @@ public class Album implements Serializable {
         if (year != null) {
             try {
                 return year.trim();
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException ex) {
                 return "[           ] ";
             }
         } else {
@@ -55,6 +55,7 @@ public class Album implements Serializable {
         return covers;
     }
     
+    // @TODO: wtf este método
     public Image getLastCover(){
         if(hasCovers()){
             return covers.get(covers.size()-1).getImage();

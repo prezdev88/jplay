@@ -14,7 +14,7 @@ public class Rule {
     public static final String VERSION              = "rev. 0.6.2";
     
     public static int PAUSE_MOVER                   = 3;         // el pause para mover la x de la foto
-    public static int PAUSE_ENTRE_FOTOS             = 10000;     // pause entre cada fotos;
+    public static int PAUSE_BETWEEN_COVERS             = 10000;     // pause entre cada fotos;
     public static int FONT_SIZE_SEARCH              = 13;
     
     public static int FONT_SIZE_CANCIONES           = 12;
@@ -27,7 +27,7 @@ public class Rule {
     // No es final, porque en el constructor de JPlay se establece según el jlabel del cover
     public static Dimension COVER_DIMENSION;
     public static final Dimension MINI_CARATULA     = new Dimension(48, 48);
-    public static final Dimension ARTISTA_COVER     = new Dimension(200, 200);
+    public static final Dimension ARTIST_COVER_ART     = new Dimension(200, 200);
     
     /*EXPLORER*/
     public static final int ICON_EXPLORER_SIZE          = 14;

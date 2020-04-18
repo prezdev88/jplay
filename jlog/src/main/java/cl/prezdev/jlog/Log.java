@@ -24,6 +24,10 @@ public class Log implements Serializable{
         Log.update.updateLogUI(logEntry);
     }
     
+    public static void add(Object message) {
+        Log.add(message.toString());
+    }
+    
     public static List<LogEntry> getEntries(){
         return Log.logEntries;
     }

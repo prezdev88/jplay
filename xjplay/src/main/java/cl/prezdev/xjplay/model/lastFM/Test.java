@@ -8,7 +8,7 @@ public class Test extends javax.swing.JFrame {
         try {
             initComponents();
             
-            jLabel1.setIcon(new ImageIcon(LastFM.getImage("Deeds of flesh", "Path of the weakening")));
+            jLabel1.setIcon(new ImageIcon(LastFM.getCoverArt("Deeds of flesh", "Path of the weakening")));
         } catch (Exception ex) {
             jLabel1.setText("No hay imagen disponible");
         }

@@ -1,7 +1,7 @@
 package cl.prezdev.xjplay.test;
 
 import cl.prezdev.jlog.Log;
-import cl.prezdev.xjplay.coverArt.HiloCover;
+import cl.prezdev.xjplay.cover.art.CoverArtThread;
 import cl.prezdev.xjplay.test.progress.WorkerStringProgress;
 import cl.prezdev.xjplay.test.progress.WorkerValueProgress;
 import java.awt.Image;
@@ -275,7 +275,7 @@ public class NewJFrame extends javax.swing.JFrame {
         imagenes.add(ii4);
         imagenes.add(ii5);
 
-        HiloCover hca = new HiloCover(lbl1, imagenes);
+        CoverArtThread hca = new CoverArtThread(lbl1, imagenes);
         hca.start();
     }//GEN-LAST:event_jButton1ActionPerformed
 
