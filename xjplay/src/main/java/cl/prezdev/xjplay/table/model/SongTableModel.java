@@ -1,21 +1,21 @@
-package cl.prezdev.xjplay.model.tableModel;
+package cl.prezdev.xjplay.table.model;
 
 import cl.prezdev.jplay.Song;
 import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-public class TMCancion implements TableModel {
+public class SongTableModel implements TableModel {
 
-    private List<Song> canciones;
+    private List<Song> songs;
 
-    public TMCancion(List<Song> canciones) {
-        this.canciones = canciones;
+    public SongTableModel(List<Song> songs) {
+        this.songs = songs;
     }
 
     @Override
     public int getRowCount() {
-        return canciones.size();
+        return songs.size();
     }
 
     @Override
@@ -48,13 +48,13 @@ public class TMCancion implements TableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Song c = canciones.get(rowIndex);
+        Song song = songs.get(rowIndex);
         
         switch (columnIndex) {
             case 0:
-                return c;
+                return song;
             case 1:
-                return c.getDurationAsString();
+                return song.getDurationAsString();
 
         }
 
@@ -62,18 +62,12 @@ public class TMCancion implements TableModel {
     }
 
     @Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {}
 
     @Override
-    public void addTableModelListener(TableModelListener l) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public void addTableModelListener(TableModelListener tableModelListener) {}
 
     @Override
-    public void removeTableModelListener(TableModelListener l) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public void removeTableModelListener(TableModelListener tableModelListener) {}
 
 }

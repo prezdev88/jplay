@@ -2,7 +2,7 @@
 package cl.prezdev.xjplay.model.lastFM;
 
 import cl.prezdev.jlog.Log;
-import cl.prezdev.xjplay.recursos.Recurso;
+import cl.prezdev.xjplay.recursos.Resource;
 import cl.prezdev.xjplay.rules.Rule;
 import java.awt.Image;
 import java.io.BufferedReader;
@@ -119,12 +119,12 @@ public class LastFM {
 
     private static Image getCoverArt(CoverArt coverArt) throws MalformedURLException, IOException {
         try {
-            URL url = new URL(coverArt.getUrl());
+            URL url = new URL(coverArt.getImageUrl());
             Image image = ImageIO.read(url);
 
             return image;
         } catch (Exception e) {
-            return Recurso.ICONO_JPLAY;
+            return Resource.JPLAY_ICON;
         }
     }
 }

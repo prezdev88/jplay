@@ -1,28 +1,21 @@
-package cl.prezdev.xjplay.model.tree;
+package cl.prezdev.xjplay.tree.cell.renderer;
 
 import cl.prezdev.jplay.Song;
-import cl.prezdev.xjplay.recursos.Recurso;
-import cl.prezdev.xjplay.rules.Rule;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 
-public class CellRenderCancionMasTocada extends JLabel implements TreeCellRenderer {
+public class SongMostPlayedTreeCellRenderer extends JLabel implements TreeCellRenderer {
 
     private ImageIcon discIcon = null;
     private ImageIcon playIcon = null;
     private ImageIcon actualDiscIcon = null;
 
-    public CellRenderCancionMasTocada(ImageIcon playIcon, ImageIcon discIcon) {
+    public SongMostPlayedTreeCellRenderer(ImageIcon playIcon, ImageIcon discIcon) {
         this.playIcon = playIcon;
         this.discIcon = discIcon;
     }
@@ -37,16 +30,17 @@ public class CellRenderCancionMasTocada extends JLabel implements TreeCellRender
 //            fuente = fuente.deriveFont(Font.PLAIN, Rule.FONT_SIZE_CANCIONES);
 //
 //            this.setFont(fuente);
-            DefaultMutableTreeNode v = (DefaultMutableTreeNode) value;
-            Object ob = v.getUserObject();
+            DefaultMutableTreeNode defaultMutableTreeNode = (DefaultMutableTreeNode) value;
+            Object userObject = defaultMutableTreeNode.getUserObject();
 
-            if (ob instanceof Song) {
+            if (userObject instanceof Song) {
+                Song song = (Song) userObject;
                 
-                Song c = (Song) ob;
-                int cant = c.getPlayCount();
-                this.setText(" [ "+cant+" ] "+c.getAuthor()+" - "+c.toString() + " ("+c.getDurationAsString()+") ");
-                this.setToolTipText(cant+(cant == 1?" vez reproducida":" veces reproducidas"));
-                this.setIcon(null);
+                int playCount = song.getPlayCount();
+                
+                this.setText(" [ "+playCount+" ] "+song.getAuthor()+" - "+song.toString() + " ("+song.getDurationAsString()+") ");
+                this.setToolTipText(playCount+(playCount == 1?" vez reproducida":" veces reproducidas"));
+                this.setIcon(null); // @TODO: probar sacando esta linea
             } 
 //
 //            boolean isCancionActual = false;
@@ -63,6 +57,8 @@ public class CellRenderCancionMasTocada extends JLabel implements TreeCellRender
 
             if (selected) {
 //                this.setForeground(Color.white);
+                // @TODO: Almacenar color en alguna clasem hasta ahora se 
+                // almacena en Util
                 this.setBackground(new Color(217, 238, 208));
             } else {
                 this.setForeground(Color.black);
@@ -100,7 +96,9 @@ public class CellRenderCancionMasTocada extends JLabel implements TreeCellRender
      * "/xml/images/16atributo.png"
      * @return Un objeto del tipo ImageIcon
      */
+    // @TODO: Desacoplar este método
+    // Este método ya esta en SongListTreeCellRenderer y ExplorerTreeCellRenderer
     public static ImageIcon crearIcono(String rutaPaquete) {
-        return new ImageIcon(CellRenderCancionMasTocada.class.getResource(rutaPaquete));
+        return new ImageIcon(SongMostPlayedTreeCellRenderer.class.getResource(rutaPaquete));
     }
 }

@@ -29,7 +29,7 @@ public class CoverArtThread extends Thread {
                 for (int i = 0; i < coverArtImages.size(); i++) {
                     currentCoverArt = coverArtImages.get(i);
                     coverArtLabel.setIcon(new ImageIcon(getCurrentCoverArt()));
-                    Thread.sleep(Rule.PAUSE_BETWEEN_COVERS);
+                    Thread.sleep(Rule.BETWEEN_COVERS_PAUSE);
                 }
             }
         } catch (InterruptedException ex) {
@@ -39,8 +39,8 @@ public class CoverArtThread extends Thread {
 
     public Image getCurrentCoverArt() {
         return this.currentCoverArt.getImage().getScaledInstance(
-            (int) Rule.COVER_DIMENSION.getWidth(),
-            (int) Rule.COVER_DIMENSION.getHeight(),
+            (int) Rule.COVER_ART_DIMENSION.getWidth(),
+            (int) Rule.COVER_ART_DIMENSION.getHeight(),
             Image.SCALE_SMOOTH
         );
     }

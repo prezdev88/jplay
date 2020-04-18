@@ -2,7 +2,7 @@ package cl.prezdev.xjplay.list.cellrenderer;
 
 import cl.prezdev.jplay.Album;
 import cl.prezdev.xjplay.artist.list.BackAlbum;
-import cl.prezdev.xjplay.recursos.Recurso;
+import cl.prezdev.xjplay.recursos.Resource;
 import cl.prezdev.xjplay.rules.Rule;
 
 import java.awt.Component;
@@ -55,7 +55,7 @@ public class AlbumListCellRenderer extends DefaultListCellRenderer {
                 );
             } else {
                 // el disco no tiene imagen
-                imageCover = Recurso.ICONO_JPLAY.getScaledInstance(
+                imageCover = Resource.JPLAY_ICON.getScaledInstance(
                     Rule.ARTIST_COVER_ART.width,
                     Rule.ARTIST_COVER_ART.height,
                     Image.SCALE_SMOOTH

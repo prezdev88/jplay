@@ -5,67 +5,68 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.SwingWorker;
 
+// @TODO: Pensar en cambiar el nombre (SongProgressBar quizás)
 public class WorkerStringProgress extends SwingWorker<Void, String> {
 
-    private final JLabel lblDuracion;
-    private final String maxDuracionCancion;
-    private final int totalSegundos;
+    private final JLabel durationLabel;
+    private final String songDuration;
+    private final int totalSeconds;
 
-    private int iniMin;
-    private int iniSeg;
-    private boolean pausado;
+    private int initialMinute;
+    private int initialSecond;
+    private boolean paused;
 
-    public WorkerStringProgress(JLabel lblDuracion, String max) {
-        this.lblDuracion = lblDuracion;
-        maxDuracionCancion = max;
-        this.totalSegundos = getTotalSegundos();
+    public WorkerStringProgress(JLabel durationLabel, String songDuration) {
+        this.durationLabel = durationLabel;
+        this.songDuration = songDuration;
+        this.totalSeconds = getTotalSeconds();
 
-        iniMin = 0;
-        iniSeg = 0;
+        initialMinute = 0;
+        initialSecond = 0;
         
-        pausado = false;
+        paused = false;
     }
     
-    public void pausar(){
-        pausado = true;
+    public void pause(){
+        paused = true;
     }
     
     public void resume(){
-        pausado = false;
+        paused = false;
     }
 
     /**
      * este método se llama cuando libero el click sobre el progress bar
      * de la duracion de la canción
-     * @param porcentaje 
+     * @param percentage 
      */
-    public void cambiar(int porcentaje) {
-        Log.add(porcentaje + "%");
+    public void changeProgressBar(int percentage) {
+        Log.add(percentage + "%");
 
-        if (porcentaje < 0) { // si el porcentaje es negativo, dejo los minutos y segundos en 0
-            iniMin = 0;
-            iniSeg = 0;
-        } else if (porcentaje > 100) { // si es mayor a 100, lo dejo en el total
-            iniMin = totalSegundos / 60;
-            iniSeg = totalSegundos - (iniMin * 60);
+        if (percentage < 0) { // si el porcentaje es negativo, dejo los minutos y segundos en 0
+            initialMinute = 0;
+            initialSecond = 0;
+        } else if (percentage > 100) { // si es mayor a 100, lo dejo en el total
+            initialMinute = totalSeconds / 60;
+            initialSecond = totalSeconds - (initialMinute * 60);
         } else { // si no, se calcula el porcentaje del total.
-            iniSeg = (porcentaje * totalSegundos) / 100;
-            iniMin = iniSeg / 60;
-            iniSeg = iniSeg - (iniMin * 60);
+            initialSecond = (percentage * totalSeconds) / 100;
+            initialMinute = initialSecond / 60;
+            initialSecond = initialSecond - (initialMinute * 60);
 
         }
-        Log.add(iniMin + ":" + iniSeg);
+        Log.add(initialMinute + ":" + initialSecond);
     }
 
     @Override
     protected Void doInBackground() throws Exception {
-        for (iniMin = 0; iniMin < 60; iniMin++) {
-            for (iniSeg = 0; iniSeg < 60; iniSeg++) {
-                while(pausado){
+        for (initialMinute = 0; initialMinute < 60; initialMinute++) {
+            for (initialSecond = 0; initialSecond < 60; initialSecond++) {
+                while(paused){
                     Thread.sleep(500);
                 }
                 
-                publish(iniMin + ":" + (iniSeg < 10 ? "0" + iniSeg : iniSeg));
+                publish(initialMinute + ":" + (initialSecond < 10 ? "0" + initialSecond : initialSecond));
                 Thread.sleep(1000);
             }
         }
@@ -74,17 +75,17 @@ public class WorkerStringProgress extends SwingWorker<Void, String> {
 
     @Override
     protected void process(List<String> chunks) {
-        lblDuracion.setText(chunks.get(0) + " - "+maxDuracionCancion);
+        durationLabel.setText(chunks.get(0) + " - "+songDuration);
     }
 
-    private int getTotalSegundos() {
-        String[] split = maxDuracionCancion.split(":");
+    private int getTotalSeconds() {
+        String[] time = songDuration.split(":");
 
         int minutos, segundos;
 
-        minutos = Integer.parseInt(split[0]);
+        minutos = Integer.parseInt(time[0]);
         minutos = minutos * 60;
-        segundos = Integer.parseInt(split[1]);
+        segundos = Integer.parseInt(time[1]);
 
         Log.add("SEGUNDOS: " + (minutos + segundos));
 

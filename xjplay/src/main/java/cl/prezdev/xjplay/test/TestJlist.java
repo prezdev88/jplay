@@ -1,5 +1,5 @@
 
-package cl.prezdev.xjplay.test.other;
+package cl.prezdev.xjplay.test;
 
 import cl.prezdev.xjplay.model.lastFM.LastFM;
 import java.awt.Image;

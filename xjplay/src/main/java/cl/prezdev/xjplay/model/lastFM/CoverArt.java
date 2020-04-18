@@ -1,20 +1,21 @@
 package cl.prezdev.xjplay.model.lastFM;
 
+// @TODO: Lombok
 public class CoverArt {
-    private String url;
+    private String imageUrl;
     private String size;
 
-    public CoverArt(String url, String size) {
-        this.url = url;
+    public CoverArt(String imageUrl, String size) {
+        this.imageUrl = imageUrl;
         this.size = size;
     }
 
-    public String getUrl() {
-        return url;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setImageUrl(String url) {
+        this.imageUrl = url;
     }
 
     public String getSize() {
@@ -27,7 +28,7 @@ public class CoverArt {
 
     @Override
     public String toString() {
-        return "CoverArt{" + "url=" + url + ", size=" + size + '}';
+        return "CoverArt{" + "url=" + imageUrl + ", size=" + size + '}';
     }
     
     

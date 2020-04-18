@@ -19,21 +19,20 @@ import cl.prezdev.xjplay.list.model.ArtistListModel;
 import cl.prezdev.xjplay.model.search.SearchDialog;
 import cl.prezdev.xjplay.model.lastFM.LastFM;
 import cl.prezdev.xjplay.model.progress.WorkerStringProgress;
-import cl.prezdev.xjplay.model.scan.Scan;
-import cl.prezdev.xjplay.model.scan.UpdateBibliotecaUI;
-import cl.prezdev.xjplay.model.tableModel.TMCancion;
-import cl.prezdev.xjplay.model.tableModel.TMCancionBiblioteca;
-import cl.prezdev.xjplay.model.tree.CellRenderCancionLista;
-import cl.prezdev.xjplay.model.tree.CellRenderCancionMasTocada;
-import cl.prezdev.xjplay.model.tree.CellRenderExplorer;
-import cl.prezdev.xjplay.model.tree.CellRenderFavoritos;
-import cl.prezdev.xjplay.recursos.Recurso;
-import cl.prezdev.xjplay.recursos.Ruta;
+import cl.prezdev.xjplay.model.scan.ScanThread;
+import cl.prezdev.xjplay.table.model.SongTableModel;
+import cl.prezdev.xjplay.table.model.MusicLabrarySongTableModel;
+import cl.prezdev.xjplay.tree.cell.renderer.SongListTreeCellRenderer;
+import cl.prezdev.xjplay.tree.cell.renderer.SongMostPlayedTreeCellRenderer;
+import cl.prezdev.xjplay.tree.cell.renderer.ExplorerTreeCellRenderer;
+import cl.prezdev.xjplay.tree.cell.renderer.FavoritesTreeCellRenderer;
+import cl.prezdev.xjplay.recursos.Resource;
+import cl.prezdev.xjplay.recursos.Path;
 import cl.prezdev.xjplay.rules.Rule;
-import cl.prezdev.xjplay.save.Guardar;
+import cl.prezdev.xjplay.save.Save;
 import cl.prezdev.xjplay.save.IO;
 import cl.prezdev.xjplay.utils.Util;
-import cl.prezdev.xjplay.utils.Validar;
+import cl.prezdev.xjplay.utils.Validate;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
@@ -90,10 +89,11 @@ import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
 import cl.prezdev.xjplay.model.search.SearchListener;
+import cl.prezdev.xjplay.model.scan.MusicLibraryUiUpdate;
 public class JPlay extends javax.swing.JFrame implements
-        BasicPlayerListener, SearchListener, UpdateBibliotecaUI, UpdateLogUI {
+        BasicPlayerListener, SearchListener, MusicLibraryUiUpdate, UpdateLogUI {
 
-    public static MusicPlayer reproductor;
+    public static MusicPlayer musicPlayer;
     private MusicLibrary biblioteca;
     private List<Song> canciones; // son las canciones de la lista de reproducción actual
     private Thread hiloRep;
@@ -139,12 +139,12 @@ public class JPlay extends javax.swing.JFrame implements
     public JPlay() {
         initComponents();
 
-        Rule.COVER_DIMENSION = new Dimension(lblCover.getWidth(), lblCover.getHeight());
+        Rule.COVER_ART_DIMENSION = new Dimension(lblCover.getWidth(), lblCover.getHeight());
 
-        icono = Recurso.ICONO_JPLAY;
+        icono = Resource.JPLAY_ICON;
 
-        icono = icono.getScaledInstance((int) Rule.COVER_DIMENSION.getWidth(),
-                (int) Rule.COVER_DIMENSION.getHeight(),
+        icono = icono.getScaledInstance((int) Rule.COVER_ART_DIMENSION.getWidth(),
+                (int) Rule.COVER_ART_DIMENSION.getHeight(),
                 Image.SCALE_SMOOTH);
 
         initLog();
@@ -169,7 +169,7 @@ public class JPlay extends javax.swing.JFrame implements
             cargarSave();
         }
 
-        this.setTitle(Rule.NOMBRE + " - " + Rule.VERSION);
+        this.setTitle(Rule.NAME + " - " + Rule.VERSION);
         isPlay = false;
         isStop = true;
         repetirCancion = opRepetirCancion.isSelected();
@@ -231,7 +231,7 @@ public class JPlay extends javax.swing.JFrame implements
 
         panelPrincipal.setBackground(Color.white);
 
-        setBounds(0, 0, Rule.ANCHO, Rule.ALTO);
+        setBounds(0, 0, Rule.WIDTH, Rule.HEIGHT);
         setLocationRelativeTo(null);
     }
 
@@ -739,18 +739,18 @@ public class JPlay extends javax.swing.JFrame implements
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         if (SAVE) {
             try {
-                Guardar g = new Guardar();
+                Save g = new Save();
 
-                g.canciones = canciones;
+                g.songs = canciones;
                 g.indexTab = tabbedPrincipal.getSelectedIndex();
                 g.logEntries = Log.getEntries();
                 g.cover = lblCover.getIcon();
                 g.albums = albums;
                 g.volume = slideVol.getValue();
-                g.coverArtistas = coversArtistas;
+                g.artistCoversArt = coversArtistas;
 
-                IO.escribirObjetoEn(g, Ruta.SAVE);
-                IO.escribirObjetoEn(biblioteca, Ruta.BIBLIOTECA);
+                IO.escribirObjetoEn(g, Path.SAVE);
+                IO.escribirObjetoEn(biblioteca, Path.MUSIC_LIBRARY);
             } catch (IOException ex) {
                 Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -835,7 +835,7 @@ public class JPlay extends javax.swing.JFrame implements
     private void tablaCancionesKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaCancionesKeyReleased
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 
-            TMCancion model = (TMCancion) tablaCanciones.getModel();
+            SongTableModel model = (SongTableModel) tablaCanciones.getModel();
             int index = tablaCanciones.getSelectedRow();
             Song c = (Song) model.getValueAt(index, 0);
 
@@ -847,7 +847,7 @@ public class JPlay extends javax.swing.JFrame implements
 
     private void tablaCancionesMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaCancionesMouseReleased
         if (evt.getClickCount() == 2) {
-            TMCancion model = (TMCancion) tablaCanciones.getModel();
+            SongTableModel model = (SongTableModel) tablaCanciones.getModel();
 //            indiceActual = tablaCanciones.getSelectedRow();
 //            Cancion c = (Cancion) model.getValueAt(indiceActual, 0);
 //
@@ -866,14 +866,14 @@ public class JPlay extends javax.swing.JFrame implements
                     canciones = biblioteca.getMostListenedSongs();
 
                     /*Ahora debo poner las canciones en un album*/
-                    Album a = new Album(Rule.NOMBRE, "Canciones más escuchadas!", null);
+                    Album a = new Album(Rule.NAME, "Canciones más escuchadas!", null);
 
                     for (Song can : canciones) {
                         a.addSong(can);
                     }
 
                     List<ImageIcon> covers = new ArrayList<>();
-                    covers.add(CellRenderCancionLista.crearIcono(Ruta.ICONO_CORAZON));
+                    covers.add(SongListTreeCellRenderer.getImageIcon(Path.HEART_ICON));
                     a.setCovers(covers);
 
                     List<Album> albums = new ArrayList<>();
@@ -884,7 +884,7 @@ public class JPlay extends javax.swing.JFrame implements
 
                     reproducir(c);
 
-                    tabbedPrincipal.setSelectedIndex(Rule.Tabs.LISTA_ACTUAL);
+                    tabbedPrincipal.setSelectedIndex(Rule.Tabs.CURRENT_LIST);
                 }
             }
         }
@@ -898,33 +898,33 @@ public class JPlay extends javax.swing.JFrame implements
         }
 
         switch (tabbedPrincipal.getSelectedIndex()) {
-            case Rule.Tabs.BIBLIOTECA:
+            case Rule.Tabs.MUSIC_LIBRARY:
                 lblInfoCarga.setText(biblioteca.getLibraryDuration());
                 break;
             case Rule.Tabs.EXPLORER:
                 lblInfoCarga.setText(biblioteca.getLibraryDuration());
                 break;
-            case Rule.Tabs.FAVORITOS:
+            case Rule.Tabs.FAVORITES:
                 lblInfoCarga.setText(biblioteca.getFavoritesDuration());
                 break;
-            case Rule.Tabs.LISTA_ACTUAL:
+            case Rule.Tabs.CURRENT_LIST:
                 lblInfoCarga.setText("Lista actual --> " + biblioteca.getFormattedDuration(msListaActual));
                 break;
             case Rule.Tabs.LOGGER:
                 lblInfoCarga.setText(biblioteca.getLibraryDuration());
                 break;
-            case Rule.Tabs.MAS_ESCUCHADAS:
+            case Rule.Tabs.MOST_PLAYED:
                 lblInfoCarga.setText(biblioteca.getMostListenedDuration());
                 break;
         }
     }//GEN-LAST:event_tabbedPrincipalMouseReleased
 
     private void btnFavActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFavActionPerformed
-        if (reproductor.getCurrentSong() != null) {
+        if (musicPlayer.getCurrentSong() != null) {
             if (btnFav.isSelected()) {
-                biblioteca.addFavoriteSong(reproductor.getCurrentSong());
+                biblioteca.addFavoriteSong(musicPlayer.getCurrentSong());
             } else {
-                biblioteca.removeFavoriteSong(reproductor.getCurrentSong());
+                biblioteca.removeFavoriteSong(musicPlayer.getCurrentSong());
             }
             cargarArbolConFavoritos();
         }
@@ -941,14 +941,14 @@ public class JPlay extends javax.swing.JFrame implements
                     canciones = biblioteca.getFavoritesSongs();
 
                     /*Ahora debo poner las canciones en un album*/
-                    Album a = new Album(Rule.NOMBRE, "Favoritas!", null);
+                    Album a = new Album(Rule.NAME, "Favoritas!", null);
 
                     for (Song can : canciones) {
                         a.addSong(can);
                     }
 
                     List<ImageIcon> covers = new ArrayList<>();
-                    covers.add(CellRenderCancionLista.crearIcono(Ruta.IC_TAB_FAVORITOS));
+                    covers.add(SongListTreeCellRenderer.getImageIcon(Path.FAVORITES_TAB_ICON));
                     a.setCovers(covers);
 
                     List<Album> albums = new ArrayList<>();
@@ -959,7 +959,7 @@ public class JPlay extends javax.swing.JFrame implements
 
                     reproducir(c);
 
-                    tabbedPrincipal.setSelectedIndex(Rule.Tabs.LISTA_ACTUAL);
+                    tabbedPrincipal.setSelectedIndex(Rule.Tabs.CURRENT_LIST);
                 }
             }
         }
@@ -967,29 +967,29 @@ public class JPlay extends javax.swing.JFrame implements
 
     private void lblPlayMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblPlayMouseReleased
         try {
-            if (reproductor != null) {
+            if (musicPlayer != null) {
                 if (isPlay) {
                     isPlay = false;
-                    if (Util.COLOR_FOREGROUND == Color.black) {
-                        lblPlay.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_PLAY_NEGRO)));
+                    if (Util.FOREGROUND_COLOR == Color.black) {
+                        lblPlay.setIcon(new ImageIcon(getClass().getResource(Path.BLACK_PLAY_ICON)));
                     } else {
-                        lblPlay.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_PLAY_BLANCO)));
+                        lblPlay.setIcon(new ImageIcon(getClass().getResource(Path.WHITE_PLAY_ICON)));
                     }
-                    reproductor.pause();
+                    musicPlayer.pause();
 
                 } else {
                     isPlay = true;
-                    if (Util.COLOR_FOREGROUND == Color.black) {
-                        lblPlay.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_PAUSE_NEGRO)));
+                    if (Util.FOREGROUND_COLOR == Color.black) {
+                        lblPlay.setIcon(new ImageIcon(getClass().getResource(Path.BLACK_PAUSE_ICON)));
                     } else {
-                        lblPlay.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_PAUSE_BLANCO)));
+                        lblPlay.setIcon(new ImageIcon(getClass().getResource(Path.WHITE_PAUSE_ICON)));
                     }
                     if (isStop) {
                         reproducirCancionActual();
                         isPlay = true;
                         isStop = false;
                     } else {
-                        reproductor.resume();
+                        musicPlayer.resume();
                     }
                 }
             }
@@ -1050,12 +1050,12 @@ public class JPlay extends javax.swing.JFrame implements
     }//GEN-LAST:event_listArtistasMouseReleased
 
     private void cargarSave() {
-        if (new File(Ruta.SAVE).exists()) {
+        if (new File(Path.SAVE).exists()) {
             try {
-                Guardar g = (Guardar) IO.leerObjetoDesde(Ruta.SAVE);
+                Save g = (Save) IO.leerObjetoDesde(Path.SAVE);
 
-                canciones = g.canciones;
-                coversArtistas = g.coverArtistas;
+                canciones = g.songs;
+                coversArtistas = g.artistCoversArt;
 
                 /*Recuperando el volumen del usuario*/
                 slideVol.setValue(g.volume);
@@ -1069,7 +1069,7 @@ public class JPlay extends javax.swing.JFrame implements
 
                 setCover(g.cover);
 
-                biblioteca = (MusicLibrary) IO.leerObjetoDesde(Ruta.BIBLIOTECA);
+                biblioteca = (MusicLibrary) IO.leerObjetoDesde(Path.MUSIC_LIBRARY);
 
 //                Scan scan = new Scan(biblioteca, this);
 //                scan.scanner();
@@ -1142,22 +1142,22 @@ public class JPlay extends javax.swing.JFrame implements
         }
 
         switch (tabbedPrincipal.getSelectedIndex()) {
-            case Rule.Tabs.BIBLIOTECA:
+            case Rule.Tabs.MUSIC_LIBRARY:
                 lblInfoCarga.setText(biblioteca.getLibraryDuration());
                 break;
             case Rule.Tabs.EXPLORER:
                 lblInfoCarga.setText(biblioteca.getLibraryDuration());
                 break;
-            case Rule.Tabs.FAVORITOS:
+            case Rule.Tabs.FAVORITES:
                 lblInfoCarga.setText(biblioteca.getFavoritesDuration());
                 break;
-            case Rule.Tabs.LISTA_ACTUAL:
+            case Rule.Tabs.CURRENT_LIST:
                 lblInfoCarga.setText("Lista actual --> " + biblioteca.getFormattedDuration(msListaActual));
                 break;
             case Rule.Tabs.LOGGER:
                 lblInfoCarga.setText(biblioteca.getLibraryDuration());
                 break;
-            case Rule.Tabs.MAS_ESCUCHADAS:
+            case Rule.Tabs.MOST_PLAYED:
                 lblInfoCarga.setText(biblioteca.getMostListenedDuration());
                 break;
         }
@@ -1168,9 +1168,9 @@ public class JPlay extends javax.swing.JFrame implements
         if (ar.listFiles() != null) {
             File arConNombre;
             for (File a : ar.listFiles()) {
-                if (Validar.isArchivoCorrecto(a)) {
+                if (!Validate.isHiddenFile(a)) {
                     try {
-                        if (a.isDirectory() || Validar.isCancion(a)) {
+                        if (a.isDirectory() || Validate.isSong(a)) {
                             /*Esto es solo para que se vea el nombre, por ende
                              tuve que sobre escribir el método toString*/
                             arConNombre = new File(a.getPath()) {
@@ -1218,7 +1218,7 @@ public class JPlay extends javax.swing.JFrame implements
             for (File a : raiz.listFiles()) {
                 if (a.isDirectory()) {
                     cargarCancionesABiblioteca(a);
-                } else if (Validar.isCancion(a)) {
+                } else if (Validate.isSong(a)) {
                     Song c = new Song(a.getPath());
                     biblioteca.addSong(c);
                     lblInfoCarga.setText("Agregando " + c);
@@ -1236,7 +1236,7 @@ public class JPlay extends javax.swing.JFrame implements
             for (File a : raiz.listFiles()) {
                 if (a.isDirectory()) {
                     cargarCancionesALista(a);
-                } else if (Validar.isCancion(a)) {
+                } else if (Validate.isSong(a)) {
                     Song c = new Song(a.getPath());
                     canciones.add(c);
                 }
@@ -1417,7 +1417,7 @@ public class JPlay extends javax.swing.JFrame implements
                 workerStringProgress.resume();
                 break;
             case BasicPlayerEvent.PAUSED:
-                workerStringProgress.pausar();
+                workerStringProgress.pause();
                 break;
 //            setSlideTime(bpe.getPosition());
             case BasicPlayerEvent.SEEKED:
@@ -1425,7 +1425,7 @@ public class JPlay extends javax.swing.JFrame implements
             case BasicPlayerEvent.OPENED:
                 // el indice es -1 cuando cargo desde la biblioteca
 //            if (indiceActual != -1) {
-                setSlideTime((int) reproductor.getCurrentSong().length());
+                setSlideTime((int) musicPlayer.getCurrentSong().length());
 //            }
                 break;
             default:
@@ -1440,8 +1440,8 @@ public class JPlay extends javax.swing.JFrame implements
 
     private void setVolumen(int vol) {
         try {
-            if (reproductor != null) {
-                reproductor.setVolume(vol);
+            if (musicPlayer != null) {
+                musicPlayer.setVolume(vol);
             }
         } catch (BasicPlayerException ex) {
             Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
@@ -1459,18 +1459,16 @@ public class JPlay extends javax.swing.JFrame implements
         treeExplorer.setModel(new javax.swing.tree.DefaultTreeModel(raiz));
         treeExplorer.setRootVisible(false);
 
-        treeExplorer.setCellRenderer(new CellRenderExplorer(
+        treeExplorer.setCellRenderer(new ExplorerTreeCellRenderer(
                 new ImageIcon(
-                        CellRenderExplorer.crearIcono(
-                                Ruta.ICONO_MUSIC).getImage().
+                        ExplorerTreeCellRenderer.crearIcono(Path.MUSIC_ICON).getImage().
                                 getScaledInstance(Rule.ICON_EXPLORER_MUSIC_SIZE,
                                         Rule.ICON_EXPLORER_MUSIC_SIZE,
                                         Image.SCALE_SMOOTH
                                 )
                 ),
                 new ImageIcon(
-                        CellRenderExplorer.crearIcono(
-                                Ruta.ICONO_FOLDER).getImage().
+                        ExplorerTreeCellRenderer.crearIcono(Path.FOLDER_ICON).getImage().
                                 getScaledInstance(Rule.ICON_EXPLORER_SIZE,
                                         Rule.ICON_EXPLORER_SIZE,
                                         Image.SCALE_SMOOTH
@@ -1517,8 +1515,7 @@ public class JPlay extends javax.swing.JFrame implements
 
         treeSong.expandRow(0);
 
-        treeSong.setCellRenderer(
-                new CellRenderCancionLista()
+        treeSong.setCellRenderer(new SongListTreeCellRenderer()
         );
 
         btnCancelarCarga.setEnabled(false);
@@ -1547,14 +1544,13 @@ public class JPlay extends javax.swing.JFrame implements
         treeMasTocadas.setRootVisible(false);
 //        treeSong.expandRow(0);
 
-        treeMasTocadas.setCellRenderer(
-                new CellRenderCancionMasTocada(
-                        CellRenderExplorer.crearIcono(Ruta.ICONO_PLAY_ARBOL),
-                        CellRenderExplorer.crearIcono(Ruta.ICONO_CD_ARBOL)
+        treeMasTocadas.setCellRenderer(new SongMostPlayedTreeCellRenderer(
+                        ExplorerTreeCellRenderer.crearIcono(Path.PLAY_TREE_ICON),
+                        ExplorerTreeCellRenderer.crearIcono(Path.ALBUM_TREE_ICON)
                 )
         );
 
-        tabbedPrincipal.setTitleAt(Rule.Tabs.MAS_ESCUCHADAS, "+ escuchadas (" + masRepro.size() + ")");
+        tabbedPrincipal.setTitleAt(Rule.Tabs.MOST_PLAYED, "+ escuchadas (" + masRepro.size() + ")");
     }
 
     private void cargarArbolConFavoritos() {
@@ -1572,11 +1568,10 @@ public class JPlay extends javax.swing.JFrame implements
         treeFavoritos.setRootVisible(false);
 //        treeSong.expandRow(0);
 
-        treeFavoritos.setCellRenderer(
-                new CellRenderFavoritos()
+        treeFavoritos.setCellRenderer(new FavoritesTreeCellRenderer()
         );
 
-        tabbedPrincipal.setTitleAt(Rule.Tabs.FAVORITOS, "Favoritos (" + favoritos.size() + ")");
+        tabbedPrincipal.setTitleAt(Rule.Tabs.FAVORITES, "Favoritos (" + favoritos.size() + ")");
     }
 
     private void listenerClickDerechoSobreArbol() {
@@ -1709,7 +1704,7 @@ public class JPlay extends javax.swing.JFrame implements
                 canciones = new ArrayList<>();
 
                 for (int fila : selRows) {
-                    c = (Song) tablaBiblioteca.getValueAt(fila, TMCancionBiblioteca.OBJETO_COMPLETO);
+                    c = (Song) tablaBiblioteca.getValueAt(fila, MusicLabrarySongTableModel.COMPLETE_OBJECT_INDEX);
                     a = biblioteca.getAlbum(c);
 
                     if (!albums.contains(a)) {
@@ -1723,7 +1718,7 @@ public class JPlay extends javax.swing.JFrame implements
 
                 cargarArbolConCanciones(getDiscos(canciones));
                 reproducir(canciones.get(0));
-                tabbedPrincipal.setSelectedIndex(Rule.Tabs.LISTA_ACTUAL);
+                tabbedPrincipal.setSelectedIndex(Rule.Tabs.CURRENT_LIST);
             }
         });
 
@@ -1737,7 +1732,7 @@ public class JPlay extends javax.swing.JFrame implements
                 Album a;
 
                 for (int fila : selRows) {
-                    c = (Song) tablaBiblioteca.getValueAt(fila, TMCancionBiblioteca.OBJETO_COMPLETO);
+                    c = (Song) tablaBiblioteca.getValueAt(fila, MusicLabrarySongTableModel.COMPLETE_OBJECT_INDEX);
                     a = biblioteca.getAlbum(c);
 
                     if (!albums.contains(a)) {
@@ -1761,7 +1756,7 @@ public class JPlay extends javax.swing.JFrame implements
                 List<Song> canciones = new ArrayList<>();
 
                 for (int fila : selRows) {
-                    canciones.add((Song) tablaBiblioteca.getValueAt(fila, TMCancionBiblioteca.OBJETO_COMPLETO));
+                    canciones.add((Song) tablaBiblioteca.getValueAt(fila, MusicLabrarySongTableModel.COMPLETE_OBJECT_INDEX));
                 }
 
                 for (Song c : canciones) {
@@ -1801,8 +1796,8 @@ public class JPlay extends javax.swing.JFrame implements
         // sin titulos las tabla
 //        tablaBiblioteca.getTableHeader().setUI(null);
 //        tablaBiblioteca.setRowHeight(20);
-        tablaBiblioteca.setModel(new TMCancionBiblioteca(canciones));
-        tabbedPrincipal.setTitleAt(Rule.Tabs.BIBLIOTECA, "Biblioteca (" + canciones.size() + ")");
+        tablaBiblioteca.setModel(new MusicLabrarySongTableModel(canciones));
+        tabbedPrincipal.setTitleAt(Rule.Tabs.MUSIC_LIBRARY, "Biblioteca (" + canciones.size() + ")");
 //        Log.add("Se cargaron " + lista.size() + " canciones en biblioteca");
 //        lblInfoCarga.setText("Se cargaron " + lista.size() + " canciones en biblioteca");
 
@@ -1839,18 +1834,18 @@ public class JPlay extends javax.swing.JFrame implements
 //            lblCaratula.setIcon(new ImageIcon(icono)); 
 
 //            pnlCoverArt.updateUI();
-            if (reproductor != null) {
-                reproductor.stop();
+            if (musicPlayer != null) {
+                musicPlayer.stop();
             }
 
-            reproductor = new MusicPlayer(cancion, this);
+            musicPlayer = new MusicPlayer(cancion, this);
 
-            reproductor.play();
+            musicPlayer.play();
 
             cancion.increasePlayCount();
 
             setTitle(
-                Rule.NOMBRE + " - " + 
+                Rule.NAME + " - " + 
                 Rule.VERSION + " [" + 
                 cancion.getAuthor() + " - " + 
                 cancion.getName() + " (" + cancion.getPlayCount() + ")]"
@@ -1860,10 +1855,10 @@ public class JPlay extends javax.swing.JFrame implements
 //            lblTemaActual.setText(c.getAutor()+" / "+c.getNombre() + " ("+c.getDuracionAsString()+")");
 
 //            btnPause.setText("Pause");
-            if (Util.COLOR_FOREGROUND == Color.white) {
-                lblPlay.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_PAUSE_BLANCO)));
+            if (Util.FOREGROUND_COLOR == Color.white) {
+                lblPlay.setIcon(new ImageIcon(getClass().getResource(Path.WHITE_PAUSE_ICON)));
             } else {
-                lblPlay.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_PAUSE_NEGRO)));
+                lblPlay.setIcon(new ImageIcon(getClass().getResource(Path.BLACK_PAUSE_ICON)));
             }
 
             isPlay = true;
@@ -1903,7 +1898,7 @@ public class JPlay extends javax.swing.JFrame implements
     }
 
     private void reproducirCancionActual() {
-        reproducir(canciones.get(canciones.indexOf(reproductor.getCurrentSong())));
+        reproducir(canciones.get(canciones.indexOf(musicPlayer.getCurrentSong())));
     }
 
 //    private int getIndice(File f) {
@@ -1915,8 +1910,8 @@ public class JPlay extends javax.swing.JFrame implements
 ////        System.out.println("Agregando "+cancion);
 //    }
     private void imprimirTemaActual() {
-        if (reproductor != null) {
-            Song cancionActual = reproductor.getCurrentSong();
+        if (musicPlayer != null) {
+            Song cancionActual = musicPlayer.getCurrentSong();
             lblArtista.setText(cancionActual.getAuthor() + " - " + cancionActual.getAlbum() + " (" + cancionActual.getYear() + ")");
             lblNombreCancion.setText(cancionActual.getName() + " (" + cancionActual.getDurationAsString() + ")");
         }
@@ -1946,12 +1941,12 @@ public class JPlay extends javax.swing.JFrame implements
 
     private void tocarCancionSeleccionadaEnTablaBiblioteca() {
         int fila = tablaBiblioteca.getSelectedRow();
-        Song c = (Song) tablaBiblioteca.getValueAt(fila, TMCancionBiblioteca.OBJETO_COMPLETO);
+        Song c = (Song) tablaBiblioteca.getValueAt(fila, MusicLabrarySongTableModel.COMPLETE_OBJECT_INDEX);
 
 //        System.out.println(biblioteca.getAlbum(c));
-        TMCancionBiblioteca model = (TMCancionBiblioteca) tablaBiblioteca.getModel();
+        MusicLabrarySongTableModel model = (MusicLabrarySongTableModel) tablaBiblioteca.getModel();
 
-        canciones = model.canciones;
+        canciones = model.songs;
 //        indiceActual = fila;
 
         cargarArbolConCanciones(getDiscos(canciones));
@@ -1966,7 +1961,7 @@ public class JPlay extends javax.swing.JFrame implements
         final File f = getSelectedTreeFile();
         if (f != null) {
             try {
-                if (Validar.isCancion(f)) {
+                if (Validate.isSong(f)) {
                     canciones = new ArrayList<>();
 //                        System.out.println(f.getParentFile());
                     hiloCargar = new Thread(new Runnable() {
@@ -2023,8 +2018,8 @@ public class JPlay extends javax.swing.JFrame implements
 //        progress.setString(porc + "%");
         if (seek) {
             try {
-                this.workerStringProgress.cambiar(porc);
-                reproductor.seek((long) value);
+                this.workerStringProgress.changeProgressBar(porc);
+                musicPlayer.seek((long) value);
             } catch (BasicPlayerException ex) {
                 Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -2060,7 +2055,7 @@ public class JPlay extends javax.swing.JFrame implements
             }
         } else if (!album.hasCovers()) { // si el Album NO tiene una lista de imagenes
             Log.add("La canción no tiene imágenes asociadas!");
-            List<ImageIcon> fotos = Recurso.getFotos(cancion);
+            List<ImageIcon> fotos = Resource.getCoversArt(cancion);
             Log.add("Se han encontrado " + fotos.size() + " foto");
 
             if (!fotos.isEmpty()) {
@@ -2074,8 +2069,8 @@ public class JPlay extends javax.swing.JFrame implements
                 List<ImageIcon> covers = new ArrayList<>();
                 try {
                     Image imLastFM = LastFM.getCoverArt(cancion.getAuthor(), cancion.getAlbum());
-                    imLastFM = imLastFM.getScaledInstance((int) Rule.COVER_DIMENSION.getWidth(),
-                            (int) Rule.COVER_DIMENSION.getHeight(),
+                    imLastFM = imLastFM.getScaledInstance((int) Rule.COVER_ART_DIMENSION.getWidth(),
+                            (int) Rule.COVER_ART_DIMENSION.getHeight(),
                             Image.SCALE_SMOOTH);
 
                     covers.add(new ImageIcon(imLastFM));
@@ -2112,8 +2107,7 @@ public class JPlay extends javax.swing.JFrame implements
 
         setIconImage(album.getCovers().get(0).getImage());
 
-        treeSong.setCellRenderer(
-                new CellRenderCancionLista()
+        treeSong.setCellRenderer(new SongListTreeCellRenderer()
         );
 
 //        Notification.show(
@@ -2153,7 +2147,7 @@ public class JPlay extends javax.swing.JFrame implements
      * Reproduce el siguiente, si es el último reproduce el primero
      */
     private void reproducirSiguiente() {
-        int indexActual = canciones.indexOf(reproductor.getCurrentSong());
+        int indexActual = canciones.indexOf(musicPlayer.getCurrentSong());
         indexActual++;
         if (indexActual < canciones.size()) {
             reproducir(canciones.get(indexActual));
@@ -2166,7 +2160,7 @@ public class JPlay extends javax.swing.JFrame implements
      * Reproduce el anterior, si es el primero reproduce el último
      */
     private void reproducirAnterior() {
-        int indexActual = canciones.indexOf(reproductor.getCurrentSong());
+        int indexActual = canciones.indexOf(musicPlayer.getCurrentSong());
         indexActual--;
         if (indexActual >= 0) {
             reproducir(canciones.get(indexActual));
@@ -2209,7 +2203,7 @@ public class JPlay extends javax.swing.JFrame implements
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                tabbedPrincipal.setSelectedIndex(Rule.Tabs.BIBLIOTECA);
+                tabbedPrincipal.setSelectedIndex(Rule.Tabs.MUSIC_LIBRARY);
                 if (dialogBuscar == null) {
                     dialogBuscar = new SearchDialog(JPlay.this, false);
                     dialogBuscar.setSearchable(JPlay.this);
@@ -2249,7 +2243,7 @@ public class JPlay extends javax.swing.JFrame implements
 
                     JOptionPane.showMessageDialog(this, text);
                 } else if (filtro.equalsIgnoreCase("/scan")) {
-                    Scan s = new Scan(biblioteca, this);
+                    ScanThread s = new ScanThread(biblioteca, this);
                     s.start();
                 } else if (filtro.equalsIgnoreCase("/favs")) {
                     Log.add("Canciones favoritas:");
@@ -2298,7 +2292,7 @@ public class JPlay extends javax.swing.JFrame implements
 
                         hCover.interrupt();
 
-                        Album a = biblioteca.getAlbum(reproductor.getCurrentSong());
+                        Album a = biblioteca.getAlbum(musicPlayer.getCurrentSong());
 
                         a.removeCover(new ImageIcon(actualCover));
 
@@ -2367,7 +2361,7 @@ public class JPlay extends javax.swing.JFrame implements
             @Override
             public void dragEnter(DropTargetDragEvent dtde) {
                 tabActual = tabbedPrincipal.getSelectedIndex();
-                tabbedPrincipal.setSelectedIndex(Rule.Tabs.BIBLIOTECA);
+                tabbedPrincipal.setSelectedIndex(Rule.Tabs.MUSIC_LIBRARY);
             }
 
             @Override
@@ -2387,7 +2381,7 @@ public class JPlay extends javax.swing.JFrame implements
 
     /*Este método sirve para actualizar la tabla de biblioteca despues del scan (Clase Scan)*/
     @Override
-    public void updateBibliotecaUI(boolean huboCambios) {
+    public void updateMusicLibraryUI(boolean huboCambios) {
         if (huboCambios) {
             cargarCancionesABiblioteca(biblioteca.getSongs());
             biblioteca.processAlbum();
@@ -2413,55 +2407,55 @@ public class JPlay extends javax.swing.JFrame implements
     }
 
     private void initIconosTabs() {
-        tabbedPrincipal.setIconAt(Rule.Tabs.EXPLORER, CellRenderCancionLista.crearIcono(Ruta.IC_TAB_EXPLORER));
-        tabbedPrincipal.setIconAt(Rule.Tabs.BIBLIOTECA, CellRenderCancionLista.crearIcono(Ruta.IC_TAB_BIBLIOTECA));
-        tabbedPrincipal.setIconAt(Rule.Tabs.LISTA_ACTUAL, CellRenderCancionLista.crearIcono(Ruta.IC_TAB_LISTA));
-        tabbedPrincipal.setIconAt(Rule.Tabs.MAS_ESCUCHADAS, CellRenderCancionLista.crearIcono(Ruta.IC_TAB_ESCUCHADAS));
-        tabbedPrincipal.setIconAt(Rule.Tabs.LOGGER, CellRenderCancionLista.crearIcono(Ruta.IC_TAB_LOG));
-        tabbedPrincipal.setIconAt(Rule.Tabs.FAVORITOS, new ImageIcon(CellRenderCancionLista.crearIcono(Ruta.IC_TAB_FAVORITOS).getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
+        tabbedPrincipal.setIconAt(Rule.Tabs.EXPLORER, SongListTreeCellRenderer.getImageIcon(Path.EXPLORER_TAB_ICON));
+        tabbedPrincipal.setIconAt(Rule.Tabs.MUSIC_LIBRARY, SongListTreeCellRenderer.getImageIcon(Path.MUSIC_LIBRARY_TAB_ICON));
+        tabbedPrincipal.setIconAt(Rule.Tabs.CURRENT_LIST, SongListTreeCellRenderer.getImageIcon(Path.LIST_TAB_ICON));
+        tabbedPrincipal.setIconAt(Rule.Tabs.MOST_PLAYED, SongListTreeCellRenderer.getImageIcon(Path.MOST_PLAYED_TAB_ICON));
+        tabbedPrincipal.setIconAt(Rule.Tabs.LOGGER, SongListTreeCellRenderer.getImageIcon(Path.LOG_TAB_ICON));
+        tabbedPrincipal.setIconAt(Rule.Tabs.FAVORITES, new ImageIcon(SongListTreeCellRenderer.getImageIcon(Path.FAVORITES_TAB_ICON).getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
     }
 
     private void setColorFondo(Album album) {
         /* Colores de fondo */
-        Util.COLOR_FONDO = album.getAverageColor();
-        Util.COLOR_FOREGROUND = Util.getForeGroundColorBasedOnBGBrightness(Util.COLOR_FONDO);
+        Util.BACKGROUND_COLOR = album.getAverageColor();
+        Util.FOREGROUND_COLOR = Util.getForeGroundColorBasedOnBGBrightness(Util.BACKGROUND_COLOR);
 
-        panelPrincipal.setBackground(Util.COLOR_FONDO);
-        slideVol.setBackground(Util.COLOR_FONDO);
-        lblNombreCancion.setForeground(Util.COLOR_FOREGROUND);
-        lblArtista.setForeground(Util.COLOR_FOREGROUND);
-        opRepetirCancion.setForeground(Util.COLOR_FOREGROUND);
-        opAleatorio.setForeground(Util.COLOR_FOREGROUND);
-        lblInfoCarga.setForeground(Util.COLOR_FOREGROUND);
-        lblDuracion.setForeground(Util.COLOR_FOREGROUND);
+        panelPrincipal.setBackground(Util.BACKGROUND_COLOR);
+        slideVol.setBackground(Util.BACKGROUND_COLOR);
+        lblNombreCancion.setForeground(Util.FOREGROUND_COLOR);
+        lblArtista.setForeground(Util.FOREGROUND_COLOR);
+        opRepetirCancion.setForeground(Util.FOREGROUND_COLOR);
+        opAleatorio.setForeground(Util.FOREGROUND_COLOR);
+        lblInfoCarga.setForeground(Util.FOREGROUND_COLOR);
+        lblDuracion.setForeground(Util.FOREGROUND_COLOR);
 
         progress.setUI(new BasicProgressBarUI() {
             @Override
             protected Color getSelectionBackground() {
-                return Util.COLOR_FONDO;
+                return Util.BACKGROUND_COLOR;
             }
 
             @Override
             protected Color getSelectionForeground() {
-                return Util.COLOR_FOREGROUND;
+                return Util.FOREGROUND_COLOR;
             }
         });
 
         progress.setForeground(new Color(76, 175, 80));
 
-        Color color = Util.COLOR_FONDO.darker().darker();
+        Color color = Util.BACKGROUND_COLOR.darker().darker();
         tabbedPrincipal.setBackground(color);
         tabbedPrincipal.setForeground(Util.getForeGroundColorBasedOnBGBrightness(color));
 
         // Acá cambio los iconos según color
-        if (Util.COLOR_FOREGROUND == Color.white) {
-            lblPlay.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_PLAY_BLANCO)));
-            lblSiguiente.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_SIGUIENTE_BLANCO)));
-            lblAnterior.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_ANTERIOR_BLANCO)));
+        if (Util.FOREGROUND_COLOR == Color.white) {
+            lblPlay.setIcon(new ImageIcon(getClass().getResource(Path.WHITE_PLAY_ICON)));
+            lblSiguiente.setIcon(new ImageIcon(getClass().getResource(Path.WHITE_NEXT_ICON)));
+            lblAnterior.setIcon(new ImageIcon(getClass().getResource(Path.WHITE_BACK_ICON)));
         } else {
-            lblPlay.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_PLAY_NEGRO)));
-            lblSiguiente.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_SIGUIENTE_NEGRO)));
-            lblAnterior.setIcon(new ImageIcon(getClass().getResource(Ruta.IC_ANTERIOR_NEGRO)));
+            lblPlay.setIcon(new ImageIcon(getClass().getResource(Path.BLACK_PLAY_ICON)));
+            lblSiguiente.setIcon(new ImageIcon(getClass().getResource(Path.BLACK_NEXT_ICON)));
+            lblAnterior.setIcon(new ImageIcon(getClass().getResource(Path.BLACK_BACK_ICON)));
         }
     }
 
@@ -2472,8 +2466,8 @@ public class JPlay extends javax.swing.JFrame implements
 
         lblCover.setIcon(new ImageIcon(
                 image.getScaledInstance(
-                        (int) Rule.COVER_DIMENSION.getWidth(),
-                        (int) Rule.COVER_DIMENSION.getHeight(),
+                        (int) Rule.COVER_ART_DIMENSION.getWidth(),
+                        (int) Rule.COVER_ART_DIMENSION.getHeight(),
                         Image.SCALE_SMOOTH)
         )
         );
@@ -2482,8 +2476,8 @@ public class JPlay extends javax.swing.JFrame implements
     private void setCover(Image cover) {
         lblCover.setIcon(new ImageIcon(
                 cover.getScaledInstance(
-                        (int) Rule.COVER_DIMENSION.getWidth(),
-                        (int) Rule.COVER_DIMENSION.getHeight(),
+                        (int) Rule.COVER_ART_DIMENSION.getWidth(),
+                        (int) Rule.COVER_ART_DIMENSION.getHeight(),
                         Image.SCALE_SMOOTH)
         )
         );

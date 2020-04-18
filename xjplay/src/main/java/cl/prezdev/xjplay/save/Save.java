@@ -8,11 +8,12 @@ import java.io.Serializable;
 import java.util.List;
 import javax.swing.Icon;
 
-public class Guardar implements Serializable{
-    public List<Song>        canciones;
+//@TODO: Cambiar a xml o json
+public class Save implements Serializable{
+    public List<Song>        songs;
     public List<Album>          albums;
-    public List<ArtistCoverArt>   coverArtistas;
-    public int                  indiceActual;
+    public List<ArtistCoverArt>   artistCoversArt;
+    public int                  currentIndex;
     public int                  indexTab;
     public List<LogEntry>       logEntries;
     public Icon                 cover;

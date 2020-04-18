@@ -1,4 +1,4 @@
-package cl.prezdev.xjplay.test.other;
+package cl.prezdev.xjplay.test;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+// @TODO: Eliminar esta clase, ya que
+// se supone que voy a almacenar todo en xml o json
 public class IO {
     private static FileInputStream fis;
     private static FileOutputStream fos;

@@ -8,7 +8,7 @@ import java.util.List;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
-public class Recurso {
+public class Resource {
 
     /*
     public static final File FUENTE_ROBOTO
@@ -17,35 +17,39 @@ public class Recurso {
             = new File("/fonts/TravelingTypewriter.ttf");
     */
 
-    public static final Image ICONO_JPLAY = new ImageIcon(Recurso.class.getResource(Ruta.ICONO_JPLAY)).getImage();
-
-    
+    public static final Image JPLAY_ICON = new ImageIcon(Resource.class.getResource(Path.JPLAY_ICON)).getImage();
 
     /**
      * Obtiene una lista de imagenes de una ruta en específico
-     * @param f
+     * @param rootFile
      * @return 
      */
-    public static List<ImageIcon> getFotos(File f) {
-        List<ImageIcon> fotos = new ArrayList<>();
+    public static List<ImageIcon> getCoversArt(File rootFile) {
+        List<ImageIcon> coversArt = new ArrayList<>();
+        ImageIcon coverArt;
         Image image;
-        ImageIcon imageIcon;
-        for (File archivo : f.getParentFile().listFiles()) {
-            Log.add(archivo.getName());
-            if (archivo.getName().contains(".jpg")
-                    || archivo.getName().contains(".png")) {
-                image = new ImageIcon(archivo.getPath()).getImage();
-                Log.add("RUTA FOTO: "+archivo.getPath());
-                imageIcon = new ImageIcon(
-                        image.getScaledInstance((int)Rule.COVER_DIMENSION.getWidth(),
-                                (int)Rule.COVER_DIMENSION.getHeight(),
-                                Image.SCALE_SMOOTH)
+        
+        for (File file : rootFile.getParentFile().listFiles()) {
+            Log.add(file.getName());
+            if (file.getName().contains(".jpg")
+                    || file.getName().contains(".png")) {
+                image = new ImageIcon(file.getPath()).getImage();
+                
+                Log.add("RUTA FOTO: "+file.getPath());
+                
+                coverArt = new ImageIcon(
+                    image.getScaledInstance(
+                        (int)Rule.COVER_ART_DIMENSION.getWidth(),
+                        (int)Rule.COVER_ART_DIMENSION.getHeight(),
+                        Image.SCALE_SMOOTH
+                    )
                 );
-                fotos.add(imageIcon);
+                
+                coversArt.add(coverArt);
             }
         }
 
-        return fotos;
+        return coversArt;
     }
 
 //    public static List<File> getFotos(File f){
