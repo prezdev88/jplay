@@ -3,7 +3,7 @@ package cl.prezdev.jlog;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-public class TMLog implements TableModel{
+public class LogTableModel implements TableModel{
 
     @Override
     public int getRowCount() {
@@ -46,15 +46,12 @@ public class TMLog implements TableModel{
     }
 
     @Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-    }
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {}
 
     @Override
-    public void addTableModelListener(TableModelListener l) {
-    }
+    public void addTableModelListener(TableModelListener tableModelListener) {}
 
     @Override
-    public void removeTableModelListener(TableModelListener l) {
-    }
+    public void removeTableModelListener(TableModelListener tableModelListener) {}
     
 }
