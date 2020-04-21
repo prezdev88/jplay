@@ -49,7 +49,7 @@ public class IO {
         fos.close();
     }
     
-    public static Object leerObjetoDesde(String ruta) throws FileNotFoundException, IOException, ClassNotFoundException{
+    public static Object readObject(String ruta) throws FileNotFoundException, IOException, ClassNotFoundException{
         fis = new FileInputStream(ruta);
         ois = new ObjectInputStream(fis);
         return ois.readObject();

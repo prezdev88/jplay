@@ -19,7 +19,7 @@ public class MusicLibrary implements Serializable{
     private List<File> paths; // rutas para analizar
     
     private long msMusicLibrary;
-    private long msMostListened;
+    private long msMostPlayed;
     private long msFavorites;
 
     public MusicLibrary() {
@@ -29,7 +29,7 @@ public class MusicLibrary implements Serializable{
         paths = new ArrayList<>();
         
         msMusicLibrary = 0;
-        msMostListened = 0;
+        msMostPlayed = 0;
         msFavorites = 0;
     }
     
@@ -41,8 +41,8 @@ public class MusicLibrary implements Serializable{
         return "Favoritos --> "+getFormattedDuration(msFavorites);
     }
     
-    public String getMostListenedDuration(){
-        return "Más escuchadas --> "+getFormattedDuration(msMostListened);
+    public String getMostPlayedDuration(){
+        return "Más escuchadas --> "+getFormattedDuration(msMostPlayed);
     }
     
     public void addFavoriteSong(Song song){
@@ -120,15 +120,15 @@ public class MusicLibrary implements Serializable{
         return songs.contains(c);
     }
 
-    public List<Song> getMostListenedSongs() {
+    public List<Song> getMostPlayedSongs() {
         List<Song> topCanciones = new ArrayList<>();
-        msMostListened = 0;
+        msMostPlayed = 0;
 
         for (Song song : songs) {
             // @TODO: Crear método para esto (song.getPlayCount() != 0)
             if (song.getPlayCount() != 0) {
                 topCanciones.add(song);
-                msMostListened += song.getMilisDuration();
+                msMostPlayed += song.getMilisDuration();
             }
         }
 

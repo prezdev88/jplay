@@ -37,10 +37,10 @@ public class Rule {
     public static int FONT_SIZE_EXPLORER                = 12;
     /*EXPLORER*/
     
-    public static class Tabs{
+    public static class TabIndex {
         public static final int EXPLORER        = 0;
         public static final int MUSIC_LIBRARY      = 1;
-        public static final int CURRENT_LIST    = 2;
+        public static final int CURRENT_SONGS_LIST = 2;
         public static final int MOST_PLAYED  = 3;
         public static final int FAVORITES       = 4;
         public static final int LOGGER          = 5;

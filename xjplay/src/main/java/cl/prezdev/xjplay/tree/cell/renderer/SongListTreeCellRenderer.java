@@ -53,7 +53,7 @@ public class SongListTreeCellRenderer extends JLabel implements TreeCellRenderer
 
                 try {// intento colocar el cover que tenga el album
                     // @TODO: encapsular esto en un método de album
-                    Image coverImage = album.getCovers().get(0).getImage().getScaledInstance(
+                    Image coverImage = album.getCoversArt().get(0).getImage().getScaledInstance(
                         (int) Rule.COVERT_ART_MINI.getWidth(),
                         (int) Rule.COVERT_ART_MINI.getHeight(),
                         Image.SCALE_SMOOTH

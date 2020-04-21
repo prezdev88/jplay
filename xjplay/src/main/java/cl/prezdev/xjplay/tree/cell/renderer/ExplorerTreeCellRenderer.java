@@ -77,7 +77,7 @@ public class ExplorerTreeCellRenderer extends JLabel implements TreeCellRenderer
      */
     // @TODO: Desacoplar este método
     // Este método ya esta en SongListTreeCellRenderer
-    public static ImageIcon crearIcono(String rutaPaquete){
+    public static ImageIcon getImageIcon(String rutaPaquete){
         return new ImageIcon(ExplorerTreeCellRenderer.class.getResource(rutaPaquete));
     }
 }

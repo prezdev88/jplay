@@ -50,7 +50,7 @@ public class SearchDialog extends javax.swing.JDialog {
 
     public void setSearchable(SearchListener searchable) {
         this.searchListener = searchable;
-        searchable.loadSearchCombobox(searchCombobox);
+        searchable.loadSearchComboBox(searchCombobox);
     }
     
     @SuppressWarnings("unchecked")

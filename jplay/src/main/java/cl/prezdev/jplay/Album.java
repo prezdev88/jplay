@@ -15,7 +15,7 @@ public class Album implements Serializable {
     private String artist;
     private String name;
     private final List<Song> songs;
-    private List<ImageIcon> covers;
+    private List<ImageIcon> coversArt;
     private final String year;
 
     public Album(String artist, String name, String anio) {
@@ -23,7 +23,7 @@ public class Album implements Serializable {
         this.name = name;
         this.year = anio;
         this.songs = new ArrayList<>();
-        covers = new ArrayList<>();
+        this.coversArt = new ArrayList<>();
     }
     
     public String getYear() {
@@ -39,26 +39,26 @@ public class Album implements Serializable {
 
     }
 
-    public boolean hasCovers() {
-        return !covers.isEmpty();
+    public boolean hasCoversArt() {
+        return !coversArt.isEmpty();
     }
 
-    public void removeCover(ImageIcon cover) {
-        Log.add("COVER REMOVIDO: " + covers.remove(cover));
+    public void removeCoverArt(ImageIcon cover) {
+        Log.add("COVER REMOVIDO: " + coversArt.remove(cover));
     }
 
-    public void setCovers(List<ImageIcon> covers) {
-        this.covers = covers;
+    public void setCoversArt(List<ImageIcon> coversArt) {
+        this.coversArt = coversArt;
     }
 
-    public List<ImageIcon> getCovers() {
-        return covers;
+    public List<ImageIcon> getCoversArt() {
+        return coversArt;
     }
     
     // @TODO: wtf este método
-    public Image getLastCover(){
-        if(hasCovers()){
-            return covers.get(covers.size()-1).getImage();
+    public Image getLastCoverArt(){
+        if(hasCoversArt()){
+            return coversArt.get(coversArt.size()-1).getImage();
         }else {
             return null;
         }
@@ -111,9 +111,9 @@ public class Album implements Serializable {
 
     // @TODO: Desacoplar este método
     public Color getAverageColor() {
-        if (this.hasCovers()) {
+        if (this.hasCoversArt()) {
             BufferedImage bufferedImage = imageToBufferedImage(
-                this.getCovers().get(0).getImage()
+                this.getCoversArt().get(0).getImage()
             );
 
             int redSum = 0, greenSum = 0, blueSum = 0;
