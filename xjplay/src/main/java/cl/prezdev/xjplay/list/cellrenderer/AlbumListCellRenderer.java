@@ -44,11 +44,12 @@ public class AlbumListCellRenderer extends DefaultListCellRenderer {
         if (album instanceof BackAlbum) {
             albumLabel.setText("ATRÁS");
         } else {
-            Image imageCover = album.getLastCover();
+            Image imageCover = album.getCoverArt().getImage();
 
-            // @TODO: encapsular en Album
+            // @TODO: encapsular en Album (no se puede, porque es algo gráfico y no corresponde)
+            // @TODO: las reglas, RULE, podrían estar en un proyecto en común (jplayCommon)
             if (imageCover != null) {
-                imageCover = album.getLastCover().getScaledInstance(
+                imageCover = imageCover.getScaledInstance(
                     Rule.ARTIST_COVER_ART.width,
                     Rule.ARTIST_COVER_ART.height,
                     Image.SCALE_SMOOTH

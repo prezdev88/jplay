@@ -125,8 +125,7 @@ public class MusicLibrary implements Serializable{
         msMostPlayed = 0;
 
         for (Song song : songs) {
-            // @TODO: Crear método para esto (song.getPlayCount() != 0)
-            if (song.getPlayCount() != 0) {
+            if (song.hasPlays()) {
                 topCanciones.add(song);
                 msMostPlayed += song.getMilisDuration();
             }
@@ -177,8 +176,7 @@ public class MusicLibrary implements Serializable{
         }
 
         if (!finded) {
-            // @TODO: crear constructor que reciba un objeto Song
-            Album album = new Album(song.getAuthor(), song.getAlbum(), song.getYear());
+            Album album = new Album(song);
             
             album.addSong(song);
 

@@ -158,4 +158,8 @@ public class Song extends File {
     public String toString() {
         return this.name;
     }
+
+    public boolean hasPlays() {
+        return (this.getPlayCount() != 0);
+    }
 }
