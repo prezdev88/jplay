@@ -83,7 +83,6 @@ import cl.prezdev.xjplay.model.scan.MusicLibraryUiUpdate;
 
 import static java.awt.EventQueue.invokeLater;
 
-
 public class JPlay extends JFrame implements
         BasicPlayerListener, SearchListener, MusicLibraryUiUpdate, UpdateLogUI {
 
