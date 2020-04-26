@@ -39,7 +39,7 @@ public class WorkerStringProgress extends SwingWorker<Void, String> {
      * de la duracion de la canción
      * @param percentage 
      */
-    public void changeProgressBar(int percentage) {
+    public void changeProgressBarValue(int percentage) {
         if (percentage < 0) { // si el porcentaje es negativo, dejo los minutos y segundos en 0
             initialMinute = 0;
             initialSecond = 0;

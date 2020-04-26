@@ -78,7 +78,7 @@
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="mainTabbedPane" max="32767" attributes="0"/>
+                          <Component id="tabbedPrincipal" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Component id="lblAnterior" min="-2" pref="24" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -86,7 +86,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="lblSiguiente" min="-2" pref="24" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="coverArtLabel" min="-2" pref="59" max="-2" attributes="0"/>
+                              <Component id="lblCover" min="-2" pref="59" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
@@ -103,13 +103,13 @@
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="cancelLoadingButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnCancelarCarga" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="lblInfoCarga" max="32767" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="opAleatorio" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="repeatSongCheckbox" min="-2" max="-2" attributes="0"/>
+                      <Component id="opRepetirCancion" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="slideVol" min="-2" pref="109" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -137,20 +137,20 @@
                               <Component id="lblPlay" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
                               <Component id="lblSiguiente" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
                               <Component id="lblAnterior" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
-                              <Component id="coverArtLabel" min="-2" pref="59" max="-2" attributes="0"/>
+                              <Component id="lblCover" min="-2" pref="59" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="mainTabbedPane" pref="302" max="32767" attributes="0"/>
+                      <Component id="tabbedPrincipal" pref="302" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="slideVol" alignment="1" min="-2" pref="23" max="-2" attributes="0"/>
                               <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                                  <Component id="cancelLoadingButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnCancelarCarga" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblInfoCarga" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                                   <Component id="opAleatorio" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
-                                  <Component id="repeatSongCheckbox" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
+                                  <Component id="opRepetirCancion" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Component id="btnFav" alignment="0" min="-2" pref="31" max="-2" attributes="0"/>
@@ -161,18 +161,18 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="coverArtLabel">
+            <Component class="javax.swing.JLabel" name="lblCover">
               <Properties>
                 <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="text" type="java.lang.String" value="[cv]"/>
               </Properties>
             </Component>
-            <Container class="javax.swing.JTabbedPane" name="mainTabbedPane">
+            <Container class="javax.swing.JTabbedPane" name="tabbedPrincipal">
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
               <Events>
-                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mainTabbedPaneMouseReleased"/>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tabbedPrincipalMouseReleased"/>
               </Events>
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
@@ -193,8 +193,8 @@
                   <SubComponents>
                     <Component class="javax.swing.JTree" name="treeExplorer">
                       <Events>
-                        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="explorerTreeMouseReleased"/>
-                        <EventHandler event="valueChanged" listener="javax.swing.event.TreeSelectionListener" parameters="javax.swing.event.TreeSelectionEvent" handler="explorerTreeValueChanged"/>
+                        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="treeExplorerMouseReleased"/>
+                        <EventHandler event="valueChanged" listener="javax.swing.event.TreeSelectionListener" parameters="javax.swing.event.TreeSelectionEvent" handler="treeExplorerValueChanged"/>
                       </Events>
                     </Component>
                   </SubComponents>
@@ -500,12 +500,12 @@
                 <Property name="text" type="java.lang.String" value="[lblInfo]"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="cancelLoadingButton">
+            <Component class="javax.swing.JButton" name="btnCancelarCarga">
               <Properties>
                 <Property name="text" type="java.lang.String" value="X"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelLoadingButtonActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarCargaActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="lblNombreCancion">
@@ -544,7 +544,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFavActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="repeatSongCheckbox">
+            <Component class="javax.swing.JCheckBox" name="opRepetirCancion">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="fe" green="fe" red="fe" type="rgb"/>
@@ -553,7 +553,7 @@
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="repeatSongCheckboxActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opRepetirCancionActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JCheckBox" name="opAleatorio">

@@ -11,7 +11,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 
-public class SongMostPlayedTreeCellRenderer extends JLabel implements TreeCellRenderer {
+public class MostPlayedSongsTreeCellRenderer extends JLabel implements TreeCellRenderer {
 
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
@@ -52,6 +52,6 @@ public class SongMostPlayedTreeCellRenderer extends JLabel implements TreeCellRe
     // @TODO: Desacoplar este método
     // Este método ya esta en SongListTreeCellRenderer y ExplorerTreeCellRenderer
     public static ImageIcon crearIcono(String rutaPaquete) {
-        return new ImageIcon(SongMostPlayedTreeCellRenderer.class.getResource(rutaPaquete));
+        return new ImageIcon(MostPlayedSongsTreeCellRenderer.class.getResource(rutaPaquete));
     }
 }

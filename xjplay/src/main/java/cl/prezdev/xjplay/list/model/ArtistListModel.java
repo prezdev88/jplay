@@ -7,20 +7,20 @@ import javax.swing.event.ListDataListener;
 
 public class ArtistListModel implements ListModel<ArtistCoverArt>{
     
-    private final List<ArtistCoverArt> coverArtistas;
+    private final List<ArtistCoverArt> artistCoverArts;
 
-    public ArtistListModel(List<ArtistCoverArt> coverArtistas) {
-        this.coverArtistas = coverArtistas;
+    public ArtistListModel(List<ArtistCoverArt> artistCoverArts) {
+        this.artistCoverArts = artistCoverArts;
     }
     
     @Override
     public int getSize() {
-        return coverArtistas.size();
+        return artistCoverArts.size();
     }
 
     @Override
     public ArtistCoverArt getElementAt(int i) {
-        return coverArtistas.get(i);
+        return artistCoverArts.get(i);
     }
 
     @Override
