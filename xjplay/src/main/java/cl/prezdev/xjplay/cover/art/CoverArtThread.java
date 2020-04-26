@@ -1,6 +1,5 @@
 package cl.prezdev.xjplay.cover.art;
 
-import cl.prezdev.jlog.Log;
 import cl.prezdev.xjplay.rules.Rule;
 import java.awt.Image;
 import java.util.List;
@@ -32,9 +31,7 @@ public class CoverArtThread extends Thread {
                     Thread.sleep(Rule.BETWEEN_COVERS_PAUSE);
                 }
             }
-        } catch (InterruptedException ex) {
-            Log.add("Hilo covert art interrumpido");
-        }
+        } catch (InterruptedException ex) {}
     }
 
     public Image getCurrentCoverArt() {

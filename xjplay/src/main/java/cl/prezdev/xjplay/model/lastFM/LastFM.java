@@ -1,7 +1,6 @@
 // https://www.last.fm/api
 package cl.prezdev.xjplay.model.lastFM;
 
-import cl.prezdev.jlog.Log;
 import cl.prezdev.xjplay.recursos.Resource;
 import cl.prezdev.xjplay.rules.Rule;
 import java.awt.Image;
@@ -31,10 +30,6 @@ public class LastFM {
         System.out.println(API_URL);
 
         List<CoverArt> coversArt = LastFM.getCoversArt(API_URL, "album");
-
-        for (CoverArt coverArt : coversArt) {
-            Log.add(coverArt);
-        }
 
         int lastIndex = coversArt.size() - 1;
         return getCoverArt(coversArt.get(lastIndex));

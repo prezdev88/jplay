@@ -1,6 +1,6 @@
 package cl.prezdev.xjplay.rules;
 
-import java.awt.Dimension;
+import java.awt.*;
 
 // @TODO: Agrupar reglas en clases staticas
 public class Rule {
@@ -36,6 +36,9 @@ public class Rule {
     public static final int ICON_EXPLORER_MUSIC_SIZE    = 14;
     public static int FONT_SIZE_EXPLORER                = 12;
     /*EXPLORER*/
+
+    public static Color BACKGROUND_COLOR = Color.white;
+    public static Color FOREGROUND_COLOR = Color.black;
     
     public static class TabIndex {
         public static final int EXPLORER        = 0;

@@ -2,10 +2,11 @@ package cl.prezdev.xjplay.tree.cell.renderer;
 
 import cl.prezdev.jplay.Album;
 import cl.prezdev.jplay.Song;
+import cl.prezdev.jplay.common.ImageProcessor;
+import cl.prezdev.jplay.common.Util;
 import cl.prezdev.xjplay.main.JPlay;
 import cl.prezdev.xjplay.recursos.Path;
 import cl.prezdev.xjplay.rules.Rule;
-import cl.prezdev.xjplay.utils.Util;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
@@ -22,104 +23,95 @@ public class SongListTreeCellRenderer extends JLabel implements TreeCellRenderer
         JTree tree, Object value, boolean selected, 
         boolean expanded, boolean leaf, int row, boolean hasFocus
     ) {
-//        try {
-            tree.setBackground(Util.BACKGROUND_COLOR.brighter());
-            this.setBackground(Util.BACKGROUND_COLOR.brighter());
-            
-            this.setOpaque(true);
+        tree.setBackground(Rule.BACKGROUND_COLOR.brighter());
+        this.setBackground(Rule.BACKGROUND_COLOR.brighter());
 
-//            Font fuente;
-//            fuente = Font.createFont(Font.TRUETYPE_FONT, Recurso.FUENTE_ROBOTO);
-//            fuente = fuente.deriveFont(Font.PLAIN, Rule.FONT_SIZE_CANCIONES);
-//
-//            this.setFont(fuente);
-            DefaultMutableTreeNode defaultMutableTreeNode = (DefaultMutableTreeNode) value;
-            Object userObject = defaultMutableTreeNode.getUserObject();
+        this.setOpaque(true);
 
-            boolean isCurrentAlbum = false;
+        DefaultMutableTreeNode defaultMutableTreeNode = (DefaultMutableTreeNode) value;
+        Object userObject = defaultMutableTreeNode.getUserObject();
 
-            if (userObject instanceof Song) {
-                Song song = (Song) userObject;
-                this.setText(
-                    song.getTrackNumber()+".- "+
-                    song.toString() + 
-                    " ("+song.getDurationAsString()+")"
+        boolean isCurrentAlbum = false;
+
+        if (userObject instanceof Song) {
+            Song song = (Song) userObject;
+            this.setText(
+                song.getTrackNumber()+".- "+
+                song.toString() +
+                " ("+ Util.getDurationAsString(song.getMicroseconds()) +")"
+            );
+
+            setIcon(null);// @TODO: Probar sacando esta linea
+        } else if (userObject instanceof Album) {
+            Album album = (Album) userObject;
+            this.setText(album.getYear() + " " +userObject.toString());
+
+            try {// intento colocar el cover que tenga el album
+                // @TODO: encapsular esto en un método de album
+                Image coverImage = album.getCoversArt().get(0).getImage().getScaledInstance(
+                    (int) Rule.COVERT_ART_MINI.getWidth(),
+                    (int) Rule.COVERT_ART_MINI.getHeight(),
+                    Image.SCALE_SMOOTH
                 );
-                
-                setIcon(null);// @TODO: Probar sacando esta linea
-            } else if (userObject instanceof Album) {
-                Album album = (Album) userObject;
-                this.setText(album.getYear() + " " +userObject.toString());
+                setIcon(new ImageIcon(coverImage));
+            } catch (IndexOutOfBoundsException ex) {
 
-                try {// intento colocar el cover que tenga el album
-                    // @TODO: encapsular esto en un método de album
-                    Image coverImage = album.getCoversArt().get(0).getImage().getScaledInstance(
-                        (int) Rule.COVERT_ART_MINI.getWidth(),
-                        (int) Rule.COVERT_ART_MINI.getHeight(),
-                        Image.SCALE_SMOOTH
-                    );
-                    setIcon(new ImageIcon(coverImage));
-                } catch (IndexOutOfBoundsException ex) {
-                    
-                    // si no hay cover, cargo el icono de la app
-                    setIcon(new ImageIcon(
-                            SongListTreeCellRenderer.getImageIcon(Path.JPLAY_ICON).getImage().getScaledInstance(
-                                (int) Rule.COVERT_ART_MINI.getWidth(),
-                                (int) Rule.COVERT_ART_MINI.getHeight(),
-                                Image.SCALE_SMOOTH
-                            )
+                // si no hay cover, cargo el icono de la app
+                setIcon(new ImageIcon(
+                        SongListTreeCellRenderer.getImageIcon(Path.JPLAY_ICON).getImage().getScaledInstance(
+                            (int) Rule.COVERT_ART_MINI.getWidth(),
+                            (int) Rule.COVERT_ART_MINI.getHeight(),
+                            Image.SCALE_SMOOTH
                         )
-                    );
-                }
-
-                if (JPlay.musicPlayer != null) {
-                    Song currentSong = JPlay.musicPlayer.getCurrentSong();
-                    String albumAndArtist = userObject.toString();
-
-                    if (albumAndArtist.equalsIgnoreCase(
-                        currentSong.getAuthor() + " - " + 
-                        currentSong.getAlbum()
-                    )) {
-                        isCurrentAlbum = true;
-                    }
-                }
+                    )
+                );
             }
-
-            boolean isCurrentSong = false;
 
             if (JPlay.musicPlayer != null) {
-                if (userObject instanceof Song) {
-                    Song song = (Song) userObject;
-                    if (JPlay.musicPlayer.getCurrentSong().equals(song)) {
-                        isCurrentSong = true;
-                    }
+                Song currentSong = JPlay.musicPlayer.getCurrentSong();
+                String albumAndArtist = userObject.toString();
+
+                if (albumAndArtist.equalsIgnoreCase(
+                    currentSong.getAuthor() + " - " +
+                    currentSong.getAlbum()
+                )) {
+                    isCurrentAlbum = true;
                 }
             }
+        }
 
-            // @TODO: DEsacoplar esta parte del código
-            Color backgroundColor = Util.BACKGROUND_COLOR.darker().darker();
-            Color foregroungColor = Util.getForeGroundColorBasedOnBGBrightness(backgroundColor);
-            
-            if (selected) {
-                this.setForeground(foregroungColor);
-                this.setBackground(backgroundColor);
-            } else {
-                this.setForeground(Util.getForeGroundColorBasedOnBGBrightness(Util.BACKGROUND_COLOR.brighter()));
-                this.setBackground(Util.BACKGROUND_COLOR.brighter());
-            }
+        boolean isCurrentSong = false;
 
-            if (isCurrentSong) {
-                this.setForeground(foregroungColor);
-                this.setBackground(backgroundColor);
+        if (JPlay.musicPlayer != null) {
+            if (userObject instanceof Song) {
+                Song song = (Song) userObject;
+                if (JPlay.musicPlayer.getCurrentSong().equals(song)) {
+                    isCurrentSong = true;
+                }
             }
+        }
 
-            if (isCurrentAlbum) {
-                this.setForeground(foregroungColor);
-                this.setBackground(backgroundColor);
-            }
-//        } catch (FontFormatException | IOException ex) {
-//            Logger.getLogger(CellRenderCancionLista.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        // @TODO: DEsacoplar esta parte del código
+        Color backgroundColor = Rule.BACKGROUND_COLOR.darker().darker();
+        Color foregroungColor = ImageProcessor.getForeGroundColorBasedOnBGBrightness(backgroundColor);
+
+        if (selected) {
+            this.setForeground(foregroungColor);
+            this.setBackground(backgroundColor);
+        } else {
+            this.setForeground(ImageProcessor.getForeGroundColorBasedOnBGBrightness(Rule.BACKGROUND_COLOR.brighter()));
+            this.setBackground(Rule.BACKGROUND_COLOR.brighter());
+        }
+
+        if (isCurrentSong) {
+            this.setForeground(foregroungColor);
+            this.setBackground(backgroundColor);
+        }
+
+        if (isCurrentAlbum) {
+            this.setForeground(foregroungColor);
+            this.setBackground(backgroundColor);
+        }
 
         return this;
     }

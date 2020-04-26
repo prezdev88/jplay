@@ -1,6 +1,5 @@
 package cl.prezdev.xjplay.model.progress;
 
-import cl.prezdev.jlog.Log;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.SwingWorker;
@@ -41,8 +40,6 @@ public class WorkerStringProgress extends SwingWorker<Void, String> {
      * @param percentage 
      */
     public void changeProgressBar(int percentage) {
-        Log.add(percentage + "%");
-
         if (percentage < 0) { // si el porcentaje es negativo, dejo los minutos y segundos en 0
             initialMinute = 0;
             initialSecond = 0;
@@ -55,7 +52,6 @@ public class WorkerStringProgress extends SwingWorker<Void, String> {
             initialSecond = initialSecond - (initialMinute * 60);
 
         }
-        Log.add(initialMinute + ":" + initialSecond);
     }
 
     @Override
@@ -86,8 +82,6 @@ public class WorkerStringProgress extends SwingWorker<Void, String> {
         minutos = Integer.parseInt(time[0]);
         minutos = minutos * 60;
         segundos = Integer.parseInt(time[1]);
-
-        Log.add("SEGUNDOS: " + (minutos + segundos));
 
         return (minutos + segundos);
     }

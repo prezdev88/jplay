@@ -1,6 +1,7 @@
 package cl.prezdev.xjplay.table.model;
 
 import cl.prezdev.jplay.Song;
+import cl.prezdev.jplay.common.Util;
 import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -67,12 +68,11 @@ public class MusicLabrarySongTableModel implements TableModel {
             case 1:
                 return song.getAuthor();
             case 2:
-                return song.getFormattedYear()+song.getAlbum();
+                return Util.getFormattedYear(song.getYear()) + song.getAlbum();
             case COMPLETE_OBJECT_INDEX:
                 return song;
             case 4:
-                return song.getDurationAsString();
-
+                return Util.getDurationAsString(song.getMicroseconds());
         }
 
         return null;

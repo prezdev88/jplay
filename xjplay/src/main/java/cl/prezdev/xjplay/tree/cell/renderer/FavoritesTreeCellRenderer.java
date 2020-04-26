@@ -2,6 +2,8 @@ package cl.prezdev.xjplay.tree.cell.renderer;
 
 
 import cl.prezdev.jplay.Song;
+import cl.prezdev.jplay.common.Util;
+
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JLabel;
@@ -30,8 +32,10 @@ public class FavoritesTreeCellRenderer extends JLabel implements TreeCellRendere
             if (userObject instanceof Song) {
                 Song song = (Song) userObject;
                 int count = song.getPlayCount();
-                
-                this.setText(" [ "+count+" ] "+song.getAuthor()+" - "+song.toString() + " ("+song.getDurationAsString()+") ");
+
+
+                String durationAsString = Util.getDurationAsString(song.getMicroseconds());
+                this.setText(" [ "+count+" ] "+song.getAuthor()+" - "+song.toString() + " ("+ durationAsString +") ");
                 this.setToolTipText(count+(count == 1?" vez reproducida":" veces reproducidas"));
                 
                 this.setIcon(null);// @TODO: Probar sacando esta linea

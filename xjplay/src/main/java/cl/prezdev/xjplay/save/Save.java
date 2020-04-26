@@ -1,6 +1,5 @@
 package cl.prezdev.xjplay.save;
 
-import cl.prezdev.jlog.LogEntry;
 import cl.prezdev.jplay.Album;
 import cl.prezdev.jplay.Song;
 import cl.prezdev.xjplay.artist.list.ArtistCoverArt;
@@ -15,7 +14,6 @@ public class Save implements Serializable{
     public List<ArtistCoverArt>   artistCoversArt;
     public int                  currentIndex;
     public int                  indexTab;
-    public List<LogEntry>       logEntries;
     public Icon                 cover;
     public int                  volume;    
 }

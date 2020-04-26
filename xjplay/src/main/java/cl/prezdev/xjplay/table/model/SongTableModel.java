@@ -1,6 +1,8 @@
 package cl.prezdev.xjplay.table.model;
 
 import cl.prezdev.jplay.Song;
+import cl.prezdev.jplay.common.Util;
+
 import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -54,7 +56,7 @@ public class SongTableModel implements TableModel {
             case 0:
                 return song;
             case 1:
-                return song.getDurationAsString();
+                return Util.getDurationAsString(song.getMicroseconds());
 
         }
 

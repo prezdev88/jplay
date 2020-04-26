@@ -1,6 +1,5 @@
 package cl.prezdev.xjplay.model.search;
 
-import cl.prezdev.jlog.Log;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -37,14 +36,14 @@ public class SearchDialog extends javax.swing.JDialog {
         init();
     }
     
-    private void searchComboboxKeyReleased() {
+    private void searchComboBoxKeyReleased() {
         try {
             Object editorItem = searchCombobox.getEditor().getItem();
             String searchText = editorItem.toString().toLowerCase().trim();
             
             searchListener.search(searchText);
         } catch (Exception ex) {
-            Log.add(ex.getMessage());
+            // @TODO: Añadir log aquí
         }
     }
 
@@ -108,7 +107,7 @@ public class SearchDialog extends javax.swing.JDialog {
             
             searchListener.search(searchText);
         } catch (Exception e) {
-            Log.add(e.getMessage());
+            // @TODO: añadir log
         }
     }//GEN-LAST:event_searchComboboxItemStateChanged
 
@@ -159,7 +158,7 @@ public class SearchDialog extends javax.swing.JDialog {
             @Override
             public void keyReleased(KeyEvent keyEvent) {
                 if (keyEvent.getKeyCode() != KeyEvent.VK_ENTER) {
-                    searchComboboxKeyReleased();
+                    searchComboBoxKeyReleased();
                 } else {
                     SearchDialog.this.setVisible(false);
 

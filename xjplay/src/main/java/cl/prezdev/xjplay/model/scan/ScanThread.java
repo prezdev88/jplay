@@ -1,6 +1,5 @@
 package cl.prezdev.xjplay.model.scan;
 
-import cl.prezdev.jlog.Log;
 import cl.prezdev.jplay.MusicLibrary;
 import cl.prezdev.jplay.Song;
 import cl.prezdev.xjplay.rules.Rule;
@@ -29,9 +28,7 @@ public class ScanThread extends Thread {
     public void run() {
         try {
             while (true) {
-                Log.add("PAUSE SCAN...");
                 Thread.sleep(Rule.PAUSE_SCAN);
-
                 scanMusicLibraryPaths();
             }
         } catch (InterruptedException | IOException ex) {
@@ -47,14 +44,10 @@ public class ScanThread extends Thread {
      */
     public void scanMusicLibraryPaths() throws IOException {
         try {
-            Log.add("REMOVIENDO NO EXISTENTES...");
             int cant = musicLibrary.cleanLibrary();
-            Log.add("OK ("+cant+" removidos)");
 
             for (File file : musicLibrary.getPaths()) {
-                Log.add("SCAN [" + file.getPath() + "]...");
                 scan(file);
-                Log.add("OK");
             }
 
             if(!hasChanged){
@@ -90,7 +83,6 @@ public class ScanThread extends Thread {
             }
         }else{
             if(musicLibrary.removePath(rootFile)){
-                Log.add("Ruta removida! ["+rootFile+"]");
                 hasChanged = true;
             }
         }

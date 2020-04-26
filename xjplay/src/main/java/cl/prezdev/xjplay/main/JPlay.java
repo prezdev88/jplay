@@ -1,16 +1,13 @@
 package cl.prezdev.xjplay.main;
 
 //iconos https://www.iconfinder.com/iconsets/snipicons
-import cl.prezdev.jlog.Log;
-import cl.prezdev.jlog.LogEntry;
-import cl.prezdev.jlog.LogTableModel;
-import cl.prezdev.jlog.UpdateLogUI;
-
 import cl.prezdev.jplay.Album;
 import cl.prezdev.jplay.MusicLibrary;
 import cl.prezdev.jplay.Song;
 import cl.prezdev.jplay.MusicPlayer;
 
+import cl.prezdev.jplay.common.ImageProcessor;
+import cl.prezdev.jplay.common.Util;
 import cl.prezdev.xjplay.cover.art.CoverArtThread;
 import cl.prezdev.xjplay.artist.list.BackAlbum;
 import cl.prezdev.xjplay.list.cellrenderer.AlbumListCellRenderer;
@@ -33,7 +30,6 @@ import cl.prezdev.xjplay.recursos.Path;
 import cl.prezdev.xjplay.rules.Rule;
 import cl.prezdev.xjplay.save.Save;
 import cl.prezdev.xjplay.save.IO;
-import cl.prezdev.xjplay.utils.Util;
 import cl.prezdev.xjplay.utils.Validate;
 
 import java.awt.Color;
@@ -84,8 +80,7 @@ import cl.prezdev.xjplay.model.scan.MusicLibraryUiUpdate;
 import static java.awt.EventQueue.invokeLater;
 
 public class JPlay extends JFrame implements
-        BasicPlayerListener, SearchListener, MusicLibraryUiUpdate, UpdateLogUI {
-
+        BasicPlayerListener, SearchListener, MusicLibraryUiUpdate{
     public static MusicPlayer musicPlayer;
     private MusicLibrary musicLibrary;
     
@@ -116,8 +111,7 @@ public class JPlay extends JFrame implements
     private SearchDialog searchDialog;
 
     // esto es para el drag and drop
-    private int currentTabIndex; 
-    private LogTableModel logTableModel;
+    private int currentTabIndex;
     
     /*
     Esta lista la utilizo cuando guardo en SAVE.
@@ -146,12 +140,9 @@ public class JPlay extends JFrame implements
             Image.SCALE_SMOOTH
         );
 
-        initLog();
-
         currentSongs = new ArrayList<>();
         albums = new ArrayList<>();
         musicLibrary = new MusicLibrary();
-        musicLibrary.setUpdateLogUI(this);
 
         isRandom = false;
 
@@ -195,7 +186,7 @@ public class JPlay extends JFrame implements
         coverArtLabel.requestFocus();
         initMostPlayerSongsTree();
         loadFavoritesSongsTree();
-        musicLibrary.printAlbums();
+        musicLibrary.printAlbumsToLog();
         printProgressBar = true;
 
         initSearchDialog();
@@ -301,13 +292,13 @@ public class JPlay extends JFrame implements
         coverArtLabel.setText("[cv]");
 
         mainTabbedPane.setToolTipText("");
-        mainTabbedPane.addMouseListener(new java.awt.event.MouseAdapter() {
+        mainTabbedPane.addMouseListener(new MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 mainTabbedPaneMouseReleased(evt);
             }
         });
 
-        treeExplorer.addMouseListener(new java.awt.event.MouseAdapter() {
+        treeExplorer.addMouseListener(new MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 explorerTreeMouseReleased(evt);
             }
@@ -332,7 +323,7 @@ public class JPlay extends JFrame implements
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        musicLibraryTable.addMouseListener(new java.awt.event.MouseAdapter() {
+        musicLibraryTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 musicLibraryTableMousePressed(evt);
             }
@@ -362,7 +353,7 @@ public class JPlay extends JFrame implements
         ));
         songsTable.setShowHorizontalLines(false);
         songsTable.setShowVerticalLines(false);
-        songsTable.addMouseListener(new java.awt.event.MouseAdapter() {
+        songsTable.addMouseListener(new MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 songsTableMouseReleased(evt);
             }
@@ -380,7 +371,7 @@ public class JPlay extends JFrame implements
         cleanLabel.setText("Limpiar");
         cleanLabel.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         cleanLabel.setOpaque(true);
-        cleanLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        cleanLabel.addMouseListener(new MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 cleanLabelMousePressed(evt);
             }
@@ -395,7 +386,7 @@ public class JPlay extends JFrame implements
             }
         });
 
-        treeSong.addMouseListener(new java.awt.event.MouseAdapter() {
+        treeSong.addMouseListener(new MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 treeSongMouseReleased(evt);
             }
@@ -424,7 +415,7 @@ public class JPlay extends JFrame implements
 
         panelMasEscuchadas.setLayout(new java.awt.BorderLayout());
 
-        mostPlayedSongTree.addMouseListener(new java.awt.event.MouseAdapter() {
+        mostPlayedSongTree.addMouseListener(new MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 mostPlayedSongTreeMouseReleased(evt);
             }
@@ -437,7 +428,7 @@ public class JPlay extends JFrame implements
 
         panelFavoritos.setLayout(new java.awt.BorderLayout());
 
-        favoritesTree.addMouseListener(new java.awt.event.MouseAdapter() {
+        favoritesTree.addMouseListener(new MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 favoritesTreeMouseReleased(evt);
             }
@@ -469,7 +460,7 @@ public class JPlay extends JFrame implements
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        artistList.addMouseListener(new java.awt.event.MouseAdapter() {
+        artistList.addMouseListener(new MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 artistListMouseReleased(evt);
             }
@@ -487,7 +478,7 @@ public class JPlay extends JFrame implements
                 songProgressBarMouseDragged(evt);
             }
         });
-        progressBarSong.addMouseListener(new java.awt.event.MouseAdapter() {
+        progressBarSong.addMouseListener(new MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 songProgressBarMouseReleased(evt);
             }
@@ -523,7 +514,7 @@ public class JPlay extends JFrame implements
                 slideVolMouseWheelMoved(evt);
             }
         });
-        volumeSlider.addMouseListener(new java.awt.event.MouseAdapter() {
+        volumeSlider.addMouseListener(new MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 volumeSlideMousePressed(evt);
             }
@@ -564,20 +555,20 @@ public class JPlay extends JFrame implements
         durationLabel.setText("0:00 - 0:00");
 
         backSongLabel.setText("A");
-        backSongLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        backSongLabel.addMouseListener(new MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 backSongLabelMouseReleased(evt);
             }
         });
 
-        playSongLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        playSongLabel.addMouseListener(new MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 playLabelMouseReleased(evt);
             }
         });
 
         nextSongLabel.setText("A");
-        nextSongLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        nextSongLabel.addMouseListener(new MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 nextSongLabelMouseReleased(evt);
             }
@@ -732,7 +723,6 @@ public class JPlay extends JFrame implements
 
                 save.songs = currentSongs;
                 save.indexTab = mainTabbedPane.getSelectedIndex();
-                save.logEntries = Log.getEntries();
                 save.cover = coverArtLabel.getIcon();
                 save.albums = albums;
                 save.volume = volumeSlider.getValue();
@@ -908,7 +898,7 @@ public class JPlay extends JFrame implements
                 break;
 
             case Rule.TabIndex.CURRENT_SONGS_LIST:
-                loadInfoLabel.setText("Lista actual --> " + musicLibrary.getFormattedDuration(millisecondsOfCurrentSongs));
+                loadInfoLabel.setText("Lista actual --> " + Util.getFormattedDuration(millisecondsOfCurrentSongs));
                 break;
 
             case Rule.TabIndex.MOST_PLAYED:
@@ -976,7 +966,7 @@ public class JPlay extends JFrame implements
                 if (isPlay) {
                     isPlay = false;
 
-                    if (Util.FOREGROUND_COLOR == Color.black) {
+                    if (Rule.FOREGROUND_COLOR == Color.black) {
                         playSongLabel.setIcon(new ImageIcon(getClass().getResource(Path.BLACK_PLAY_ICON)));
                     } else {
                         playSongLabel.setIcon(new ImageIcon(getClass().getResource(Path.WHITE_PLAY_ICON)));
@@ -986,7 +976,7 @@ public class JPlay extends JFrame implements
                 } else {
                     isPlay = true;
 
-                    if (Util.FOREGROUND_COLOR == Color.black) {
+                    if (Rule.FOREGROUND_COLOR == Color.black) {
                         playSongLabel.setIcon(new ImageIcon(getClass().getResource(Path.BLACK_PAUSE_ICON)));
                     } else {
                         playSongLabel.setIcon(new ImageIcon(getClass().getResource(Path.WHITE_PAUSE_ICON)));
@@ -1071,20 +1061,16 @@ public class JPlay extends JFrame implements
                 /*Recuperando el volumen del usuario*/
                 mainTabbedPane.setSelectedIndex(save.indexTab);
 
-                Log.setLogEntries(save.logEntries);
                 mainTabbedPane.setTitleAt(Rule.TabIndex.LOGGER, "Logger (" + loggerTable.getRowCount() + ")");
 
                 setCoverArt(save.cover);
 
                 musicLibrary = (MusicLibrary) IO.readObject(Path.MUSIC_LIBRARY);
 
-                Log.add("Cantidad de canciones cargadas del save: " + currentSongs.size());
-
                 loadAlbumsInTreeSong(save.albums);
                 loadSongsInMusicLibrary(musicLibrary.getSongs());
                 showCurrentSongInfo();
             } catch (InvalidClassException ex) {
-                Log.add("EX: " + ex.getMessage());
                 musicLibrary = new MusicLibrary();
                 currentSongs = musicLibrary.getSongs();
                 artistCoversArt = new ArrayList<>();
@@ -1108,7 +1094,7 @@ public class JPlay extends JFrame implements
                 break;
 
             case Rule.TabIndex.CURRENT_SONGS_LIST:
-                loadInfoLabel.setText("Lista actual --> " + musicLibrary.getFormattedDuration(millisecondsOfCurrentSongs));
+                loadInfoLabel.setText("Lista actual --> " + Util.getFormattedDuration(millisecondsOfCurrentSongs));
                 break;
 
             case Rule.TabIndex.MOST_PLAYED:
@@ -1273,7 +1259,6 @@ public class JPlay extends JFrame implements
 
     @Override
     public void stateUpdated(BasicPlayerEvent bpe) {
-        Log.add("STATE UPDATED: " + bpe.toString());
         switch (bpe.getCode()) {
             case BasicPlayerEvent.EOM:
                 /*
@@ -1289,7 +1274,6 @@ public class JPlay extends JFrame implements
                     playCurrentSong();
                 }
 
-                Log.add("END_OF_MUSIC");
                 break;
 
             case BasicPlayerEvent.RESUMED:
@@ -1307,9 +1291,7 @@ public class JPlay extends JFrame implements
     }
 
     @Override
-    public void setController(BasicController bc) {
-        Log.add("SET CONTROLLER: " + bc);
-    }
+    public void setController(BasicController basicController) {}
 
     private void setVolume(int volume) {
         try {
@@ -1364,7 +1346,6 @@ public class JPlay extends JFrame implements
     private void loadAlbumsInTreeSong(List<Album> albums) {
         this.albums = albums;
         //ordenar acá
-        Log.add("Se cargaron " + currentSongs.size() + " canciones a la lista principal");
 
         Collections.sort(currentSongs, (Comparator<File>) (file1, file2) -> file1.compareTo(file2));
 
@@ -1393,10 +1374,10 @@ public class JPlay extends JFrame implements
 
         // @TODO: desacoplar esto
         for (Song song : currentSongs) {
-            millisecondsOfCurrentSongs += song.getMilisDuration();
+            millisecondsOfCurrentSongs += song.getMilliSeconds();
         }
 
-        loadInfoLabel.setText("Lista actual --> " + musicLibrary.getFormattedDuration(millisecondsOfCurrentSongs));
+        loadInfoLabel.setText("Lista actual --> " + Util.getFormattedDuration(millisecondsOfCurrentSongs));
     }
 
     private void initMostPlayerSongsTree() {
@@ -1413,10 +1394,7 @@ public class JPlay extends JFrame implements
         mostPlayedSongTree.setRootVisible(false);
 
         mostPlayedSongTree.setCellRenderer(
-            new SongMostPlayedTreeCellRenderer(
-                ExplorerTreeCellRenderer.getImageIcon(Path.PLAY_TREE_ICON),
-                ExplorerTreeCellRenderer.getImageIcon(Path.ALBUM_TREE_ICON)
-            )
+            new SongMostPlayedTreeCellRenderer()
         );
 
         mainTabbedPane.setTitleAt(
@@ -1531,7 +1509,7 @@ public class JPlay extends JFrame implements
                     loadSongsInMusicLibrary(file);
                     loadSongsInMusicLibrary(musicLibrary.getSongs());
 
-                    musicLibrary.processAlbum();
+                    musicLibrary.addSongsToAlbums();
                     musicLibrary.addPath(file);
 
                     initArtistCoversArt();
@@ -1653,15 +1631,13 @@ public class JPlay extends JFrame implements
         musicLibraryTable.setModel(new MusicLabrarySongTableModel(songs));
         mainTabbedPane.setTitleAt(Rule.TabIndex.MUSIC_LIBRARY, "Biblioteca (" + songs.size() + ")");
 
-        Log.add(musicLibrary.getLibraryDuration());
-
         musicLibraryTable.getColumnModel().getColumn(0).setPreferredWidth(Rule.TRACK_NUMBER_COLUMN_SIZE);
         musicLibraryTable.getColumnModel().getColumn(1).setPreferredWidth(Rule.ARTIST_COLUMN_SIZE);
         musicLibraryTable.getColumnModel().getColumn(2).setPreferredWidth(Rule.ALBUM_COLUMN_SIZE);
         musicLibraryTable.getColumnModel().getColumn(3).setPreferredWidth(Rule.ARTIST_COLUMN_SIZE);
 
         cancelLoadingButton.setEnabled(false);
-        musicLibrary.processAlbum();
+        musicLibrary.addSongsToAlbums();
     }
 
     /*
@@ -1695,7 +1671,7 @@ public class JPlay extends JFrame implements
             
             setVolume(volumeSlider.getValue());
 
-            if (Util.FOREGROUND_COLOR == Color.white) {
+            if (Rule.FOREGROUND_COLOR == Color.white) {
                 playSongLabel.setIcon(new ImageIcon(getClass().getResource(Path.WHITE_PAUSE_ICON)));
             } else {
                 playSongLabel.setIcon(new ImageIcon(getClass().getResource(Path.BLACK_PAUSE_ICON)));
@@ -1710,7 +1686,8 @@ public class JPlay extends JFrame implements
                 this.workerStringProgress.cancel(true);
             }
 
-            this.workerStringProgress = new WorkerStringProgress(durationLabel, song.getDurationAsString());
+            String durationAsString = Util.getDurationAsString(song.getMicroseconds());
+            this.workerStringProgress = new WorkerStringProgress(durationLabel, durationAsString);
 
             this.workerStringProgress.execute();
 
@@ -1728,7 +1705,9 @@ public class JPlay extends JFrame implements
         if (musicPlayer != null) {
             Song song = musicPlayer.getCurrentSong();
             artistLabel.setText(song.getAuthor() + " - " + song.getAlbum() + " (" + song.getYear() + ")");
-            nameSongLabel.setText(song.getName() + " (" + song.getDurationAsString() + ")");
+
+            String durationAsString = Util.getDurationAsString(song.getMicroseconds());
+            nameSongLabel.setText(song.getName() + " (" + durationAsString + ")");
         }
     }
 
@@ -1744,7 +1723,6 @@ public class JPlay extends JFrame implements
             public void mouseClicked(MouseEvent mouseEvent) {
                 int column = musicLibraryTable.columnAtPoint(mouseEvent.getPoint());
                 String columnName = musicLibraryTable.getColumnName(column);
-                Log.add("Column index selected " + column + " " + columnName);
             }
         });
     }
@@ -1869,9 +1847,7 @@ public class JPlay extends JFrame implements
                 );
             }
         } else if (!album.hasCoversArt()) { // si el Album NO tiene una lista de imagenes
-            Log.add("La canción no tiene imágenes asociadas!");
             List<ImageIcon> coversArt = Resource.getCoversArt(song);
-            Log.add("Se han encontrado " + coversArt.size() + " foto");
 
             if (!coversArt.isEmpty()) {
                 /*
@@ -1879,7 +1855,6 @@ public class JPlay extends JFrame implements
                 para poder comenzar el hilo de las caratulas
                  */
                 album.setCoversArt(coversArt);
-                Log.add("Se añadió una lista de fotos a la cancion [" + coversArt.size() + " fotos]");
             } else { // no hay imagenes en la carpeta de la canción
                 coversArt = new ArrayList<>();
 
@@ -1893,8 +1868,6 @@ public class JPlay extends JFrame implements
                     );
 
                     coversArt.add(new ImageIcon(coverArt));
-
-                    Log.add("Se añadió una image desde LastFM!");
                 } catch (Exception ex) {
                     /*Establezco la caratula por defecto (el disco)*/
 //                        icono = icono.getScaledInstance(
@@ -1902,13 +1875,10 @@ public class JPlay extends JFrame implements
 //                                (int) Rule.COVER_DIMENSION.getHeight(),
 //                                Image.SCALE_SMOOTH);
                     coversArt.add(new ImageIcon(iconApp));
-                    Log.add("Se añadió una caratula POR DEFECTO --> " + ex.getMessage());
                 }
 
                 album.setCoversArt(coversArt);
             }
-        } else {
-            Log.add("La canción tiene caratula!");
         }
 
         if (coverArtThread != null) {
@@ -2012,19 +1982,15 @@ public class JPlay extends JFrame implements
         try {
             // @TODO: Desacoplar código de comandos
             if (searchText.startsWith("/")) {
-                Log.add("comando! " + searchText);
-
                 // si es un comando, despues cargo de nuevo la biblioteca
                 loadSongsInMusicLibrary(musicLibrary.getSongs());
 
                 String pathString = "";
 
                 if (searchText.equalsIgnoreCase("/rutas")) {
-                    Log.add("RUTAS:");
                     pathString += "RUTAS:\n";
 
                     for (File file : musicLibrary.getPaths()) {
-                        Log.add("\t" + file.getPath());
                         pathString += file.getPath() + "\n";
                     }
 
@@ -2033,17 +1999,13 @@ public class JPlay extends JFrame implements
                     ScanThread scanThread = new ScanThread(musicLibrary, this);
                     scanThread.start();
                 } else if (searchText.equalsIgnoreCase("/favs")) {
-                    Log.add("Canciones favoritas:");
-                    for (Song song : musicLibrary.getFavoritesSongs()) {
-                        Log.add(song.toString());
-                    }
+                    // @TODO WTF
                 }
             }
 
             musicLibraryTable.setRowSelectionInterval(0, 0);
         } catch (HeadlessException e) {
             // cae aca cuando no hay canciones en la tabla biblioteca
-            Log.add(e.getMessage());
         }
     }
 
@@ -2082,9 +2044,7 @@ public class JPlay extends JFrame implements
                     coverArtThread = new CoverArtThread(coverArtLabel, album.getCoversArt());
                     coverArtThread.start();
                 }
-            } catch (NullPointerException ex) {
-                Log.add("Objeto HCOVER es nulo");
-            }
+            } catch (NullPointerException ex) {}
         });
 
         covertArtPopUp.add(deleteCoverArt);
@@ -2120,7 +2080,7 @@ public class JPlay extends JFrame implements
                                 loadSongsInMusicLibrary(file);
                                 loadSongsInMusicLibrary(musicLibrary.getSongs());
 
-                                musicLibrary.processAlbum();
+                                musicLibrary.addSongsToAlbums();
                                 musicLibrary.addPath(file);
                             } catch (IOException ex) {
                                 Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
@@ -2160,26 +2120,11 @@ public class JPlay extends JFrame implements
     public void updateMusicLibraryUI(boolean haschanged) {
         if (haschanged) {
             loadSongsInMusicLibrary(musicLibrary.getSongs());
-            musicLibrary.processAlbum();
-        } else {
-            Log.add("[No hubo cambios en la biblioteca]");
+            musicLibrary.addSongsToAlbums();
         }
     }
 
-    @Override
-    public void updateLogUI(LogEntry newLogEntry) {
-        try {
-            loggerTable.updateUI();
-        } catch (NullPointerException e) {}
 
-        mainTabbedPane.setTitleAt(Rule.TabIndex.LOGGER, "Logger (" + loggerTable.getRowCount() + ")");
-    }
-
-    private void initLog() {
-        Log.setUpdateLogUI(this);
-        logTableModel = new LogTableModel();
-        loggerTable.setModel(logTableModel);
-    }
 
     private void initTabIcons() {
         mainTabbedPane.setIconAt(Rule.TabIndex.EXPLORER, SongListTreeCellRenderer.getImageIcon(Path.EXPLORER_TAB_ICON));
@@ -2193,39 +2138,46 @@ public class JPlay extends JFrame implements
 
     private void setBackgroundColor(Album album) {
         /* Colores de fondo */
-        Util.BACKGROUND_COLOR = album.getAverageColor();
-        Util.FOREGROUND_COLOR = Util.getForeGroundColorBasedOnBGBrightness(Util.BACKGROUND_COLOR);
+        if (album.hasCoversArt()) {
+            Rule.BACKGROUND_COLOR = ImageProcessor.getAverageColor(album.getCoverArt());
+        } else {
+            Rule.BACKGROUND_COLOR = Color.white;
+        }
 
-        panelPrincipal.setBackground(Util.BACKGROUND_COLOR);
-        volumeSlider.setBackground(Util.BACKGROUND_COLOR);
-        nameSongLabel.setForeground(Util.FOREGROUND_COLOR);
-        artistLabel.setForeground(Util.FOREGROUND_COLOR);
-        repeatSongCheckbox.setForeground(Util.FOREGROUND_COLOR);
-        randomCheckbox.setForeground(Util.FOREGROUND_COLOR);
-        loadInfoLabel.setForeground(Util.FOREGROUND_COLOR);
-        durationLabel.setForeground(Util.FOREGROUND_COLOR);
+
+
+        Rule.FOREGROUND_COLOR = ImageProcessor.getForeGroundColorBasedOnBGBrightness(Rule.BACKGROUND_COLOR);
+
+        panelPrincipal.setBackground(Rule.BACKGROUND_COLOR);
+        volumeSlider.setBackground(Rule.BACKGROUND_COLOR);
+        nameSongLabel.setForeground(Rule.FOREGROUND_COLOR);
+        artistLabel.setForeground(Rule.FOREGROUND_COLOR);
+        repeatSongCheckbox.setForeground(Rule.FOREGROUND_COLOR);
+        randomCheckbox.setForeground(Rule.FOREGROUND_COLOR);
+        loadInfoLabel.setForeground(Rule.FOREGROUND_COLOR);
+        durationLabel.setForeground(Rule.FOREGROUND_COLOR);
 
         progressBarSong.setUI(new BasicProgressBarUI() {
             @Override
             protected Color getSelectionBackground() {
-                return Util.BACKGROUND_COLOR;
+                return Rule.BACKGROUND_COLOR;
             }
 
             @Override
             protected Color getSelectionForeground() {
-                return Util.FOREGROUND_COLOR;
+                return Rule.FOREGROUND_COLOR;
             }
         });
 
         // @TODO: Color en colores
         progressBarSong.setForeground(new Color(76, 175, 80));
 
-        Color color = Util.BACKGROUND_COLOR.darker().darker();
+        Color color = Rule.BACKGROUND_COLOR.darker().darker();
         mainTabbedPane.setBackground(color);
-        mainTabbedPane.setForeground(Util.getForeGroundColorBasedOnBGBrightness(color));
+        mainTabbedPane.setForeground(ImageProcessor.getForeGroundColorBasedOnBGBrightness(color));
 
         // Acá cambio los iconos según color
-        if (Util.FOREGROUND_COLOR == Color.white) {
+        if (Rule.FOREGROUND_COLOR == Color.white) {
             playSongLabel.setIcon(new ImageIcon(getClass().getResource(Path.WHITE_PLAY_ICON)));
             nextSongLabel.setIcon(new ImageIcon(getClass().getResource(Path.WHITE_NEXT_ICON)));
             backSongLabel.setIcon(new ImageIcon(getClass().getResource(Path.WHITE_BACK_ICON)));
