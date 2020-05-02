@@ -36,8 +36,8 @@ public class CoverArtThread extends Thread {
 
     public Image getCurrentCoverArt() {
         return this.currentCoverArt.getImage().getScaledInstance(
-            (int) Rule.COVER_ART_DIMENSION.getWidth(),
-            (int) Rule.COVER_ART_DIMENSION.getHeight(),
+            (int) Rule.COVER_ART_DIMENTION.getWidth(),
+            (int) Rule.COVER_ART_DIMENTION.getHeight(),
             Image.SCALE_SMOOTH
         );
     }

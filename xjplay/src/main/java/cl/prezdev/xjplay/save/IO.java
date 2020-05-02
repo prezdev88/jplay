@@ -21,7 +21,7 @@ public class IO {
      * @param objeto El objeto que Quieres guardar
      * @param ruta Usa el caracter "/" como separador
      */
-    public static void escribirObjetoEn(Object objeto, String ruta) throws IOException{
+    public static void writeObject(Object objeto, String ruta) throws IOException{
         /*si la ruta no existe, la creo*/
         if (!new File(ruta).exists()) {
             String[] carpetas = ruta.split("/");

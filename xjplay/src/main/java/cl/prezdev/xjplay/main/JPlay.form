@@ -2,10 +2,6 @@
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Container class="javax.swing.JDialog" name="dialogCanciones">
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
-    </Container>
     <Container class="javax.swing.JDialog" name="jDialog1">
 
       <Layout>
@@ -50,7 +46,7 @@
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="mainPanel">
+    <Container class="javax.swing.JPanel" name="panelApp">
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
           <BorderConstraints direction="Center"/>
@@ -60,17 +56,17 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="panelPrincipal" alignment="0" max="32767" attributes="0"/>
+              <Component id="mainPanel" alignment="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="panelPrincipal" alignment="0" max="32767" attributes="0"/>
+              <Component id="mainPanel" alignment="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Container class="javax.swing.JPanel" name="panelPrincipal">
+        <Container class="javax.swing.JPanel" name="mainPanel">
 
           <Layout>
             <DimensionLayout dim="0">
@@ -78,24 +74,24 @@
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="tabbedPrincipal" max="32767" attributes="0"/>
+                          <Component id="mainTabbedPane" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
-                              <Component id="lblAnterior" min="-2" pref="24" max="-2" attributes="0"/>
+                              <Component id="backSongLabel" min="-2" pref="24" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblPlay" min="-2" pref="24" max="-2" attributes="0"/>
+                              <Component id="playSongLabel" min="-2" pref="24" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblSiguiente" min="-2" pref="24" max="-2" attributes="0"/>
+                              <Component id="nextSongLabel" min="-2" pref="24" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblCover" min="-2" pref="59" max="-2" attributes="0"/>
+                              <Component id="coverArtLabel" min="-2" pref="59" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Component id="lblArtista" min="-2" pref="482" max="-2" attributes="0"/>
+                                      <Component id="artistLabel" min="-2" pref="482" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="lblDuracion" min="-2" pref="79" max="-2" attributes="0"/>
+                                      <Component id="songDurationLabel" min="-2" pref="79" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="progress" max="32767" attributes="0"/>
-                                  <Component id="lblNombreCancion" max="32767" attributes="0"/>
+                                  <Component id="progressBarSong" max="32767" attributes="0"/>
+                                  <Component id="songNameLabel" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -103,17 +99,17 @@
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnCancelarCarga" min="-2" max="-2" attributes="0"/>
+                      <Component id="cancelLoadingButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="lblInfoCarga" max="32767" attributes="0"/>
+                      <Component id="loadInfoLabel" max="32767" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="opAleatorio" min="-2" max="-2" attributes="0"/>
+                      <Component id="shuffleCheckbox" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="opRepetirCancion" min="-2" max="-2" attributes="0"/>
+                      <Component id="repeatSongCheckbox" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="slideVol" min="-2" pref="109" max="-2" attributes="0"/>
+                      <Component id="volumeSlider" min="-2" pref="109" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="btnFav" min="-2" pref="50" max="-2" attributes="0"/>
+                      <Component id="favoriteButton" min="-2" pref="50" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -124,36 +120,36 @@
                       <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" attributes="0">
-                              <Component id="lblNombreCancion" min="-2" pref="15" max="-2" attributes="0"/>
+                              <Component id="songNameLabel" min="-2" pref="15" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblArtista" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblDuracion" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="artistLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="songDurationLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="progress" min="-2" max="-2" attributes="0"/>
+                              <Component id="progressBarSong" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lblPlay" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
-                              <Component id="lblSiguiente" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
-                              <Component id="lblAnterior" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
-                              <Component id="lblCover" min="-2" pref="59" max="-2" attributes="0"/>
+                              <Component id="playSongLabel" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
+                              <Component id="nextSongLabel" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
+                              <Component id="backSongLabel" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
+                              <Component id="coverArtLabel" min="-2" pref="59" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="tabbedPrincipal" pref="302" max="32767" attributes="0"/>
+                      <Component id="mainTabbedPane" pref="302" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="slideVol" alignment="1" min="-2" pref="23" max="-2" attributes="0"/>
+                              <Component id="volumeSlider" alignment="1" min="-2" pref="23" max="-2" attributes="0"/>
                               <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                                  <Component id="btnCancelarCarga" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblInfoCarga" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                                  <Component id="opAleatorio" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
-                                  <Component id="opRepetirCancion" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
+                                  <Component id="cancelLoadingButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="loadInfoLabel" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                  <Component id="shuffleCheckbox" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
+                                  <Component id="repeatSongCheckbox" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <Component id="btnFav" alignment="0" min="-2" pref="31" max="-2" attributes="0"/>
+                          <Component id="favoriteButton" alignment="0" min="-2" pref="31" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -161,18 +157,18 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="lblCover">
+            <Component class="javax.swing.JLabel" name="coverArtLabel">
               <Properties>
                 <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="text" type="java.lang.String" value="[cv]"/>
               </Properties>
             </Component>
-            <Container class="javax.swing.JTabbedPane" name="tabbedPrincipal">
+            <Container class="javax.swing.JTabbedPane" name="mainTabbedPane">
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
               <Events>
-                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tabbedPrincipalMouseReleased"/>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mainTabbedPaneMouseReleased"/>
               </Events>
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
@@ -191,10 +187,10 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTree" name="treeExplorer">
+                    <Component class="javax.swing.JTree" name="explorerTree">
                       <Events>
-                        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="treeExplorerMouseReleased"/>
-                        <EventHandler event="valueChanged" listener="javax.swing.event.TreeSelectionListener" parameters="javax.swing.event.TreeSelectionEvent" handler="treeExplorerValueChanged"/>
+                        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="explorerTreeMouseReleased"/>
+                        <EventHandler event="valueChanged" listener="javax.swing.event.TreeSelectionListener" parameters="javax.swing.event.TreeSelectionEvent" handler="explorerTreeValueChanged"/>
                       </Events>
                     </Component>
                   </SubComponents>
@@ -213,7 +209,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTable" name="tablaBiblioteca">
+                    <Component class="javax.swing.JTable" name="musicLibraryTable">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                           <Table columnCount="4" rowCount="4">
@@ -225,9 +221,9 @@
                         </Property>
                       </Properties>
                       <Events>
-                        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tablaBibliotecaMousePressed"/>
-                        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tablaBibliotecaMouseReleased"/>
-                        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tablaBibliotecaKeyReleased"/>
+                        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="musicLibraryTableMousePressed"/>
+                        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="musicLibraryTableMouseReleased"/>
+                        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="musicLibraryTableKeyReleased"/>
                       </Events>
                     </Component>
                   </SubComponents>
@@ -244,8 +240,8 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblLimpiar" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jScrollPane2" alignment="0" pref="723" max="32767" attributes="0"/>
+                          <Component id="cleanLabel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="songsTableScrollPane" alignment="0" pref="723" max="32767" attributes="0"/>
                           <Component id="jScrollPane4" alignment="1" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
@@ -254,22 +250,22 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jScrollPane4" pref="126" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jScrollPane2" min="-2" pref="116" max="-2" attributes="0"/>
+                              <Component id="songsTableScrollPane" min="-2" pref="116" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblLimpiar" min="-2" pref="23" max="-2" attributes="0"/>
+                              <Component id="cleanLabel" min="-2" pref="23" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+                    <Container class="javax.swing.JScrollPane" name="songsTableScrollPane">
                       <AuxValues>
                         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
                       </AuxValues>
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
-                        <Component class="javax.swing.JTable" name="tablaCanciones">
+                        <Component class="javax.swing.JTable" name="songsTable">
                           <Properties>
                             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                               <Table columnCount="4" rowCount="4">
@@ -283,13 +279,13 @@
                             <Property name="showVerticalLines" type="boolean" value="false"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tablaCancionesMouseReleased"/>
-                            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tablaCancionesKeyReleased"/>
+                            <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="songsTableMouseReleased"/>
+                            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="songsTableKeyReleased"/>
                           </Events>
                         </Component>
                       </SubComponents>
                     </Container>
-                    <Component class="javax.swing.JLabel" name="lblLimpiar">
+                    <Component class="javax.swing.JLabel" name="cleanLabel">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="b5" green="51" red="3f" type="rgb"/>
@@ -307,10 +303,10 @@
                         <Property name="opaque" type="boolean" value="true"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblLimpiarMousePressed"/>
-                        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblLimpiarMouseReleased"/>
-                        <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblLimpiarMouseExited"/>
-                        <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblLimpiarMouseEntered"/>
+                        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="cleanLabelMousePressed"/>
+                        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="cleanLabelMouseReleased"/>
+                        <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="cleanLabelMouseExited"/>
+                        <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="cleanLabelMouseEntered"/>
                       </Events>
                     </Component>
                     <Container class="javax.swing.JScrollPane" name="jScrollPane4">
@@ -352,9 +348,9 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
-                        <Component class="javax.swing.JTree" name="treeMasTocadas">
+                        <Component class="javax.swing.JTree" name="mostPlayedSongTree">
                           <Events>
-                            <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="treeMasTocadasMouseReleased"/>
+                            <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mostPlayedSongTreeMouseReleased"/>
                           </Events>
                         </Component>
                       </SubComponents>
@@ -384,9 +380,9 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
-                        <Component class="javax.swing.JTree" name="treeFavoritos">
+                        <Component class="javax.swing.JTree" name="favoritesTree">
                           <Events>
-                            <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="treeFavoritosMouseReleased"/>
+                            <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="favoritesTreeMouseReleased"/>
                           </Events>
                         </Component>
                       </SubComponents>
@@ -455,14 +451,14 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
-                        <Component class="javax.swing.JList" name="listArtistas">
+                        <Component class="javax.swing.JList" name="artistList">
                           <Properties>
                             <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
                               <StringArray count="0"/>
                             </Property>
                           </Properties>
                           <Events>
-                            <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="listArtistasMouseReleased"/>
+                            <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="artistListMouseReleased"/>
                           </Events>
                           <AuxValues>
                             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
@@ -474,7 +470,7 @@
                 </Container>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JProgressBar" name="progress">
+            <Component class="javax.swing.JProgressBar" name="progressBarSong">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="fe" green="fe" red="fe" type="rgb"/>
@@ -484,11 +480,11 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="mouseDragged" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="progressMouseDragged"/>
-                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="progressMouseReleased"/>
+                <EventHandler event="mouseDragged" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="progressBarSongMouseDragged"/>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="progressBarSongMouseReleased"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblInfoCarga">
+            <Component class="javax.swing.JLabel" name="loadInfoLabel">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="fe" green="fe" red="fe" type="rgb"/>
@@ -500,15 +496,15 @@
                 <Property name="text" type="java.lang.String" value="[lblInfo]"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="btnCancelarCarga">
+            <Component class="javax.swing.JButton" name="cancelLoadingButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="X"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarCargaActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelLoadingButtonActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblNombreCancion">
+            <Component class="javax.swing.JLabel" name="songNameLabel">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Verdana" size="12" style="1"/>
@@ -516,7 +512,7 @@
                 <Property name="text" type="java.lang.String" value="Artista / Canci&#xf3;n"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblArtista">
+            <Component class="javax.swing.JLabel" name="artistLabel">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Verdana" size="11" style="0"/>
@@ -524,7 +520,7 @@
                 <Property name="text" type="java.lang.String" value="Artista / Canci&#xf3;n"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JSlider" name="slideVol">
+            <Component class="javax.swing.JSlider" name="volumeSlider">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -532,19 +528,15 @@
                 <Property name="maximum" type="int" value="40"/>
               </Properties>
               <Events>
-                <EventHandler event="mouseDragged" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="slideVolMouseDragged"/>
-                <EventHandler event="mouseWheelMoved" listener="java.awt.event.MouseWheelListener" parameters="java.awt.event.MouseWheelEvent" handler="slideVolMouseWheelMoved"/>
-                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="slideVolMousePressed"/>
-                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="slideVolMouseReleased"/>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="slideVolMouseClicked"/>
+                <EventHandler event="mouseDragged" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="volumeSliderMouseDragged"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JToggleButton" name="btnFav">
+            <Component class="javax.swing.JToggleButton" name="favoriteButton">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFavActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="favoriteButtonActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="opRepetirCancion">
+            <Component class="javax.swing.JCheckBox" name="repeatSongCheckbox">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="fe" green="fe" red="fe" type="rgb"/>
@@ -553,10 +545,10 @@
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opRepetirCancionActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="repeatSongCheckboxActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="opAleatorio">
+            <Component class="javax.swing.JCheckBox" name="shuffleCheckbox">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="fe" green="fe" red="fe" type="rgb"/>
@@ -565,10 +557,10 @@
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opAleatorioActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="shuffleCheckboxActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblDuracion">
+            <Component class="javax.swing.JLabel" name="songDurationLabel">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Dialog" size="11" style="0"/>
@@ -577,25 +569,25 @@
                 <Property name="text" type="java.lang.String" value="0:00 - 0:00"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblAnterior">
+            <Component class="javax.swing.JLabel" name="backSongLabel">
               <Properties>
                 <Property name="text" type="java.lang.String" value="A"/>
               </Properties>
               <Events>
-                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblAnteriorMouseReleased"/>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="backSongLabelMouseReleased"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblPlay">
+            <Component class="javax.swing.JLabel" name="playSongLabel">
               <Events>
-                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblPlayMouseReleased"/>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="playSongLabelMouseReleased"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblSiguiente">
+            <Component class="javax.swing.JLabel" name="nextSongLabel">
               <Properties>
                 <Property name="text" type="java.lang.String" value="A"/>
               </Properties>
               <Events>
-                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblSiguienteMouseReleased"/>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="nextSongLabelMouseReleased"/>
               </Events>
             </Component>
           </SubComponents>

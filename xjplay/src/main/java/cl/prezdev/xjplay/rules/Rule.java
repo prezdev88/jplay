@@ -27,7 +27,7 @@ public class Rule {
     public static int NAME_COLUMN_SIZE              = 300;
     public static String API_KEY                    = "e4af175c34493321a0df649859069c40";
     // No es final, porque en el constructor de JPlay se establece según el jlabel del cover
-    public static Dimension COVER_ART_DIMENSION;
+    public static Dimension COVER_ART_DIMENTION;
     public static final Dimension COVERT_ART_MINI     = new Dimension(48, 48);
     public static final Dimension ARTIST_COVER_ART     = new Dimension(200, 200);
     

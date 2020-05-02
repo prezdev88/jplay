@@ -2,57 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cef2924e-e41c-49e1-849b-9ed41738b020" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../compile.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../jplay-common/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../jplay-common/.idea/libraries/Maven__org_projectlombok_lombok_1_18_12.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../jplay-common/jplay-common.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../jplay-common/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../jplay-common/src/main/java/cl/prezdev/App.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../jplay-common/src/main/java/cl/prezdev/jplay/common/ImageProcessor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../jplay-common/src/main/java/cl/prezdev/jplay/common/Util.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../jplay-common/target/classes/cl/prezdev/App.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../jplay-common/target/classes/cl/prezdev/jplay/common/ImageProcessor.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../jplay-common/target/classes/cl/prezdev/jplay/common/Util.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../jplay-common/target/jplay-common-1.0-SNAPSHOT.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../jplay-common/target/maven-archiver/pom.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../jplay-common/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../jplay-common/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__cl_prezdev_jplay_common_1_0_SNAPSHOT.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cl/prezdev/jplay/MetadataSong.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../save/biblioteca.dat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../save/save.dat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../xjplay/.idea/libraries/Maven__cl_prezdev_jplay_common_1_0_SNAPSHOT.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jlog/target/jlog-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../jlog/target/jlog-1.0-SNAPSHOT.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jlog/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../jlog/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__cl_prezdev_jlog_1_0_SNAPSHOT.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jplay.iml" beforeDir="false" afterPath="$PROJECT_DIR$/jplay.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cl/prezdev/jplay/Album.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/prezdev/jplay/Album.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cl/prezdev/jplay/MusicLibrary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/prezdev/jplay/MusicLibrary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cl/prezdev/jplay/Song.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/prezdev/jplay/Song.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../run.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../xjplay/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../xjplay/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../xjplay/save/biblioteca.dat" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/save/biblioteca.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../xjplay/save/save.dat" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/save/save.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/cover/art/CoverArtThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/cover/art/CoverArtThread.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/main/JPlay.form" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/main/JPlay.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/main/JPlay.java" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/main/JPlay.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/model/lastFM/LastFM.java" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/model/lastFM/LastFM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/model/progress/WorkerStringProgress.java" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/model/progress/WorkerStringProgress.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/model/scan/ScanThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/model/scan/ScanThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/model/search/SearchDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/model/search/SearchDialog.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/recursos/Resource.java" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/recursos/Resource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/rules/Rule.java" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/rules/Rule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/save/Save.java" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/save/Save.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/table/model/MusicLabrarySongTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/table/model/MusicLabrarySongTableModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/table/model/SongTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/table/model/SongTableModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/tree/cell/renderer/FavoritesTreeCellRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/tree/cell/renderer/FavoritesTreeCellRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/tree/cell/renderer/SongListTreeCellRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/tree/cell/renderer/SongListTreeCellRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/tree/cell/renderer/SongMostPlayedTreeCellRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/tree/cell/renderer/SongMostPlayedTreeCellRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/utils/Util.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../xjplay/xjplay.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/xjplay.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
