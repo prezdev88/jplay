@@ -137,7 +137,7 @@ public class JPlay extends JFrame implements
     private List<Album> albums;
 
     // Son los milisegundos totales de la lista de reproducción actual.
-    private long millisecondsOfCurrentSongs;  
+    private int millisecondsOfCurrentSongs;  
 
     public JPlay() {
         initComponents();
@@ -268,9 +268,6 @@ public class JPlay extends JFrame implements
         panelFavoritos = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
         favoritesTree = new javax.swing.JTree();
-        panelLogger = new javax.swing.JPanel();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        tableLogger = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane8 = new javax.swing.JScrollPane();
         artistList = new javax.swing.JList();
@@ -457,25 +454,6 @@ public class JPlay extends JFrame implements
         panelFavoritos.add(jScrollPane7, java.awt.BorderLayout.CENTER);
 
         mainTabbedPane.addTab("Favoritos", panelFavoritos);
-
-        panelLogger.setLayout(new java.awt.BorderLayout());
-
-        tableLogger.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane6.setViewportView(tableLogger);
-
-        panelLogger.add(jScrollPane6, java.awt.BorderLayout.CENTER);
-
-        mainTabbedPane.addTab("Logger (DEV)", panelLogger);
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
@@ -1042,8 +1020,6 @@ public class JPlay extends JFrame implements
                 /*Recuperando el volumen del usuario*/
                 mainTabbedPane.setSelectedIndex(save.indexTab);
 
-                mainTabbedPane.setTitleAt(Rule.TabIndex.LOGGER, "Logger (" + tableLogger.getRowCount() + ")");
-
                 setCoverArt(save.cover);
 
                 musicLibrary = (MusicLibrary) IO.readObject(Path.MUSIC_LIBRARY);
@@ -1185,7 +1161,6 @@ public class JPlay extends JFrame implements
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JLabel loadInfoLabel;
@@ -1197,7 +1172,6 @@ public class JPlay extends JFrame implements
     private javax.swing.JPanel panelApp;
     private javax.swing.JPanel panelFavoritos;
     private javax.swing.JPanel panelListaActual;
-    private javax.swing.JPanel panelLogger;
     private javax.swing.JPanel panelMasEscuchadas;
     private javax.swing.JLabel playSongLabel;
     private javax.swing.JProgressBar progressBarSong;
@@ -1207,7 +1181,6 @@ public class JPlay extends JFrame implements
     private javax.swing.JLabel songNameLabel;
     private javax.swing.JTable songsTable;
     private javax.swing.JScrollPane songsTableScrollPane;
-    private javax.swing.JTable tableLogger;
     private javax.swing.JTree treeSong;
     private javax.swing.JSlider volumeSlider;
     // End of variables declaration//GEN-END:variables
