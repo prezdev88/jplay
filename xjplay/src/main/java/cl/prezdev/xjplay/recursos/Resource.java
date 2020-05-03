@@ -26,6 +26,7 @@ public class Resource {
                     || file.getName().contains(".png")) {
                 image = new ImageIcon(file.getPath()).getImage();
 
+                /*
                 coverArt = new ImageIcon(
                     image.getScaledInstance(
                         (int)Rule.COVER_ART_DIMENTION.getWidth(),
@@ -33,6 +34,8 @@ public class Resource {
                         Image.SCALE_SMOOTH
                     )
                 );
+                 */
+                coverArt = new ImageIcon(image);
                 
                 coversArt.add(coverArt);
             }

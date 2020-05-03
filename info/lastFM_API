@@ -7,3 +7,8 @@ Registered to	patodeath
 
 Ejemplo de llamada al servicio
 http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=e4af175c34493321a0df649859069c40&artist=Criminal&album=dead%20soul&format=json
+
+
+http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&api_key=e4af175c34493321a0df649859069c40&artist=amon amarth&format=json
+https://musicbrainz.org/ws/2/artist/5b687684-ad34-4a9f-b425-0e7aa81fbd38?inc=url-rels&fmt=xml
+https://github.com/hugovk/now-playing-radiator/commit/e6de980db9da6846edc5aa2d2f7057b8f3b21bc8

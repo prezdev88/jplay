@@ -61,6 +61,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
@@ -1610,7 +1611,7 @@ public class JPlay extends JFrame implements
     *   Llamar a play del model (jplay) y desde ahí, con listeners, cambiar el gui (xjplay)
     * */
     private void play(Song song) {
-
+        long startTime = System.nanoTime();
         favoriteButton.setSelected(musicLibrary.isFavoriteSong(song));
 
         try {
@@ -1667,7 +1668,12 @@ public class JPlay extends JFrame implements
                 JOptionPane.ERROR_MESSAGE
             );
         }
+        long endTime = System.nanoTime();
 
+        long durationInNano = (endTime - startTime);
+        long durationInMillis = TimeUnit.NANOSECONDS.toMillis(durationInNano);
+
+        System.out.println("load song: "+durationInMillis+"ms");
     }
 
     private void playCurrentSong() {
@@ -2193,9 +2199,9 @@ public class JPlay extends JFrame implements
     private void initArtistCoversArt() {
         if (artistCoverArts == null) {
             artistCoverArts = new ArrayList<>();
-            musicLibrary.getArtistNames().forEach((artista) -> {
+            musicLibrary.getArtistNames().forEach((artist) -> {
                 try {
-                    artistCoverArts.add(new ArtistCoverArt(artista));
+                    artistCoverArts.add(new ArtistCoverArt(artist));
                 } catch (Exception ex) {
                     Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
                 }
