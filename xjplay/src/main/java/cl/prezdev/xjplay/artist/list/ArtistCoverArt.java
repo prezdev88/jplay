@@ -1,6 +1,7 @@
 package cl.prezdev.xjplay.artist.list;
 
 import cl.prezdev.xjplay.model.lastFM.LastFM;
+import cl.prezdev.xjplay.recursos.Resource;
 import cl.prezdev.xjplay.rules.Rule;
 import java.awt.Image;
 import java.io.Serializable;
@@ -16,11 +17,21 @@ public class ArtistCoverArt implements Serializable {
 
         Image artistCoverArt = LastFM.getCoverArt(artistName);
 
-        covertArt = new ImageIcon(artistCoverArt.getScaledInstance(
-            Rule.ARTIST_COVER_ART.width,
-            Rule.ARTIST_COVER_ART.height,
-            Image.SCALE_SMOOTH)
-        );
+        if(artistCoverArt != null){
+            covertArt = new ImageIcon(artistCoverArt.getScaledInstance(
+                Rule.ARTIST_COVER_ART.width,
+                Rule.ARTIST_COVER_ART.height,
+                Image.SCALE_SMOOTH)
+            );
+        }else{
+            covertArt = new ImageIcon(
+                Resource.JPLAY_ICON.getScaledInstance(
+                    Rule.ARTIST_COVER_ART.width,
+                    Rule.ARTIST_COVER_ART.height,
+                    Image.SCALE_SMOOTH
+                )
+            );
+        }
     }
 
     public String getArtistName() {

@@ -40,16 +40,17 @@ public class Util {
     }
 
     public static String getFormattedYear(String year) {
+        final String NO_YEAR = "[----] ";
         if (year != null) {
             try {
                 int an = Integer.parseInt(year.trim());
 
                 return "[" + an + "] ";
             } catch (NumberFormatException e) {
-                return "[           ] ";
+                return NO_YEAR;
             }
         }else{
-            return "[           ] ";
+            return NO_YEAR;
         }
     }
 

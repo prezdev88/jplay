@@ -25,7 +25,7 @@ import cl.prezdev.xjplay.recursos.Resource;
 import cl.prezdev.xjplay.rules.Rule;
 import cl.prezdev.xjplay.save.IO;
 import cl.prezdev.xjplay.save.Save;
-import cl.prezdev.xjplay.table.model.MusicLabrarySongTableModel;
+import cl.prezdev.xjplay.table.model.MusicLibrarySongTableModel;
 import cl.prezdev.xjplay.table.model.SongTableModel;
 import cl.prezdev.xjplay.tree.cell.renderer.ExplorerTreeCellRenderer;
 import cl.prezdev.xjplay.tree.cell.renderer.FavoritesTreeCellRenderer;
@@ -1462,13 +1462,13 @@ public class JPlay extends JFrame implements
             songsLoadThread = new Thread(() -> {
                 cancelLoadingButton.setEnabled(true);
                 try {
-                    File f = getSelectedTreeFile();
+                    File selectedTreeFile = getSelectedTreeFile();
 
-                    loadSongsInMusicLibrary(f);
+                    loadSongsInMusicLibrary(selectedTreeFile);
                     loadSongsInMusicLibrary(musicLibrary.getSongs());
                     
                     musicLibrary.addSongsToAlbums();
-                    musicLibrary.addPath(f);
+                    musicLibrary.addPath(selectedTreeFile);
                     
                     initArtistCoversArt();
                 } catch (IOException | InterruptedException ex) {
@@ -1506,7 +1506,7 @@ public class JPlay extends JFrame implements
             // @TODO: Analizar esto (no lo he hecho)
             // Me tinca que se puede mejorar (y se debe mejorar)
             for (int row : selectedRows) {
-                song = (Song) musicLibraryTable.getValueAt(row, MusicLabrarySongTableModel.COMPLETE_OBJECT_INDEX);
+                song = (Song) musicLibraryTable.getValueAt(row, MusicLibrarySongTableModel.COMPLETE_OBJECT_INDEX);
                 album = musicLibrary.getAlbum(song);
                 
                 if (!albums.contains(album)) {
@@ -1532,7 +1532,7 @@ public class JPlay extends JFrame implements
             Album album;
             
             for (int row : selectedRows) {
-                song = (Song) musicLibraryTable.getValueAt(row, MusicLabrarySongTableModel.COMPLETE_OBJECT_INDEX);
+                song = (Song) musicLibraryTable.getValueAt(row, MusicLibrarySongTableModel.COMPLETE_OBJECT_INDEX);
                 album = musicLibrary.getAlbum(song);
                 
                 if (!albums.contains(album)) {
@@ -1555,7 +1555,7 @@ public class JPlay extends JFrame implements
                 songs.add(
                     (Song) musicLibraryTable.getValueAt(
                         row, 
-                        MusicLabrarySongTableModel.COMPLETE_OBJECT_INDEX
+                        MusicLibrarySongTableModel.COMPLETE_OBJECT_INDEX
                     )
                 );
             }
@@ -1590,7 +1590,7 @@ public class JPlay extends JFrame implements
             return file.compareTo(anotherFile);
         });
         
-        musicLibraryTable.setModel(new MusicLabrarySongTableModel(songs));
+        musicLibraryTable.setModel(new MusicLibrarySongTableModel(songs));
         mainTabbedPane.setTitleAt(Rule.TabIndex.MUSIC_LIBRARY, "Biblioteca (" + songs.size() + ")");
         
         TableColumnModel musicLibraryColumnModel = musicLibraryTable.getColumnModel();
@@ -1716,12 +1716,12 @@ public class JPlay extends JFrame implements
         
         Song song = (Song) musicLibraryTable.getValueAt(
             selectedRow, 
-            MusicLabrarySongTableModel.COMPLETE_OBJECT_INDEX
+            MusicLibrarySongTableModel.COMPLETE_OBJECT_INDEX
         );
 
-        MusicLabrarySongTableModel musicLabrarySongTableModel = (MusicLabrarySongTableModel) musicLibraryTable.getModel();
+        MusicLibrarySongTableModel musicLibrarySongTableModel = (MusicLibrarySongTableModel) musicLibraryTable.getModel();
 
-        songs = musicLabrarySongTableModel.songs;
+        songs = musicLibrarySongTableModel.songs;
         
         loadAlbumsInTreeSong(getAlbums(songs));
         play(song);

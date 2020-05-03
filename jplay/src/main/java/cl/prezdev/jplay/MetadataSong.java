@@ -17,30 +17,41 @@ public class MetadataSong {
 
         try {
             song.setName(getMetaData("title", String.class));
-        } catch (NullPointerException e) {}
+        } catch (PropertyNotFoundException e) {
+        }
 
         try {
             song.setAuthor(getMetaData("author", String.class));
-        } catch (NullPointerException e) {}
+        } catch (PropertyNotFoundException e) {
+            song.setAuthor("");
+        }
 
         try {
             song.setAlbum(getMetaData("album", String.class));
-        } catch (NullPointerException e) {}
+        } catch (PropertyNotFoundException e) {
+            song.setAlbum("");
+        }
 
         try {
             song.setTrackNumber(getMetaData("mp3.id3tag.track", Integer.class));
-        } catch (Exception ex) {}
+        } catch (PropertyNotFoundException | NumberFormatException e) {
+            song.setTrackNumber(-1);
+        }
 
         try {
             song.setMicroseconds(getMetaData("duration", Long.class));
-        } catch (Exception ex) {}
+        } catch (PropertyNotFoundException | NumberFormatException e) {
+            song.setMicroseconds(-1L);
+        }
 
         try {
             song.setYear(getMetaData("date", String.class));
-        } catch (Exception ex) {}
+        } catch (PropertyNotFoundException e) {
+            song.setYear("");
+        }
     }
 
-    private static <T> T getMetaData(String key, Class<T> _class) {
+    private static <T> T getMetaData(String key, Class<T> _class) throws PropertyNotFoundException{
         try {
             //http://www.javazoom.net/mp3spi/documents.html
             //http://www.javazoom.net/jlgui/developerguide.html
@@ -64,9 +75,9 @@ public class MetadataSong {
                 }
             }
 
-            return null;
+            throw new PropertyNotFoundException();
         } catch (UnsupportedAudioFileException | IOException ex) {
-            return null;
+            throw new PropertyNotFoundException();
         }
     }
 }

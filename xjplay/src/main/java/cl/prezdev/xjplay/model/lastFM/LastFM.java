@@ -44,13 +44,14 @@ public class LastFM {
 
         System.out.println(url);
 
-        List<CoverArt> covers = LastFM.getCoversArt(url, "artist");
+        List<CoverArt> coversArt = LastFM.getCoversArt(url, "artist");
 
-//        for (CoverArt cover : covers) {
-//            System.out.println(cover.toString());
-//        }
-        int ultimoIndice = covers.size() - 1;
-        return getCoverArt(covers.get(ultimoIndice));
+        try {
+            return getCoverArt(coversArt.get(coversArt.size() - 1));
+        }catch(Exception ex){
+            // Cuando la lista de covers esta vacía
+            return null;
+        }
     }
 
     // @TODO: Consumir API con una librería apta para ello
@@ -91,25 +92,29 @@ public class LastFM {
      * @throws Exception
      */
     private static List<CoverArt> getCoversArt(String apiUrl, String parameter) throws Exception {
-        String jsonText = LastFM.readUrl(apiUrl);
+        try{
+            String jsonText = LastFM.readUrl(apiUrl);
 
-        JSONObject jsonObject = new JSONObject(jsonText);
+            JSONObject jsonObject = new JSONObject(jsonText);
 
-        JSONArray jsonArray = jsonObject.getJSONObject(parameter).getJSONArray("image");
+            JSONArray jsonArray = jsonObject.getJSONObject(parameter).getJSONArray("image");
 
-        List<CoverArt> covers = new ArrayList<>();
+            List<CoverArt> covers = new ArrayList<>();
 
-        for (int i = 0; i < jsonArray.length(); i++) {
-            covers.add(
-                    new CoverArt(
-                            jsonArray.getJSONObject(i).get("#text").toString(),
-                            jsonArray.getJSONObject(i).get("size").toString()
-                    )
-            );
+            for (int i = 0; i < jsonArray.length(); i++) {
+                covers.add(
+                        new CoverArt(
+                                jsonArray.getJSONObject(i).get("#text").toString(),
+                                jsonArray.getJSONObject(i).get("size").toString()
+                        )
+                );
+            }
+            return covers;
+
+            //https://stackoverflow.com/questions/19966672/java-json-with-gson
+        }catch(Exception ex){
+            return new ArrayList<>();
         }
-        return covers;
-
-        //https://stackoverflow.com/questions/19966672/java-json-with-gson
     }
 
     private static Image getCoverArt(CoverArt coverArt) throws MalformedURLException, IOException {

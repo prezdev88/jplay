@@ -11,15 +11,15 @@ public class Album implements Serializable {
 
     private final static Logger LOGGER = Logger.getLogger("cl.prezdev.jplay.Album");
 
-    private String artist;
+    private String artistName;
     private String name;
     private final List<Song> songs;
     private List<ImageIcon> coversArt;
     private ImageIcon coverArt;
     private final String year;
 
-    public Album(String artist, String name, String year) {
-        this.artist = artist;
+    public Album(String artistName, String name, String year) {
+        this.artistName = artistName;
         this.name = name;
         this.year = year;
         this.songs = new ArrayList<>();
@@ -32,13 +32,9 @@ public class Album implements Serializable {
 
     public String getYear() {
         if (year != null) {
-            try {
-                return year.trim();
-            } catch (NumberFormatException ex) {
-                return "[           ] ";
-            }
+            return year.trim();
         } else {
-            return "[           ] ";
+            return "";
         }
 
     }
@@ -89,12 +85,12 @@ public class Album implements Serializable {
         return this.songs.contains(song);
     }
 
-    public String getArtist() {
-        return artist;
+    public String getArtistName() {
+        return artistName;
     }
 
-    public void setArtist(String artist) {
-        this.artist = artist;
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
     }
 
     public String getName() {
@@ -115,6 +111,6 @@ public class Album implements Serializable {
 
     @Override
     public String toString() {
-        return artist + " - " + name;
+        return artistName + " - " + name;
     }
 }

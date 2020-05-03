@@ -21,10 +21,7 @@ public class Song extends File {
     public Song(String pathname) {
         super(pathname);
         
-        name = getName();
-        author = "Sin autor";
-        album = "Sin album";
-        trackNumber = -1;
+        name = super.getName();
         MetadataSong.loadMetadata(this);
         playCount = 0;
     }
@@ -38,6 +35,10 @@ public class Song extends File {
     }
 
     public Integer getMilliSeconds() {
+        if(microseconds == null){
+            return 0;
+        }
+
         return (int) (microseconds / 1000);
     }
 

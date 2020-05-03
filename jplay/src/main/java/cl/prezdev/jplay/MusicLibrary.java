@@ -152,29 +152,36 @@ public class MusicLibrary implements Serializable{
 
     public void addSongsToAlbums() {
         for (Song song : songs) {
-            addToAlbum(song);
+            if(song != null){
+                addToAlbum(song);
+            }
         }
     }
 
     private void addToAlbum(Song song) {
-        boolean finded = false;
+        boolean found = false;
         
         for (Album album : albums) {
-            // si el album es igual que el album de la cancion
-            if (album.getName().trim().equalsIgnoreCase(song.getAlbum().trim())) {
-                // y si la cancion no existe en el album
-                if (!album.songExist(song)) {
-                    // la añado!
-                    album.addSong(song);
-                }
+            try{
+                // si el album es igual que el album de la cancion
+                if (album.getName().trim().equalsIgnoreCase(song.getAlbum().trim())) {
+                    // y si la cancion no existe en el album
+                    if (!album.songExist(song)) {
+                        // la añado!
+                        album.addSong(song);
+                    }
 
-                finded = true;
-                
-                break;
+                    found = true;
+
+                    break;
+                }
+            }catch(NullPointerException ex){
+                System.out.println(song);
+                System.out.println(album);
             }
         }
 
-        if (!finded) {
+        if (!found) {
             Album album = new Album(song);
             
             album.addSong(song);
@@ -205,7 +212,7 @@ public class MusicLibrary implements Serializable{
         List<Album> albumsByArtist = new ArrayList<>();
         
         for (Album album : albums) {
-            if (album.getArtist().equalsIgnoreCase(artistName)) {
+            if (album.getArtistName().equalsIgnoreCase(artistName)) {
                 LOGGER.log(Level.INFO, "Album encontrado! : " + album);
                 albumsByArtist.add(album);
             }
@@ -219,7 +226,7 @@ public class MusicLibrary implements Serializable{
         String artistName;
         
         for (Album album : albums) {
-            artistName = album.getArtist().trim().toLowerCase();
+            artistName = album.getArtistName().trim().toLowerCase();
 
             if (!artistName.equals("")) {
                 if (!artistNames.contains(artistName)) {

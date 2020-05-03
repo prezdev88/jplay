@@ -11,7 +11,8 @@ if [ "$1" = "-c" ]; then
 fi
 
 if [ "$1" != "-h" ]; then
-    java -jar xjplay/target/xjplay-1.0-SNAPSHOT-jar-with-dependencies.jar
+    cd xjplay
+    java -jar target/xjplay-1.0-SNAPSHOT-jar-with-dependencies.jar
 fi
 
 
