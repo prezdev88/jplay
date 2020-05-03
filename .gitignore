@@ -1,36 +1,4 @@
-/pruebaNiconNotify/pruebaNotify/build/
-/notificaciones/niconNotify_v2/nbproject/private/
-/jplay_model/nbproject/private/
-/Jplay_gui/nbproject/private/
-/JPlay/nbproject/private/
-/JPlay_gui/nbproject/private/
-/Jplay_gui (Conflicto de mayúsculas y minúsculas)/nbproject/private/
-/JPlay_prueba/nbproject/private/
-/jplay_prueba (Conflicto de mayúsculas y minúsculas)/nbproject/private/
-/Test/JPlay_prueba/nbproject/private/
-/Test/notificaciones/niconNotify_v2/nbproject/private/
-/Test/notificaciones/pruebaNotify/build/
-/Test/notificaciones/pruebaNotify/nbproject/private/
-/JPlay_gui (Conflicto de mayúsculas y minúsculas)/nbproject/private/
-/JPlay_GUI/build/
-/XJPlay/nbproject/private/
-/XJPlay/build/
-/JPlay/build/
-/Test/JPlay_prueba/build/
-/Test/notificaciones/niconNotify_v2/build/
-/Test/notificaciones/niconNotify_v2/dist/
-/JPlay/dist/
-# /XJPlay/dist/
-/XJPlay/save/
-/JLog/nbproject/private/
-/JLog/build/
-/JLog/dist/
-/XJPlay/dist/
-/maven-projects/jlog/target/
-/maven-projects/jplay/target/
-/maven-projects/xjplay/target/
-/jplay/target/
-/old.backup/JLog/nbproject/private/
-/old.backup/JPlay/nbproject/private/
-/old.backup/XJPlay/nbproject/private/
-/xjplay/target/
+/jplay/target
+/jplay-common/target
+/xjplay/save
+/xjplay/target
