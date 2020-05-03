@@ -414,13 +414,13 @@ public class JPlay extends JFrame implements
         panelListaActualLayout.setHorizontalGroup(
             panelListaActualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(cleanLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(songsTableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 723, Short.MAX_VALUE)
+            .addComponent(songsTableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 769, Short.MAX_VALUE)
             .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         panelListaActualLayout.setVerticalGroup(
             panelListaActualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelListaActualLayout.createSequentialGroup()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(songsTableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -562,7 +562,7 @@ public class JPlay extends JFrame implements
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addGap(5, 5, 5)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(mainTabbedPane)
+                    .addComponent(mainTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 771, Short.MAX_VALUE)
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addComponent(backSongLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -614,7 +614,7 @@ public class JPlay extends JFrame implements
                         .addComponent(backSongLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(coverArtLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(mainTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
+                .addComponent(mainTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -989,11 +989,11 @@ public class JPlay extends JFrame implements
             if (selectedValue instanceof ArtistCoverArt) {
                 ArtistCoverArt artistCoverArt = (ArtistCoverArt) selectedValue;
                 String artistName = artistCoverArt.getArtistName();
-                List<Album> albumsByArtista = musicLibrary.getAlbumsByArtist(artistName);
-                albumsByArtista.add(0, new BackAlbum());
+                List<Album> albumsByArtist = musicLibrary.getAlbumsByArtist(artistName);
+                albumsByArtist.add(0, new BackAlbum());
 
-                listCellRenderer = new AlbumListCellRenderer(albumsByArtista);
-                listModel = new AlbumListModel(albumsByArtista);
+                listCellRenderer = new AlbumListCellRenderer(albumsByArtist);
+                listModel = new AlbumListModel(albumsByArtist);
             } else if (selectedValue instanceof BackAlbum) {
                 // quiere ir atrás, o sea a los artistas
                 listCellRenderer = new ArtistListCellRenderer(artistCoverArts);
@@ -1816,7 +1816,7 @@ public class JPlay extends JFrame implements
 
                 JOptionPane.showMessageDialog(this, "Se han eliminado " + count + " canciones de la lista.", "Info", JOptionPane.INFORMATION_MESSAGE);
             }
-        } else if (!album.hasCoversArt()) { // si el Album NO tiene una lista de imagenes
+            } else if (!album.hasCoversArt()) { // si el Album NO tiene una lista de imagenes
             List<ImageIcon> coversArt = Resource.getCoversArt(song);
 
             /*

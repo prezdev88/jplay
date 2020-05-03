@@ -204,7 +204,7 @@ public class MusicLibrary implements Serializable{
     public List<Album> getAlbumsByArtist(String artistName) {
         List<Album> albumsByArtist = new ArrayList<>();
         
-        for (Album album : albumsByArtist) {
+        for (Album album : albums) {
             if (album.getArtist().equalsIgnoreCase(artistName)) {
                 LOGGER.log(Level.INFO, "Album encontrado! : " + album);
                 albumsByArtist.add(album);
