@@ -2,13 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cef2924e-e41c-49e1-849b-9ed41738b020" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../xjplay/save/biblioteca.dat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../xjplay/save/save.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../info/lastFM_API" beforeDir="false" afterPath="$PROJECT_DIR$/../info/lastFM_API" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../jplay-common/src/main/java/cl/prezdev/jplay/common/ImageProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/../jplay-common/src/main/java/cl/prezdev/jplay/common/ImageProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../jplay-common/target/classes/cl/prezdev/jplay/common/ImageProcessor.class" beforeDir="false" afterPath="$PROJECT_DIR$/../jplay-common/target/classes/cl/prezdev/jplay/common/ImageProcessor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../jplay-common/target/jplay-common-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../jplay-common/target/jplay-common-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../jplay-common/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../jplay-common/target/maven-archiver/pom.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/list/cellrenderer/AlbumListCellRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/list/cellrenderer/AlbumListCellRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../xjplay/save/biblioteca.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../xjplay/save/save.dat" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/main/JPlay.java" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/main/JPlay.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/recursos/Resource.java" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/recursos/Resource.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,9 +140,9 @@
       <screen x="0" y="0" width="1920" height="1035" />
     </state>
     <state x="698" y="270" key="extract.method.dialog/0.0.1920.1035@0.0.1920.1035" timestamp="1588469806827" />
-    <state x="351" y="244" width="645" height="546" key="find.popup" timestamp="1588477240425">
+    <state x="351" y="244" width="645" height="546" key="find.popup" timestamp="1588487514374">
       <screen x="0" y="0" width="1920" height="1035" />
     </state>
-    <state x="351" y="244" width="645" height="546" key="find.popup/0.0.1920.1035@0.0.1920.1035" timestamp="1588477240425" />
+    <state x="351" y="244" width="645" height="546" key="find.popup/0.0.1920.1035@0.0.1920.1035" timestamp="1588487514374" />
   </component>
 </project>

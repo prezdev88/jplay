@@ -23,7 +23,7 @@ public class ImageProcessor {
 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                color   = bufferedImage.getRGB(i, j);
+                color   = bufferedImage.getRGB(j, i);
                 red     = (color & 0x00ff0000) >> 16;
                 green   = (color & 0x0000ff00) >> 8;
                 blue    = color & 0x000000ff;

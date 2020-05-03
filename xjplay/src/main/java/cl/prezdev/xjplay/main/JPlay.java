@@ -1313,7 +1313,7 @@ public class JPlay extends JFrame implements
     /**
      * Este método carga los discos al arbol de lista actual
      *
-     * @param disco
+     * @param albums
      */
     // @TODO: Pensar en separar la lógica de cargas de models en vistas
     // quizás en otro proyecto
@@ -1837,12 +1837,14 @@ public class JPlay extends JFrame implements
                 
                 try {
                     Image coverArt = LastFM.getCoverArt(song.getAuthor(), song.getAlbum());
-                    
+
+                    /*
                     coverArt = coverArt.getScaledInstance(
                         (int) Rule.COVER_ART_DIMENTION.getWidth(),
                         (int) Rule.COVER_ART_DIMENTION.getHeight(),
                         Image.SCALE_SMOOTH
                     );
+                     */
 
                     coversArt.add(new ImageIcon(coverArt));
                 } catch (Exception ex) {
