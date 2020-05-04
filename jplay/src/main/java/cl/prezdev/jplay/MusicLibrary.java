@@ -23,16 +23,26 @@ public class MusicLibrary implements Serializable{
     private long msMusicLibrary;
     private long msMostPlayed;
     private long msFavorites;
+    
+    private static MusicLibrary musicLibrary;
 
-    public MusicLibrary() {
-        albums = new ArrayList<>();
-        songs = new ArrayList<>();
-        favoritesSongs = new ArrayList<>();
-        paths = new ArrayList<>();
+    private MusicLibrary() {
+        albums          = new ArrayList<>();
+        songs           = new ArrayList<>();
+        favoritesSongs  = new ArrayList<>();
+        paths           = new ArrayList<>();
         
-        msMusicLibrary = 0;
-        msMostPlayed = 0;
-        msFavorites = 0;
+        msMusicLibrary  = 0;
+        msMostPlayed    = 0;
+        msFavorites     = 0;
+    }
+    
+    public static MusicLibrary getInstance(){
+        if(musicLibrary == null){
+            musicLibrary = new MusicLibrary();
+        }
+        
+        return musicLibrary;
     }
     
     public String getLibraryDuration(){

@@ -7,8 +7,8 @@ import javazoom.jlgui.basicplayer.BasicPlayerListener;
 
 public class MusicPlayer {
 
-    private BasicPlayer basicPlayer;
-    private BasicController basicController;
+    private final BasicPlayer basicPlayer;
+    private final BasicController basicController;
     private Song currentSong;
     
     private static MusicPlayer musicPlayer;

@@ -159,7 +159,7 @@ public class JPlay extends JFrame implements
 
         songs = new ArrayList<>();
         albums = new ArrayList<>();
-        musicLibrary = new MusicLibrary();
+        musicLibrary = MusicLibrary.getInstance();
 
         isRandom = false;
 
@@ -1031,7 +1031,7 @@ public class JPlay extends JFrame implements
                 showCurrentSongInfo();
 
             } catch (InvalidClassException ex) {
-                musicLibrary = new MusicLibrary();
+                musicLibrary = MusicLibrary.getInstance();
                 songs = musicLibrary.getSongs();
                 artistCoverArts = new ArrayList<>();
                 loadDefault();
