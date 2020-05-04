@@ -1,10 +1,10 @@
 package cl.prezdev.xjplay.tree.cell.renderer;
 
 import cl.prezdev.jplay.Album;
+import cl.prezdev.jplay.MusicPlayer;
 import cl.prezdev.jplay.Song;
 import cl.prezdev.jplay.common.ImageProcessor;
 import cl.prezdev.jplay.common.Util;
-import cl.prezdev.xjplay.main.JPlay;
 import cl.prezdev.xjplay.recursos.Path;
 import cl.prezdev.xjplay.rules.Rule;
 import java.awt.Color;
@@ -67,8 +67,8 @@ public class SongListTreeCellRenderer extends JLabel implements TreeCellRenderer
                 );
             }
 
-            if (JPlay.musicPlayer != null) {
-                Song currentSong = JPlay.musicPlayer.getCurrentSong();
+            if (MusicPlayer.getInstance().hasCurrentSong()) {
+                Song currentSong = MusicPlayer.getInstance().getCurrentSong();
                 String albumAndArtist = userObject.toString();
 
                 if (albumAndArtist.equalsIgnoreCase(
@@ -82,10 +82,10 @@ public class SongListTreeCellRenderer extends JLabel implements TreeCellRenderer
 
         boolean isCurrentSong = false;
 
-        if (JPlay.musicPlayer != null) {
+        if (MusicPlayer.getInstance().hasCurrentSong()) {
             if (userObject instanceof Song) {
                 Song song = (Song) userObject;
-                if (JPlay.musicPlayer.getCurrentSong().equals(song)) {
+                if (MusicPlayer.getInstance().getCurrentSong().equals(song)) {
                     isCurrentSong = true;
                 }
             }

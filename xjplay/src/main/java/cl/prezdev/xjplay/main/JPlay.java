@@ -96,7 +96,7 @@ import javazoom.jlgui.basicplayer.BasicPlayerListener;
 public class JPlay extends JFrame implements
         BasicPlayerListener, SearchListener, MusicLibraryUiUpdate {
 
-    public static MusicPlayer musicPlayer;
+    private MusicPlayer musicPlayer;
     private MusicLibrary musicLibrary;
     
     // son las canciones de la lista de reproducción actual
@@ -142,6 +142,7 @@ public class JPlay extends JFrame implements
 
     public JPlay() {
         initComponents();
+        initMusicPlayer();
 
         Rule.COVER_ART_DIMENTION = new Dimension(
             coverArtLabel.getWidth(), 
@@ -218,6 +219,8 @@ public class JPlay extends JFrame implements
         setBounds(0, 0, Rule.WIDTH, Rule.HEIGHT);
         setLocationRelativeTo(null);
         //@TODO: Intentar ordenar este constructor, pensar bien la forma de agrupar
+        
+        
     }
 
     private void initIcons() {
@@ -868,7 +871,7 @@ public class JPlay extends JFrame implements
     }//GEN-LAST:event_mainTabbedPaneMouseReleased
 
     private void favoriteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_favoriteButtonActionPerformed
-        if (musicPlayer.getCurrentSong() != null) {
+        if (musicPlayer.hasCurrentSong()) {
             if (favoriteButton.isSelected()) {
                 musicLibrary.addFavoriteSong(musicPlayer.getCurrentSong());
             } else {
@@ -921,33 +924,31 @@ public class JPlay extends JFrame implements
 
     private void playSongLabelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_playSongLabelMouseReleased
         try {
-            if (musicPlayer != null) {
-                if (isPlay) {
-                    isPlay = false;
-                    
-                    if (Rule.FOREGROUND_COLOR == Color.black) {
-                        playSongLabel.setIcon(new ImageIcon(getClass().getResource(Path.BLACK_PLAY_ICON)));// @TODO: Arreglar esto de los íconos
-                    } else {
-                        playSongLabel.setIcon(new ImageIcon(getClass().getResource(Path.WHITE_PLAY_ICON)));// @TODO: Arreglar esto de los íconos
-                    }
-                    
-                    musicPlayer.pause();
+            if (isPlay) {
+                isPlay = false;
+
+                if (Rule.FOREGROUND_COLOR == Color.black) {
+                    playSongLabel.setIcon(new ImageIcon(getClass().getResource(Path.BLACK_PLAY_ICON)));// @TODO: Arreglar esto de los íconos
                 } else {
+                    playSongLabel.setIcon(new ImageIcon(getClass().getResource(Path.WHITE_PLAY_ICON)));// @TODO: Arreglar esto de los íconos
+                }
+
+                musicPlayer.pause();
+            } else {
+                isPlay = true;
+
+                if (Rule.FOREGROUND_COLOR == Color.black) {
+                    playSongLabel.setIcon(new ImageIcon(getClass().getResource(Path.BLACK_PAUSE_ICON)));// @TODO: Arreglar esto de los íconos
+                } else {
+                    playSongLabel.setIcon(new ImageIcon(getClass().getResource(Path.WHITE_PAUSE_ICON)));// @TODO: Arreglar esto de los íconos
+                }
+
+                if (isStop) {
+                    playCurrentSong();
                     isPlay = true;
-                    
-                    if (Rule.FOREGROUND_COLOR == Color.black) {
-                        playSongLabel.setIcon(new ImageIcon(getClass().getResource(Path.BLACK_PAUSE_ICON)));// @TODO: Arreglar esto de los íconos
-                    } else {
-                        playSongLabel.setIcon(new ImageIcon(getClass().getResource(Path.WHITE_PAUSE_ICON)));// @TODO: Arreglar esto de los íconos
-                    }
-                    
-                    if (isStop) {
-                        playCurrentSong();
-                        isPlay = true;
-                        isStop = false;
-                    } else {
-                        musicPlayer.resume();
-                    }
+                    isStop = false;
+                } else {
+                    musicPlayer.resume();
                 }
             }
         } catch (BasicPlayerException ex) {
@@ -1266,9 +1267,7 @@ public class JPlay extends JFrame implements
 
     private void setVolume(int vol) {
         try {
-            if (musicPlayer != null) {
-                musicPlayer.setVolume(vol);
-            }
+            musicPlayer.setVolume(vol);
         } catch (BasicPlayerException ex) {
             Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1619,13 +1618,7 @@ public class JPlay extends JFrame implements
                 setCoverArt(song);
             }).start();
             
-            if (musicPlayer != null) {
-                musicPlayer.stop();
-            }
-
-            musicPlayer = new MusicPlayer(song, this);
-
-            musicPlayer.play();
+            musicPlayer.play(song);
 
             song.increasePlayCount();
 
@@ -1677,21 +1670,22 @@ public class JPlay extends JFrame implements
     }
 
     private void playCurrentSong() {
+        // @TODO: WTF TOTAL!
         play(songs.get(songs.indexOf(musicPlayer.getCurrentSong())));
     }
 
     private void showCurrentSongInfo() {
-        if (musicPlayer != null) {
+        if (musicPlayer.hasCurrentSong()) {
             Song currentSong = musicPlayer.getCurrentSong();
-            
+
             artistLabel.setText(
-                currentSong.getAuthor()+ " - " + 
-                currentSong.getAlbum() + " (" + 
-                currentSong.getYear()+ ")"
+                currentSong.getAuthor() + " - "
+                + currentSong.getAlbum() + " ("
+                + currentSong.getYear() + ")"
             );
-            
+
             String durationAsString = Util.getDurationAsString(currentSong.getMicroseconds());
-            songNameLabel.setText(currentSong.getName()+ " (" + durationAsString + ")");
+            songNameLabel.setText(currentSong.getName() + " (" + durationAsString + ")");
         }
     }
 
@@ -1877,13 +1871,15 @@ public class JPlay extends JFrame implements
      * Reproduce el siguiente, si es el último reproduce el primero
      */
     private void playNextSong() {
-        int currentIndex = songs.indexOf(musicPlayer.getCurrentSong());
-        currentIndex++;
-        
-        if (currentIndex < songs.size()) {
-            play(songs.get(currentIndex));
-        } else {
-            play(songs.get(0));
+        if(musicPlayer.hasCurrentSong()){
+            int currentIndex = songs.indexOf(musicPlayer.getCurrentSong());
+            currentIndex++;
+
+            if (currentIndex < songs.size()) {
+                play(songs.get(currentIndex));
+            } else {
+                play(songs.get(0));
+            }
         }
     }
 
@@ -1891,14 +1887,16 @@ public class JPlay extends JFrame implements
      * Reproduce el anterior, si es el primero reproduce el último
      */
     private void playPreviousSong() {
-        int currentIndex = songs.indexOf(musicPlayer.getCurrentSong());
-        currentIndex--;
-        
-        if (currentIndex >= 0) {
-            play(songs.get(currentIndex));
-        } else {
-            // reproduce el último
-            play(songs.get(songs.size() - 1));
+        if(musicPlayer.hasCurrentSong()){
+            int currentIndex = songs.indexOf(musicPlayer.getCurrentSong());
+            currentIndex--;
+
+            if (currentIndex >= 0) {
+                play(songs.get(currentIndex));
+            } else {
+                // reproduce el último
+                play(songs.get(songs.size() - 1));
+            }
         }
     }
 
@@ -2246,5 +2244,10 @@ public class JPlay extends JFrame implements
         System.out.println("ARTISTA [" + artistName + "] --> " + anyMatch);
 
         return anyMatch;
+    }
+
+    private void initMusicPlayer() {
+        musicPlayer = MusicPlayer.getInstance();
+        musicPlayer.addBasicPlayerListener(this);
     }
 }

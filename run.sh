@@ -12,7 +12,7 @@ fi
 
 if [ "$1" != "-h" ]; then
     cd xjplay
-    java -jar target/xjplay-1.0-SNAPSHOT-jar-with-dependencies.jar
+    java -jar -Dsun.java2d.opengl=true target/xjplay-1.0-SNAPSHOT-jar-with-dependencies.jar
 fi
 
 

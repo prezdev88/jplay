@@ -9,9 +9,9 @@ import javax.swing.Icon;
 
 //@TODO: Cambiar a xml o json
 public class Save implements Serializable{
-    public List<Song>        songs;
+    public List<Song>           songs;
     public List<Album>          albums;
-    public List<ArtistCoverArt>   artistCoversArt;
+    public List<ArtistCoverArt> artistCoversArt;
     public int                  currentIndex;
     public int                  indexTab;
     public Icon                 cover;

@@ -7,27 +7,37 @@ import javazoom.jlgui.basicplayer.BasicPlayerListener;
 
 public class MusicPlayer {
 
-    private final BasicPlayer basicPlayer;
-    private final BasicController basicController;
-    private final Song currentSong;
-
-    public MusicPlayer(
-        Song currentSong, 
-        BasicPlayerListener... basicPlayerListeners
-    ) throws BasicPlayerException {
-        this.currentSong = currentSong;
-
+    private BasicPlayer basicPlayer;
+    private BasicController basicController;
+    private Song currentSong;
+    
+    private static MusicPlayer musicPlayer;
+    
+    public static MusicPlayer getInstance(){
+        if (musicPlayer == null) {
+            musicPlayer = new MusicPlayer();
+        }
+        
+        return musicPlayer;
+    }
+    
+    private MusicPlayer() {
         basicPlayer = new BasicPlayer();
         basicController = (BasicController) basicPlayer;
-        
-        for (BasicPlayerListener basicPlayerListener : basicPlayerListeners) {
-            basicPlayer.addBasicPlayerListener(basicPlayerListener);
-        }
-
-        basicController.open(currentSong);
+    }
+    
+    public void addBasicPlayerListener(BasicPlayerListener basicPlayerListener){
+        basicPlayer.addBasicPlayerListener(basicPlayerListener);
     }
 
-    public void play() throws BasicPlayerException {
+    public void play(Song song) throws BasicPlayerException{
+        if(hasCurrentSong()){
+            stop();
+        }
+        
+        this.currentSong = song;
+        this.basicController.open(currentSong);
+        
         basicController.play();
     }
 
@@ -55,5 +65,8 @@ public class MusicPlayer {
     public Song getCurrentSong() {
         return currentSong;
     }
-
+    
+    public boolean hasCurrentSong(){
+        return this.currentSong != null;
+    }
 }
