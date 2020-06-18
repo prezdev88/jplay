@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cef2924e-e41c-49e1-849b-9ed41738b020" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../jplay-common/src/main/java/cl/prezdev/jplay/common/ImageProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/../jplay-common/src/main/java/cl/prezdev/jplay/common/ImageProcessor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jplay-common/target/classes/cl/prezdev/jplay/common/ImageProcessor.class" beforeDir="false" afterPath="$PROJECT_DIR$/../jplay-common/target/classes/cl/prezdev/jplay/common/ImageProcessor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jplay-common/target/jplay-common-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../jplay-common/target/jplay-common-1.0-SNAPSHOT.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jplay-common/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../jplay-common/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../xjplay/save/biblioteca.dat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../xjplay/save/save.dat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/main/JPlay.java" beforeDir="false" afterPath="$PROJECT_DIR$/../xjplay/src/main/java/cl/prezdev/xjplay/main/JPlay.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +45,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="Lombok plugin" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.folding" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -120,10 +114,11 @@
       <screen x="0" y="0" width="1920" height="1035" />
     </state>
     <state width="1874" height="298" key="GridCell.Tab.0.right/0.0.1920.1035@0.0.1920.1035" timestamp="1587445093766" />
-    <state x="175" y="153" key="SettingsEditor" timestamp="1587444794879">
-      <screen x="0" y="0" width="1920" height="1035" />
+    <state x="484" y="146" key="SettingsEditor" timestamp="1592451448690">
+      <screen x="0" y="0" width="1920" height="1038" />
     </state>
     <state x="175" y="153" key="SettingsEditor/0.0.1920.1035@0.0.1920.1035" timestamp="1587444794879" />
+    <state x="484" y="146" key="SettingsEditor/0.0.1920.1038@0.0.1920.1038" timestamp="1592451448690" />
     <state x="689" y="252" width="540" height="524" key="StructurePopup" timestamp="1588466323315">
       <screen x="0" y="0" width="1920" height="1035" />
     </state>

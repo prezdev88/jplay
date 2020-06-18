@@ -2,7 +2,7 @@ package cl.prezdev.xjplay.list.cellrenderer;
 
 import cl.prezdev.jplay.Album;
 import cl.prezdev.xjplay.artist.list.BackAlbum;
-import cl.prezdev.xjplay.recursos.Resource;
+import cl.prezdev.xjplay.resources.Resource;
 import cl.prezdev.xjplay.rules.Rule;
 
 import java.awt.Component;

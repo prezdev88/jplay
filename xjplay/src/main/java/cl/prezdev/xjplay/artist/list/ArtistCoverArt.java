@@ -1,7 +1,7 @@
 package cl.prezdev.xjplay.artist.list;
 
 import cl.prezdev.xjplay.model.lastFM.LastFM;
-import cl.prezdev.xjplay.recursos.Resource;
+import cl.prezdev.xjplay.resources.Resource;
 import cl.prezdev.xjplay.rules.Rule;
 import java.awt.Image;
 import java.io.Serializable;

@@ -1,4 +1,4 @@
-package cl.prezdev.xjplay.recursos;
+package cl.prezdev.xjplay.resources;
 
 public class Path {
     public final static String SAVE                         = "save/save.dat";

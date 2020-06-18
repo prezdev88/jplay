@@ -1,6 +1,5 @@
-package cl.prezdev.xjplay.recursos;
+package cl.prezdev.xjplay.resources;
 
-import cl.prezdev.xjplay.rules.Rule;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
