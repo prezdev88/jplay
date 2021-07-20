@@ -1,4 +1,7 @@
 /jplay/target
+/jplay/*.iml
 /jplay-common/target
+/jplay-common/*.iml
 /xjplay/save
 /xjplay/target
+/xjplay/*.iml
