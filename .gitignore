@@ -1,7 +1,15 @@
 /jplay/target
 /jplay/*.iml
+/jplay/.idea
+/jplay/.idea/*
+
 /jplay-common/target
 /jplay-common/*.iml
+/jplay-common/.idea
+/jplay-common/.idea/*
+
 /xjplay/save
 /xjplay/target
 /xjplay/*.iml
+/xjplay/.idea
+/xjplay/.idea/*
