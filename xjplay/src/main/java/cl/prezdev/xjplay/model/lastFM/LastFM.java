@@ -1,7 +1,7 @@
 // https://www.last.fm/api
 package cl.prezdev.xjplay.model.lastFM;
 
-import cl.prezdev.xjplay.recursos.Resource;
+import cl.prezdev.xjplay.resources.Resource;
 import cl.prezdev.xjplay.rules.Rule;
 import java.awt.Image;
 import java.io.BufferedReader;

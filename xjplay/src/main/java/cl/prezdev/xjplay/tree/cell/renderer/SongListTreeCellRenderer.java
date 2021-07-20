@@ -5,7 +5,7 @@ import cl.prezdev.jplay.MusicPlayer;
 import cl.prezdev.jplay.Song;
 import cl.prezdev.jplay.common.ImageProcessor;
 import cl.prezdev.jplay.common.Util;
-import cl.prezdev.xjplay.recursos.Path;
+import cl.prezdev.xjplay.resources.Path;
 import cl.prezdev.xjplay.rules.Rule;
 import java.awt.Color;
 import java.awt.Component;
