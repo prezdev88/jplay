@@ -13,3 +13,10 @@
 /xjplay/*.iml
 /xjplay/.idea
 /xjplay/.idea/*
+
+save
+save/*
+
+.idea/
+jplay-mvn.iml
+
