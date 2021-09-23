@@ -7,6 +7,7 @@
     <version>1.0-SNAPSHOT</version>
     <name>xjplay</name>
     <url>http://maven.apache.org</url>
+
     <dependencies>
         <dependency>
             <groupId>cl.prezdev</groupId>
@@ -53,16 +54,11 @@
             <artifactId>org.eclipse.jgit</artifactId>
             <version>5.7.0.202003110725-r</version>
         </dependency>
-
     </dependencies>
-    
-    <properties>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.source>1.8</maven.compiler.source>
-    </properties>
-    
+
     <build>
         <plugins>
+            <!-- 
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
@@ -74,6 +70,47 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
+                </configuration>
+            </plugin>
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <mainClass>cl.prezdev.xjplay.main.JPlay</mainClass>
+                                </manifest>
+                            </archive>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <configuration>
+                    <mainClass>cl.prezdev.xjplay.main.JPlay</mainClass>
                 </configuration>
             </plugin>
         </plugins>
