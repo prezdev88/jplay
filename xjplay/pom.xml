@@ -58,21 +58,6 @@
 
     <build>
         <plugins>
-            <!-- 
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>cl.prezdev.xjplay.main.JPlay</mainClass>
-                        </manifest>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
-            </plugin>
-            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -109,9 +94,17 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.2.1</version>
-                <configuration>
-                    <mainClass>cl.prezdev.xjplay.main.JPlay</mainClass>
-                </configuration>
+                <executions>  
+                    <execution>  
+                        <phase>install</phase>  
+                        <goals>  
+                            <goal>java</goal>  
+                        </goals>  
+                        <configuration>  
+                            <mainClass>cl.prezdev.xjplay.main.JPlay</mainClass>
+                        </configuration>
+                    </execution>  
+                </executions>  
             </plugin>
         </plugins>
     </build>
