@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.BranchTrackingStatus;
@@ -13,7 +14,6 @@ import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 
 /**
- *
  * @author prez
  */
 public class GitTest {
@@ -24,12 +24,12 @@ public class GitTest {
     public static void main(String[] args) {
         try {
             String REMOTE_URL = "https://github.com/pperezp/jplay";
-            
-            
+
+
             Collection<Ref> refs = Git.lsRemoteRepository()
                     .setRemote(REMOTE_URL)
                     .call();
-            
+
             for (Ref ref : refs) {
 //                List<Integer> counts = getCounts(, ref.getName());
                 System.out.println("For branch: " + ref.getName());
@@ -40,9 +40,9 @@ public class GitTest {
         } catch (GitAPIException ex) {
             Logger.getLogger(GitTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
+
     }
-    
+
     private static List<Integer> getCounts(Repository repository, String branchName) throws IOException {
         BranchTrackingStatus trackingStatus = BranchTrackingStatus.of(repository, branchName);
         List<Integer> counts = new ArrayList<>();
@@ -56,5 +56,5 @@ public class GitTest {
         }
         return counts;
     }
-    
+
 }

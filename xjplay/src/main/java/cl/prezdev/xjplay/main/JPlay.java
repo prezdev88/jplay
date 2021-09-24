@@ -1,6 +1,7 @@
 package cl.prezdev.xjplay.main;
 
 //iconos https://www.iconfinder.com/iconsets/snipicons
+
 import cl.prezdev.jplay.Album;
 import cl.prezdev.jplay.MusicLibrary;
 import cl.prezdev.jplay.Song;
@@ -32,9 +33,12 @@ import cl.prezdev.xjplay.tree.cell.renderer.FavoritesTreeCellRenderer;
 import cl.prezdev.xjplay.tree.cell.renderer.SongListTreeCellRenderer;
 import cl.prezdev.xjplay.tree.cell.renderer.MostPlayedSongsTreeCellRenderer;
 import cl.prezdev.xjplay.utils.Validate;
+
 import java.awt.Color;
 import java.awt.Dimension;
+
 import static java.awt.EventQueue.invokeLater;
+
 import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.datatransfer.DataFlavor;
@@ -88,6 +92,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+
 import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
@@ -96,39 +101,39 @@ import javazoom.jlgui.basicplayer.BasicPlayerListener;
 public class JPlay extends JFrame implements
         BasicPlayerListener, SearchListener, MusicLibraryUiUpdate {
 
-    private MusicPlayer musicPlayer;
+    private transient MusicPlayer musicPlayer;
     private MusicLibrary musicLibrary;
-    
+
     // son las canciones de la lista de reproducción actual
-    private List<Song> songs; 
-    private Thread songsLoadThread;
+    private List<Song> songs;
+    private transient Thread songsLoadThread;
     private JPopupMenu explorerTreePopUp;
     private JPopupMenu musicLibraryPopUp;
     private JPopupMenu coverArtPopUp;
 
     // Esto es sólo para debug
-    private final boolean SAVE = true; 
+    private final boolean SAVE = true;
     private List<Song> songsFound;
     private List<ArtistCoverArt> artistCoverArts;
     private boolean isPlay;
     private boolean isStop;
     private boolean isRandom;
     private boolean repeatSong;
-    private Image appIcon;
-    
+    private transient Image appIcon;
+
     // hilo para animación de caratulas
-    private CoverArtThread coverArtThread; 
+    private transient CoverArtThread coverArtThread;
 
     // GUARDA EL TOTAL DE DURACIÓN DE LA CANCION EN MILIS
-    private int totalBytes; 
+    private int totalBytes;
 
     // para pintar los minutos en la barra
-    private WorkerStringProgress workerStringProgress; 
+    private transient WorkerStringProgress workerStringProgress;
     private boolean printProgressBarSong;
     private SearchDialog searchDialog;
-    
+
     // esto es para el drag and drop
-    private int currentTabIndex; 
+    private int currentTabIndex;
 
     /**
      * Esta lista la utilizo cuando guardo en SAVE. Ya que si solo guardo las
@@ -138,23 +143,23 @@ public class JPlay extends JFrame implements
     private List<Album> albums;
 
     // Son los milisegundos totales de la lista de reproducción actual.
-    private int millisecondsOfCurrentSongs;  
+    private int millisecondsOfCurrentSongs;
 
     public JPlay() {
         initComponents();
         initMusicPlayer();
 
         Rule.COVER_ART_DIMENTION = new Dimension(
-            coverArtLabel.getWidth(), 
-            coverArtLabel.getHeight()
+                coverArtLabel.getWidth(),
+                coverArtLabel.getHeight()
         );
 
         appIcon = Resource.JPLAY_ICON;
 
         appIcon = appIcon.getScaledInstance(
-            (int) Rule.COVER_ART_DIMENTION.getWidth(),
-            (int) Rule.COVER_ART_DIMENTION.getHeight(),
-            Image.SCALE_SMOOTH
+                (int) Rule.COVER_ART_DIMENTION.getWidth(),
+                (int) Rule.COVER_ART_DIMENTION.getHeight(),
+                Image.SCALE_SMOOTH
         );
 
         songs = new ArrayList<>();
@@ -204,7 +209,7 @@ public class JPlay extends JFrame implements
         coverArtLabel.requestFocus();
         initMostPlayerSongsTree();
         loadFavoritesSongsTree();
-        
+
         musicLibrary.printAlbumsToLog();
         printProgressBarSong = true;
 
@@ -219,8 +224,8 @@ public class JPlay extends JFrame implements
         setBounds(0, 0, Rule.WIDTH, Rule.HEIGHT);
         setLocationRelativeTo(null);
         //@TODO: Intentar ordenar este constructor, pensar bien la forma de agrupar
-        
-        
+
+
     }
 
     private void initIcons() {
@@ -229,20 +234,22 @@ public class JPlay extends JFrame implements
         playSongLabel.setIcon(new ImageIcon(getClass().getResource(Path.BLACK_PLAY_ICON)));
         favoriteButton.setIcon(new ImageIcon(getClass().getResource(Path.FAVORITES_TAB_ICON)));
     }
-    
+
     // http://stackoverflow.com/questions/13516730/disable-enter-key-from-moving-down-a-row-in-jtable
     // este método es porque cuando apretaba enter en la tabla de canciones, se veia feo el que
     // el cursor bajara y despues subiera. Este método sobre escribe eso hecho por java automáticamente
-    private void setNoActionEnter(JTable table) {
+    private void setNoActionEnter(JTable jTable) {
         KeyStroke enterKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
-        
+
         final int INPUT_MAP = JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT;
-        
-        table.getInputMap(INPUT_MAP).put(enterKeyStroke, "Enter");
-        
-        table.getActionMap().put("Enter", new AbstractAction() {
+
+        jTable.getInputMap(INPUT_MAP).put(enterKeyStroke, "Enter");
+
+        jTable.getActionMap().put("Enter", new AbstractAction() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {}
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
         });
 
     }
@@ -292,12 +299,12 @@ public class JPlay extends JFrame implements
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
         jDialog1Layout.setHorizontalGroup(
-            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+                jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 400, Short.MAX_VALUE)
         );
         jDialog1Layout.setVerticalGroup(
-            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+                jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 300, Short.MAX_VALUE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -333,25 +340,29 @@ public class JPlay extends JFrame implements
         mainTabbedPane.addTab("Explorer", jScrollPane3);
 
         musicLibraryTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
+                new Object[][]{
+                        {null, null, null, null},
+                        {null, null, null, null},
+                        {null, null, null, null},
+                        {null, null, null, null}
+                },
+                new String[]{
+                        "Title 1", "Title 2", "Title 3", "Title 4"
+                }
         ));
         musicLibraryTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 musicLibraryTableMousePressed(evt);
             }
+
+            @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 musicLibraryTableMouseReleased(evt);
             }
         });
         musicLibraryTable.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 musicLibraryTableKeyReleased(evt);
             }
@@ -361,24 +372,26 @@ public class JPlay extends JFrame implements
         mainTabbedPane.addTab("Biblioteca", jScrollPane1);
 
         songsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
+                new Object[][]{
+                        {null, null, null, null},
+                        {null, null, null, null},
+                        {null, null, null, null},
+                        {null, null, null, null}
+                },
+                new String[]{
+                        "Title 1", "Title 2", "Title 3", "Title 4"
+                }
         ));
         songsTable.setShowHorizontalLines(false);
         songsTable.setShowVerticalLines(false);
         songsTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 songsTableMouseReleased(evt);
             }
         });
         songsTable.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 songsTableKeyReleased(evt);
             }
@@ -392,21 +405,29 @@ public class JPlay extends JFrame implements
         cleanLabel.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         cleanLabel.setOpaque(true);
         cleanLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 cleanLabelMousePressed(evt);
             }
+
+            @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 cleanLabelMouseReleased(evt);
             }
+
+            @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 cleanLabelMouseExited(evt);
             }
+
+            @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 cleanLabelMouseEntered(evt);
             }
         });
 
         treeSong.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 treeSongMouseReleased(evt);
             }
@@ -416,19 +437,19 @@ public class JPlay extends JFrame implements
         javax.swing.GroupLayout panelListaActualLayout = new javax.swing.GroupLayout(panelListaActual);
         panelListaActual.setLayout(panelListaActualLayout);
         panelListaActualLayout.setHorizontalGroup(
-            panelListaActualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(cleanLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(songsTableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 769, Short.MAX_VALUE)
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING)
+                panelListaActualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(cleanLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(songsTableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 769, Short.MAX_VALUE)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         panelListaActualLayout.setVerticalGroup(
-            panelListaActualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelListaActualLayout.createSequentialGroup()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(songsTableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cleanLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                panelListaActualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelListaActualLayout.createSequentialGroup()
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(songsTableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cleanLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         mainTabbedPane.addTab("Lista actual", panelListaActual);
@@ -449,6 +470,7 @@ public class JPlay extends JFrame implements
         panelFavoritos.setLayout(new java.awt.BorderLayout());
 
         favoritesTree.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 favoritesTreeMouseReleased(evt);
             }
@@ -462,6 +484,7 @@ public class JPlay extends JFrame implements
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         artistList.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 artistListMouseReleased(evt);
             }
@@ -475,11 +498,13 @@ public class JPlay extends JFrame implements
         progressBarSong.setBackground(new java.awt.Color(254, 254, 254));
         progressBarSong.setForeground(new java.awt.Color(255, 255, 255));
         progressBarSong.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            @Override
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 progressBarSongMouseDragged(evt);
             }
         });
         progressBarSong.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 progressBarSongMouseReleased(evt);
             }
@@ -491,11 +516,7 @@ public class JPlay extends JFrame implements
         loadInfoLabel.setText("[lblInfo]");
 
         cancelLoadingButton.setText("X");
-        cancelLoadingButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelLoadingButtonActionPerformed(evt);
-            }
-        });
+        cancelLoadingButton.addActionListener(evt -> cancelLoadingButtonActionPerformed(evt));
 
         songNameLabel.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
         songNameLabel.setText("Artista / Canción");
@@ -506,6 +527,7 @@ public class JPlay extends JFrame implements
         volumeSlider.setBackground(new java.awt.Color(255, 255, 255));
         volumeSlider.setMaximum(40);
         volumeSlider.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            @Override
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 volumeSliderMouseDragged(evt);
             }
@@ -562,97 +584,98 @@ public class JPlay extends JFrame implements
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
-            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGap(5, 5, 5)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(mainTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 771, Short.MAX_VALUE)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addComponent(backSongLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(playSongLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nextSongLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(coverArtLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addComponent(artistLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(songDurationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(progressBarSong, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(songNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(5, 5, 5))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(cancelLoadingButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(loadInfoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(shuffleCheckbox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(repeatSongCheckbox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(volumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(favoriteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addGap(5, 5, 5)
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(mainTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 771, Short.MAX_VALUE)
+                                        .addGroup(mainPanelLayout.createSequentialGroup()
+                                                .addComponent(backSongLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(playSongLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(nextSongLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(coverArtLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(mainPanelLayout.createSequentialGroup()
+                                                                .addComponent(artistLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                .addComponent(songDurationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(progressBarSong, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(songNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addGap(5, 5, 5))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(cancelLoadingButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(loadInfoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(shuffleCheckbox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(repeatSongCheckbox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(volumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(favoriteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
-            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                .addGap(5, 5, 5)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addComponent(songNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(artistLabel)
-                            .addComponent(songDurationLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(progressBarSong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(playSongLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(nextSongLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(backSongLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(coverArtLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(mainTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(volumeSlider, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cancelLoadingButton)
-                            .addComponent(loadInfoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(shuffleCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(repeatSongCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(favoriteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                                .addGap(5, 5, 5)
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(mainPanelLayout.createSequentialGroup()
+                                                .addComponent(songNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(artistLabel)
+                                                        .addComponent(songDurationLabel))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(progressBarSong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(playSongLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(nextSongLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(backSongLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(coverArtLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(mainTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(volumeSlider, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(cancelLoadingButton)
+                                                        .addComponent(loadInfoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(shuffleCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(repeatSongCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(favoriteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap())
         );
 
         javax.swing.GroupLayout panelAppLayout = new javax.swing.GroupLayout(panelApp);
         panelApp.setLayout(panelAppLayout);
         panelAppLayout.setHorizontalGroup(
-            panelAppLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                panelAppLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelAppLayout.setVerticalGroup(
-            panelAppLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                panelAppLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         getContentPane().add(panelApp, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
     // @TODO: Desacoplar los listeners de volumeSlides
     private void volumeSliderMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_volumeSliderMouseDragged
         setVolume(volumeSlider.getValue());
     }//GEN-LAST:event_volumeSliderMouseDragged
 
-   // @TODO: Desacoplar los listeners de explorerTree
+    // @TODO: Desacoplar los listeners de explorerTree
     private void explorerTreeMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_explorerTreeMouseReleased
         if (evt.getClickCount() == 2) {
             loadSong();
@@ -706,10 +729,10 @@ public class JPlay extends JFrame implements
     }//GEN-LAST:event_formWindowClosing
 
     /*
-    * @TODO: Se me ocurrió una idea:
-    *   1.- Crear proyecto para poner datos (model) en vista (o algo asi)
-    *   2.- Crear proyecto que se encargue de los listeners de la vista (o algo asi)
-    * */
+     * @TODO: Se me ocurrió una idea:
+     *   1.- Crear proyecto para poner datos (model) en vista (o algo asi)
+     *   2.- Crear proyecto que se encargue de los listeners de la vista (o algo asi)
+     * */
     private void musicLibraryTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_musicLibraryTableMouseReleased
         if (evt.getClickCount() == 2) {
             playSelectedMusicLibrarySong();
@@ -732,7 +755,7 @@ public class JPlay extends JFrame implements
 
     private void musicLibraryTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_musicLibraryTableKeyReleased
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            playSelectedMusicLibrarySong(); 
+            playSelectedMusicLibrarySong();
         }
     }//GEN-LAST:event_musicLibraryTableKeyReleased
 
@@ -794,7 +817,7 @@ public class JPlay extends JFrame implements
             play(song);
         }
     }//GEN-LAST:event_songsTableKeyReleased
-    
+
     // @TODO: eliminar
     private void songsTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_songsTableMouseReleased
         if (evt.getClickCount() == 2) {
@@ -807,7 +830,7 @@ public class JPlay extends JFrame implements
             DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) mostPlayedSongTree.getLastSelectedPathComponent();
             if (treeNode != null) {
                 Object userObject = treeNode.getUserObject();
-                
+
                 if (userObject instanceof Song) {
                     // @TODO: Una vez que lo de abajo pase a clase Album, cambiar nonbre a song
                     Song song = (Song) userObject;
@@ -842,31 +865,37 @@ public class JPlay extends JFrame implements
     }//GEN-LAST:event_mostPlayedSongTreeMouseReleased
 
     private void mainTabbedPaneMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainTabbedPaneMouseReleased
-        if (evt.getClickCount() == 2) {
-            if (mainTabbedPane.getSelectedIndex() == 1) {
-                loadSongsInMusicLibrary(musicLibrary.getSongs());
-            }
+        if (evt.getClickCount() == 2 && mainTabbedPane.getSelectedIndex() == 1) {
+            loadSongsInMusicLibrary(musicLibrary.getSongs());
         }
 
         switch (mainTabbedPane.getSelectedIndex()) {
             case Rule.TabIndex.MUSIC_LIBRARY:
                 loadInfoLabel.setText(musicLibrary.getLibraryDuration());
                 break;
+
             case Rule.TabIndex.EXPLORER:
                 loadInfoLabel.setText(musicLibrary.getLibraryDuration());
                 break;
+
             case Rule.TabIndex.FAVORITES:
                 loadInfoLabel.setText(musicLibrary.getFavoritesDuration());
                 break;
+
             case Rule.TabIndex.CURRENT_SONGS_LIST:
                 loadInfoLabel.setText("Lista actual --> " + Util.getDurationAsString(millisecondsOfCurrentSongs));
                 break;
+
             case Rule.TabIndex.LOGGER:
                 loadInfoLabel.setText(musicLibrary.getLibraryDuration());
                 break;
+
             case Rule.TabIndex.MOST_PLAYED:
                 loadInfoLabel.setText(musicLibrary.getMostPlayedDuration());
                 break;
+
+            default:
+                throw new UnsupportedOperationException();
         }
     }//GEN-LAST:event_mainTabbedPaneMouseReleased
 
@@ -877,7 +906,7 @@ public class JPlay extends JFrame implements
             } else {
                 musicLibrary.removeFavoriteSong(musicPlayer.getCurrentSong());
             }
-            
+
             loadFavoritesSongsTree();
         }
     }//GEN-LAST:event_favoriteButtonActionPerformed
@@ -888,7 +917,7 @@ public class JPlay extends JFrame implements
             DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) favoritesTree.getLastSelectedPathComponent();
             if (treeNode != null) {
                 Object userObject = treeNode.getUserObject();
-                
+
                 // @TODO: Una vez que lo de abajo pase a clase Album, cambiar nonbre a song
                 if (userObject instanceof Song) {
                     Song song = (Song) userObject;
@@ -984,7 +1013,7 @@ public class JPlay extends JFrame implements
     private void artistListMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_artistListMouseReleased
         if (evt.getClickCount() == 2) {
             Object selectedValue = artistList.getSelectedValue();
-            
+
             ListCellRenderer listCellRenderer = null;
             ListModel listModel = null;
 
@@ -1001,7 +1030,7 @@ public class JPlay extends JFrame implements
                 listCellRenderer = new ArtistListCellRenderer(artistCoverArts);
                 listModel = new ArtistListModel(artistCoverArts);
             }
-            
+
             artistList.setCellRenderer(listCellRenderer);
             artistList.setModel(listModel);
         }
@@ -1048,24 +1077,27 @@ public class JPlay extends JFrame implements
             case Rule.TabIndex.EXPLORER:
                 loadInfoLabel.setText(musicLibrary.getLibraryDuration());
                 break;
-                
+
             case Rule.TabIndex.FAVORITES:
                 loadInfoLabel.setText(musicLibrary.getFavoritesDuration());
                 break;
-                
+
             case Rule.TabIndex.CURRENT_SONGS_LIST:
                 loadInfoLabel.setText("Lista actual --> " + Util.getDurationAsString(millisecondsOfCurrentSongs));
                 break;
-          
+
             case Rule.TabIndex.MOST_PLAYED:
                 loadInfoLabel.setText(musicLibrary.getMostPlayedDuration());
                 break;
+
+            default:
+                throw new UnsupportedOperationException();
         }
     }
 
     private void loadFilesInTreeNode(DefaultMutableTreeNode rootTreeNode, File rootFile) {
         List<File> files = new ArrayList<>();
-        
+
         if (rootFile.listFiles() != null) {
             File namedFile;
             for (File file : rootFile.listFiles()) {
@@ -1199,24 +1231,25 @@ public class JPlay extends JFrame implements
     }
 
     // @TODO: BasicPlayerListener no debiese implementar acá
+
     /**
      * Open callback, stream is ready to play.
-     *
+     * <p>
      * properties map includes audio format dependant features such as bitrate,
      * duration, frequency, channels, number of frames, vbr flag, ...
      *
-     * @param stream could be File, URL or InputStream
+     * @param stream     could be File, URL or InputStream
      * @param properties audio stream properties.
      */
     @Override
-    public void opened(Object stream, Map properties) {}
+    public void opened(Object stream, Map properties) {
+    }
 
     /**
-     *
-     * @param bytesread from encoded stream.
+     * @param bytesread    from encoded stream.
      * @param microseconds elapsed (<b>reseted after a seek !</b>).
-     * @param pcmdata PCM samples.
-     * @param properties audio stream parameters.
+     * @param pcmdata      PCM samples.
+     * @param properties   audio stream parameters.
      */
     @Override
     public void progress(int bytesread, long microseconds, byte[] pcmdata, Map properties) {
@@ -1241,29 +1274,33 @@ public class JPlay extends JFrame implements
                 }
 
                 break;
-                
+
             case BasicPlayerEvent.STOPPED:
                 break;
 
             case BasicPlayerEvent.RESUMED:
                 workerStringProgress.resume();
                 break;
-                
+
             case BasicPlayerEvent.PAUSED:
                 workerStringProgress.pause();
                 break;
-                
+
             case BasicPlayerEvent.SEEKED:
                 break;
-                
+
             case BasicPlayerEvent.OPENED:
                 setProgressBarSongMaxValue((int) musicPlayer.getCurrentSong().length());
                 break;
+
+            default:
+                throw new UnsupportedOperationException();
         }
     }
 
     @Override
-    public void setController(BasicController bc) {}
+    public void setController(BasicController bc) {
+    }
 
     private void setVolume(int vol) {
         try {
@@ -1286,26 +1323,26 @@ public class JPlay extends JFrame implements
 
         // @TODO: WTF!
         explorerTree.setCellRenderer(
-            new ExplorerTreeCellRenderer(
-                new ImageIcon(
-                    ExplorerTreeCellRenderer.getImageIcon(
-                        Path.MUSIC_ICON).getImage().
-                        getScaledInstance(
-                            Rule.ICON_EXPLORER_MUSIC_SIZE,
-                            Rule.ICON_EXPLORER_MUSIC_SIZE,
-                            Image.SCALE_SMOOTH
-                        )
-                ),
-                new ImageIcon(
-                    ExplorerTreeCellRenderer.getImageIcon(
-                        Path.FOLDER_ICON).getImage().
-                        getScaledInstance(
-                            Rule.ICON_EXPLORER_SIZE,
-                            Rule.ICON_EXPLORER_SIZE,
-                            Image.SCALE_SMOOTH
+                new ExplorerTreeCellRenderer(
+                        new ImageIcon(
+                                ExplorerTreeCellRenderer.getImageIcon(
+                                        Path.MUSIC_ICON).getImage().
+                                        getScaledInstance(
+                                                Rule.ICON_EXPLORER_MUSIC_SIZE,
+                                                Rule.ICON_EXPLORER_MUSIC_SIZE,
+                                                Image.SCALE_SMOOTH
+                                        )
+                        ),
+                        new ImageIcon(
+                                ExplorerTreeCellRenderer.getImageIcon(
+                                        Path.FOLDER_ICON).getImage().
+                                        getScaledInstance(
+                                                Rule.ICON_EXPLORER_SIZE,
+                                                Rule.ICON_EXPLORER_SIZE,
+                                                Image.SCALE_SMOOTH
+                                        )
                         )
                 )
-            )
         );
     }
 
@@ -1344,7 +1381,7 @@ public class JPlay extends JFrame implements
 
         cancelLoadingButton.setEnabled(false);
         millisecondsOfCurrentSongs = 0;
-        
+
         // @TODO: desacoplar esto
         songs.stream().forEach((song) -> {
             millisecondsOfCurrentSongs += song.getMilliSeconds();
@@ -1372,7 +1409,7 @@ public class JPlay extends JFrame implements
     }
 
     // @TODO: ver initMostPlayerSongsTree
-    
+
     private void loadFavoritesSongsTree() {
         DefaultMutableTreeNode rootTreeNode = new DefaultMutableTreeNode("raiz");
 
@@ -1404,7 +1441,7 @@ public class JPlay extends JFrame implements
                     int selectedRow = explorerTree.getRowForLocation(mouseEvent.getX(), mouseEvent.getY());
                     TreePath treePath = explorerTree.getPathForLocation(mouseEvent.getX(), mouseEvent.getY());
                     explorerTree.setSelectionPath(treePath);
-                    
+
                     if (selectedRow > -1) {
                         explorerTree.setSelectionRow(selectedRow);
                         explorerTreePopUp.show(explorerTree, mouseEvent.getX() + 10, mouseEvent.getY() + 10);
@@ -1412,11 +1449,11 @@ public class JPlay extends JFrame implements
                 }
             }
         };
-        
+
         explorerTree.addMouseListener(mouseListener);
-        
+
         explorerTreePopUp = new JPopupMenu();
-        
+
         JMenuItem toNewListMenuItem = new JMenuItem("A lista nueva");
         JMenuItem toAlreadyExistMenuItem = new JMenuItem("Añadir a existente");
         JMenuItem toMusicLibraryMenuItem = new JMenuItem("Añadir a biblioteca");
@@ -1438,7 +1475,7 @@ public class JPlay extends JFrame implements
                     Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
-            
+
             songsLoadThread.start();
         });
 
@@ -1447,14 +1484,14 @@ public class JPlay extends JFrame implements
                 cancelLoadingButton.setEnabled(true);
                 try {
                     File selectedFile = getSelectedTreeFile();
-                    
+
                     loadSongToSongList(selectedFile);
                     loadAlbumsInTreeSong(getAlbums(songs));
                 } catch (IOException | InterruptedException ex) {
                     Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
-            
+
             songsLoadThread.start();
         });
 
@@ -1466,10 +1503,10 @@ public class JPlay extends JFrame implements
 
                     loadSongsInMusicLibrary(selectedTreeFile);
                     loadSongsInMusicLibrary(musicLibrary.getSongs());
-                    
+
                     musicLibrary.addSongsToAlbums();
                     musicLibrary.addPath(selectedTreeFile);
-                    
+
                     initArtistCoversArt();
                 } catch (IOException | InterruptedException ex) {
                     Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
@@ -1484,7 +1521,7 @@ public class JPlay extends JFrame implements
 
     private void initMusicLibraryPopUp() {
         musicLibraryPopUp = new JPopupMenu();
-        
+
         JMenuItem removeFromMusicLibraryMenuItem = new JMenuItem("Remover");
         JMenuItem playAlbumMenuItem = new JMenuItem("Reproducir Disco");
         JMenuItem addAlbumMenuItem = new JMenuItem("Añadir Disco");
@@ -1497,18 +1534,18 @@ public class JPlay extends JFrame implements
         playAlbumMenuItem.addActionListener((ActionEvent actionEvent) -> {
             int[] selectedRows = musicLibraryTable.getSelectedRows();
             List<Album> albums = new ArrayList<>();
-            
+
             Song song;
             Album album;
-            
+
             songs = new ArrayList<>();
-            
+
             // @TODO: Analizar esto (no lo he hecho)
             // Me tinca que se puede mejorar (y se debe mejorar)
             for (int row : selectedRows) {
                 song = (Song) musicLibraryTable.getValueAt(row, MusicLibrarySongTableModel.COMPLETE_OBJECT_INDEX);
                 album = musicLibrary.getAlbum(song);
-                
+
                 if (!albums.contains(album)) {
                     albums.add(album);
                     for (Song can : album.getSongs()) {
@@ -1516,10 +1553,10 @@ public class JPlay extends JFrame implements
                     }
                 }
             }
-            
+
             loadAlbumsInTreeSong(getAlbums(songs));
             play(songs.get(0));
-            
+
             mainTabbedPane.setSelectedIndex(Rule.TabIndex.CURRENT_SONGS_LIST);
         });
 
@@ -1527,14 +1564,14 @@ public class JPlay extends JFrame implements
             // @TODO: playAlbumMenuItem.addActionListener
             int[] selectedRows = musicLibraryTable.getSelectedRows();
             List<Album> albums = new ArrayList<>();
-            
+
             Song song;
             Album album;
-            
+
             for (int row : selectedRows) {
                 song = (Song) musicLibraryTable.getValueAt(row, MusicLibrarySongTableModel.COMPLETE_OBJECT_INDEX);
                 album = musicLibrary.getAlbum(song);
-                
+
                 if (!albums.contains(album)) {
                     albums.add(album);
                     for (Song can : album.getSongs()) {
@@ -1542,35 +1579,35 @@ public class JPlay extends JFrame implements
                     }
                 }
             }
-            
+
             loadAlbumsInTreeSong(getAlbums(songs));
         });
 
         removeFromMusicLibraryMenuItem.addActionListener((ActionEvent actionEvent) -> {
             int[] selectedRows = musicLibraryTable.getSelectedRows();
-            
+
             List<Song> songs = new ArrayList<>();
-            
+
             for (int row : selectedRows) {
                 songs.add(
-                    (Song) musicLibraryTable.getValueAt(
-                        row, 
-                        MusicLibrarySongTableModel.COMPLETE_OBJECT_INDEX
-                    )
+                        (Song) musicLibraryTable.getValueAt(
+                                row,
+                                MusicLibrarySongTableModel.COMPLETE_OBJECT_INDEX
+                        )
                 );
             }
-            
+
             for (Song song : songs) {
                 musicLibrary.removeSong(song);
             }
-            
+
             loadSongsInMusicLibrary(musicLibrary.getSongs());
         });
     }
 
     private File getSelectedTreeFile() {
         DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) explorerTree.getLastSelectedPathComponent();
-        
+
         if (treeNode != null) {
             Object userObject = treeNode.getUserObject();
             if (userObject instanceof File) {
@@ -1581,7 +1618,7 @@ public class JPlay extends JFrame implements
                 */
             }
         }
-        
+
         return null;
     }
 
@@ -1589,26 +1626,26 @@ public class JPlay extends JFrame implements
         Collections.sort(songs, (File file, File anotherFile) -> {
             return file.compareTo(anotherFile);
         });
-        
+
         musicLibraryTable.setModel(new MusicLibrarySongTableModel(songs));
         mainTabbedPane.setTitleAt(Rule.TabIndex.MUSIC_LIBRARY, "Biblioteca (" + songs.size() + ")");
-        
+
         TableColumnModel musicLibraryColumnModel = musicLibraryTable.getColumnModel();
-        
+
         musicLibraryColumnModel.getColumn(0).setPreferredWidth(Rule.TRACK_NUMBER_COLUMN_SIZE);
         musicLibraryColumnModel.getColumn(1).setPreferredWidth(Rule.ARTIST_COLUMN_SIZE);
         musicLibraryColumnModel.getColumn(2).setPreferredWidth(Rule.ALBUM_COLUMN_SIZE);
         musicLibraryColumnModel.getColumn(3).setPreferredWidth(Rule.ARTIST_COLUMN_SIZE);
-        
+
         cancelLoadingButton.setEnabled(false);
-        
+
         musicLibrary.addSongsToAlbums();
     }
 
     /*
-    * @TODO: Primera idea:
-    *   Llamar a play del model (jplay) y desde ahí, con listeners, cambiar el gui (xjplay)
-    * */
+     * @TODO: Primera idea:
+     *   Llamar a play del model (jplay) y desde ahí, con listeners, cambiar el gui (xjplay)
+     * */
     private void play(Song song) {
         long startTime = System.nanoTime();
         favoriteButton.setSelected(musicLibrary.isFavoriteSong(song));
@@ -1617,20 +1654,20 @@ public class JPlay extends JFrame implements
             new Thread(() -> {
                 setCoverArt(song);
             }).start();
-            
+
             musicPlayer.play(song);
 
             song.increasePlayCount();
 
             setTitle(
-                Rule.NAME + " - "
-                + Rule.VERSION + " ["
-                + song.getAuthor() + " - "
-                + song.getName() + " (" + song.getPlayCount() + ")]"
+                    Rule.NAME + " - "
+                            + Rule.VERSION + " ["
+                            + song.getAuthor() + " - "
+                            + song.getName() + " (" + song.getPlayCount() + ")]"
             );
-            
+
             setVolume(volumeSlider.getValue());
-            
+
             // @TODO: Arreglar esto del ícono
             if (Rule.FOREGROUND_COLOR == Color.white) {
                 playSongLabel.setIcon(new ImageIcon(getClass().getResource(Path.WHITE_PAUSE_ICON)));
@@ -1655,10 +1692,10 @@ public class JPlay extends JFrame implements
             showCurrentSongInfo();
         } catch (BasicPlayerException ex) {
             JOptionPane.showMessageDialog(
-                this, 
-                "Error al reproducir: " + ex.getMessage(), 
-                "Error", 
-                JOptionPane.ERROR_MESSAGE
+                    this,
+                    "Error al reproducir: " + ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
             );
         }
         long endTime = System.nanoTime();
@@ -1666,7 +1703,7 @@ public class JPlay extends JFrame implements
         long durationInNano = (endTime - startTime);
         long durationInMillis = TimeUnit.NANOSECONDS.toMillis(durationInNano);
 
-        System.out.println("load song: "+durationInMillis+"ms");
+        System.out.println("load song: " + durationInMillis + "ms");
     }
 
     private void playCurrentSong() {
@@ -1679,9 +1716,9 @@ public class JPlay extends JFrame implements
             Song currentSong = musicPlayer.getCurrentSong();
 
             artistLabel.setText(
-                currentSong.getAuthor() + " - "
-                + currentSong.getAlbum() + " ("
-                + currentSong.getYear() + ")"
+                    currentSong.getAuthor() + " - "
+                            + currentSong.getAlbum() + " ("
+                            + currentSong.getYear() + ")"
             );
 
             String durationAsString = Util.getDurationAsString(currentSong.getMicroseconds());
@@ -1713,16 +1750,16 @@ public class JPlay extends JFrame implements
 
     private void playSelectedMusicLibrarySong() {
         int selectedRow = musicLibraryTable.getSelectedRow();
-        
+
         Song song = (Song) musicLibraryTable.getValueAt(
-            selectedRow, 
-            MusicLibrarySongTableModel.COMPLETE_OBJECT_INDEX
+                selectedRow,
+                MusicLibrarySongTableModel.COMPLETE_OBJECT_INDEX
         );
 
         MusicLibrarySongTableModel musicLibrarySongTableModel = (MusicLibrarySongTableModel) musicLibraryTable.getModel();
 
         songs = musicLibrarySongTableModel.songs;
-        
+
         loadAlbumsInTreeSong(getAlbums(songs));
         play(song);
     }
@@ -1731,20 +1768,20 @@ public class JPlay extends JFrame implements
     // o cuando apreto enter en el arbol
     private void loadSong() {
         final File selectedTreeFile = getSelectedTreeFile();
-        
+
         if (selectedTreeFile != null) {
             try {
                 if (Validate.isSong(selectedTreeFile)) {
                     songs = new ArrayList<>();
                     songsLoadThread = new Thread(() -> {
                         cancelLoadingButton.setEnabled(true);
-                        
+
                         try {
                             loadSongToSongList(selectedTreeFile.getParentFile());
                         } catch (InterruptedException | IOException ex) {
                             Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        
+
                         loadAlbumsInTreeSong(getAlbums(songs));
                     });
 
@@ -1779,7 +1816,7 @@ public class JPlay extends JFrame implements
 
         final float VALUE = totalBytes * ((float) percentage / (float) 100);
         progressBarSong.setValue((int) VALUE);
-        
+
         if (seek) {
             try {
                 this.workerStringProgress.changeProgressBarValue(percentage);
@@ -1797,14 +1834,14 @@ public class JPlay extends JFrame implements
         if (!song.exists()) { // si canción no existe
             if (JOptionPane.showConfirmDialog(
                     this,
-                    song.exists() + "[" + song.getName()+ "] no encontrada. "
+                    song.exists() + "[" + song.getName() + "] no encontrada. "
                             + "¿Desea analizar la lista completa para eliminar los no encontrados?", "Error",
                     JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 Iterator<Song> iterator = songs.iterator();
 
                 Song nextSong;
                 int count = 0;
-                
+
                 while (iterator.hasNext()) {
                     nextSong = iterator.next();
 
@@ -1816,19 +1853,19 @@ public class JPlay extends JFrame implements
 
                 JOptionPane.showMessageDialog(this, "Se han eliminado " + count + " canciones de la lista.", "Info", JOptionPane.INFORMATION_MESSAGE);
             }
-            } else if (!album.hasCoversArt()) { // si el Album NO tiene una lista de imagenes
+        } else if (!album.hasCoversArt()) { // si el Album NO tiene una lista de imagenes
             List<ImageIcon> coversArt = Resource.getCoversArt(song);
 
             /*
             si la lista de fotos no esta vacía por lo menos hay una
             para poder comenzar el hilo de las caratulas
              */
-            if (!coversArt.isEmpty()) {   
+            if (!coversArt.isEmpty()) {
                 album.setCoversArt(coversArt);
-            } else { 
+            } else {
                 // no hay imágenes en la carpeta de la canción
                 coversArt = new ArrayList<>();
-                
+
                 try {
                     Image coverArt = LastFM.getCoverArt(song.getAuthor(), song.getAlbum());
 
@@ -1845,10 +1882,10 @@ public class JPlay extends JFrame implements
                     /*Establezco la caratula por defecto (el disco)*/
                     coversArt.add(new ImageIcon(appIcon));
                 }
-                
+
                 album.setCoversArt(coversArt);
             }
-        } 
+        }
 
         if (coverArtThread != null) {
             coverArtThread.interrupt();
@@ -1863,7 +1900,7 @@ public class JPlay extends JFrame implements
         setIconImage(album.getCoverArt().getImage());
 
         treeSong.setCellRenderer(
-            new SongListTreeCellRenderer()
+                new SongListTreeCellRenderer()
         );
     }
 
@@ -1871,7 +1908,7 @@ public class JPlay extends JFrame implements
      * Reproduce el siguiente, si es el último reproduce el primero
      */
     private void playNextSong() {
-        if(musicPlayer.hasCurrentSong()){
+        if (musicPlayer.hasCurrentSong()) {
             int currentIndex = songs.indexOf(musicPlayer.getCurrentSong());
             currentIndex++;
 
@@ -1887,7 +1924,7 @@ public class JPlay extends JFrame implements
      * Reproduce el anterior, si es el primero reproduce el último
      */
     private void playPreviousSong() {
-        if(musicPlayer.hasCurrentSong()){
+        if (musicPlayer.hasCurrentSong()) {
             int currentIndex = songs.indexOf(musicPlayer.getCurrentSong());
             currentIndex--;
 
@@ -1924,8 +1961,8 @@ public class JPlay extends JFrame implements
         /*CON CTRL + F y f3 funciona el buscar*/
         InputMap inputMap = this.getRootPane().getInputMap(JRootPane.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = this.getRootPane().getActionMap();
-        
-        
+
+
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_MASK), "buscar");
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0), "buscar");
         /*CON CTRL + F y f3 funciona el buscar*/
@@ -1935,7 +1972,7 @@ public class JPlay extends JFrame implements
             @Override
             public void actionPerformed(ActionEvent e) {
                 mainTabbedPane.setSelectedIndex(Rule.TabIndex.MUSIC_LIBRARY);
-                
+
                 if (searchDialog == null) {
                     searchDialog = new SearchDialog(JPlay.this, false);
                     searchDialog.setSearchable(JPlay.this);
@@ -1943,12 +1980,12 @@ public class JPlay extends JFrame implements
                 } else {
                     searchDialog.setVisible(!searchDialog.isVisible());
                 }
-                
+
                 searchDialog.setBounds(
-                    JPlay.this.getX(),
-                    JPlay.this.getY(),
-                    JPlay.this.getWidth(),
-                    searchDialog.getHeight()
+                        JPlay.this.getX(),
+                        JPlay.this.getY(),
+                        JPlay.this.getWidth(),
+                        searchDialog.getHeight()
                 );
             }
         });
@@ -1980,7 +2017,7 @@ public class JPlay extends JFrame implements
                     scanThread.start();
                 }
             }
-            
+
             musicLibraryTable.setRowSelectionInterval(0, 0);
         } catch (HeadlessException e) {
             // cae aca cuando no hay canciones en la tabla biblioteca
@@ -2013,17 +2050,18 @@ public class JPlay extends JFrame implements
             try {
                 if (coverArtThread.isAlive()) {
                     Image currentCoverArt = coverArtThread.getCurrentCoverArt();
-                    
+
                     coverArtThread.interrupt();
-                    
+
                     Album album = musicLibrary.getAlbum(musicPlayer.getCurrentSong());
-                    
+
                     album.removeCoverArt(new ImageIcon(currentCoverArt));
-                    
+
                     coverArtThread = new CoverArtThread(coverArtLabel, album.getCoversArt());
                     coverArtThread.start();
                 }
-            } catch (NullPointerException ex) {}
+            } catch (NullPointerException ex) {
+            }
         });
 
         coverArtPopUp.add(deleteCoverArtItem);
@@ -2058,14 +2096,14 @@ public class JPlay extends JFrame implements
                             try {
                                 loadSongsInMusicLibrary(file);
                                 loadSongsInMusicLibrary(musicLibrary.getSongs());
-                                
+
                                 musicLibrary.addSongsToAlbums();
                                 musicLibrary.addPath(file);
                             } catch (IOException | InterruptedException ex) {
                                 Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         });
-                        
+
                         System.out.println("HILO CARGAR DROP TERMINADO!");
                     });
 
@@ -2122,7 +2160,7 @@ public class JPlay extends JFrame implements
         } else {
             Rule.BACKGROUND_COLOR = Color.white;
         }
-        
+
         Rule.FOREGROUND_COLOR = ImageProcessor.getForeGroundColorBasedOnBGBrightness(Rule.BACKGROUND_COLOR);
 
         mainPanel.setBackground(Rule.BACKGROUND_COLOR);
@@ -2167,32 +2205,32 @@ public class JPlay extends JFrame implements
     // @TODO: No se como arreglar estos métodos (setCoverArt) pero me suena a que se puede hacer mejor
     private void setCoverArt(Icon cover) {
         BufferedImage bufferedImageimage = new BufferedImage(
-            cover.getIconWidth(), 
-            cover.getIconHeight(), 
-            BufferedImage.TYPE_INT_RGB
+                cover.getIconWidth(),
+                cover.getIconHeight(),
+                BufferedImage.TYPE_INT_RGB
         );
-        
+
         cover.paintIcon(null, bufferedImageimage.getGraphics(), 0, 0);
 
         coverArtLabel.setIcon(
-            new ImageIcon(
-                bufferedImageimage.getScaledInstance(
-                (int) Rule.COVER_ART_DIMENTION.getWidth(),
-                (int) Rule.COVER_ART_DIMENTION.getHeight(),
-                Image.SCALE_SMOOTH)
-            )
+                new ImageIcon(
+                        bufferedImageimage.getScaledInstance(
+                                (int) Rule.COVER_ART_DIMENTION.getWidth(),
+                                (int) Rule.COVER_ART_DIMENTION.getHeight(),
+                                Image.SCALE_SMOOTH)
+                )
         );
     }
 
     private void setCovertArtLabel(Image coverArt) {
         coverArtLabel.setIcon(
-            new ImageIcon(
-                coverArt.getScaledInstance(
-                    (int) Rule.COVER_ART_DIMENTION.getWidth(),
-                    (int) Rule.COVER_ART_DIMENTION.getHeight(),
-                    Image.SCALE_SMOOTH
+                new ImageIcon(
+                        coverArt.getScaledInstance(
+                                (int) Rule.COVER_ART_DIMENTION.getWidth(),
+                                (int) Rule.COVER_ART_DIMENTION.getHeight(),
+                                Image.SCALE_SMOOTH
+                        )
                 )
-            )
         );
     }
 
@@ -2220,10 +2258,10 @@ public class JPlay extends JFrame implements
 
         /*Ordena descendente los artistas*/
         Collections.sort(artistCoverArts, (
-            ArtistCoverArt artistCoverArt, 
-            ArtistCoverArt anotherArtistCoverArt
-        ) -> 
-            artistCoverArt.getArtistName().compareTo(anotherArtistCoverArt.getArtistName())
+                        ArtistCoverArt artistCoverArt,
+                        ArtistCoverArt anotherArtistCoverArt
+                ) ->
+                        artistCoverArt.getArtistName().compareTo(anotherArtistCoverArt.getArtistName())
         );
 
         try {
@@ -2238,7 +2276,7 @@ public class JPlay extends JFrame implements
 
     public boolean isArtistExist(String artistName) {
         boolean anyMatch = artistCoverArts.stream().anyMatch(
-            (artistCoverArt) -> (artistCoverArt.getArtistName().equals(artistName))
+                (artistCoverArt) -> (artistCoverArt.getArtistName().equals(artistName))
         );
 
         System.out.println("ARTISTA [" + artistName + "] --> " + anyMatch);

@@ -30,6 +30,6 @@ public class CoverArt {
     public String toString() {
         return "CoverArt{" + "url=" + imageUrl + ", size=" + size + '}';
     }
-    
-    
+
+
 }

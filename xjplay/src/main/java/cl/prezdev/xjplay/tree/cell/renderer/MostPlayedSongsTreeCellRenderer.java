@@ -25,8 +25,8 @@ public class MostPlayedSongsTreeCellRenderer extends JLabel implements TreeCellR
 
             int playCount = song.getPlayCount();
 
-            this.setText(" [ "+playCount+" ] "+song.getAuthor()+" - "+song.toString() + " ("+ Util.getDurationAsString(song.getMicroseconds()) +") ");
-            this.setToolTipText(playCount+(playCount == 1?" vez reproducida":" veces reproducidas"));
+            this.setText(" [ " + playCount + " ] " + song.getAuthor() + " - " + song.toString() + " (" + Util.getDurationAsString(song.getMicroseconds()) + ") ");
+            this.setToolTipText(playCount + (playCount == 1 ? " vez reproducida" : " veces reproducidas"));
             this.setIcon(null); // @TODO: probar sacando esta linea
         }
 
@@ -46,7 +46,7 @@ public class MostPlayedSongsTreeCellRenderer extends JLabel implements TreeCellR
      * Método para construir un icono a través de la ruta de un paquete
      *
      * @param rutaPaquete ruta del paquete. Ejemplo:
-     * "/xml/images/16atributo.png"
+     *                    "/xml/images/16atributo.png"
      * @return Un objeto del tipo ImageIcon
      */
     // @TODO: Desacoplar este método

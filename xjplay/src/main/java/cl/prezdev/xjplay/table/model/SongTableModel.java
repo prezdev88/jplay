@@ -51,7 +51,7 @@ public class SongTableModel implements TableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Song song = songs.get(rowIndex);
-        
+
         switch (columnIndex) {
             case 0:
                 return song;
@@ -64,12 +64,15 @@ public class SongTableModel implements TableModel {
     }
 
     @Override
-    public void setValueAt(Object value, int rowIndex, int columnIndex) {}
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {
+    }
 
     @Override
-    public void addTableModelListener(TableModelListener tableModelListener) {}
+    public void addTableModelListener(TableModelListener tableModelListener) {
+    }
 
     @Override
-    public void removeTableModelListener(TableModelListener tableModelListener) {}
+    public void removeTableModelListener(TableModelListener tableModelListener) {
+    }
 
 }

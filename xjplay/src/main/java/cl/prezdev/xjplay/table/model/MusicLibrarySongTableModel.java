@@ -2,6 +2,7 @@ package cl.prezdev.xjplay.table.model;
 
 import cl.prezdev.jplay.Song;
 import cl.prezdev.jplay.common.Util;
+
 import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -56,14 +57,14 @@ public class MusicLibrarySongTableModel implements TableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        if(rowIndex >= 0){
+        if (rowIndex >= 0) {
             Song song = songs.get(rowIndex);
 
             switch (columnIndex) {
                 case 0:
-                    if(song.getTrackNumber() != null && song.getTrackNumber() != -1){
+                    if (song.getTrackNumber() != null && song.getTrackNumber() != -1) {
                         return song.getTrackNumber();
-                    }else{
+                    } else {
                         return "";
                     }
                 case 1:
@@ -75,20 +76,23 @@ public class MusicLibrarySongTableModel implements TableModel {
                 case 4:
                     return Util.getDurationAsString(song.getMicroseconds());
             }
-        }else{
-            System.out.println("ROW INDEX = "+rowIndex);
+        } else {
+            System.out.println("ROW INDEX = " + rowIndex);
         }
 
         return null;
     }
 
     @Override
-    public void setValueAt(Object value, int rowIndex, int columnIndex) {}
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {
+    }
 
     @Override
-    public void addTableModelListener(TableModelListener tableModelListener) {}
+    public void addTableModelListener(TableModelListener tableModelListener) {
+    }
 
     @Override
-    public void removeTableModelListener(TableModelListener tableModelListenerl) {}
+    public void removeTableModelListener(TableModelListener tableModelListenerl) {
+    }
 
 }

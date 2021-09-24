@@ -6,7 +6,6 @@ import javax.swing.BorderFactory;
 import javax.swing.UIManager;
 
 /**
- *
  * @author prez
  */
 public class TestBorder extends javax.swing.JFrame {
@@ -37,12 +36,12 @@ public class TestBorder extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 371, Short.MAX_VALUE)
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 371, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 249, Short.MAX_VALUE)
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 249, Short.MAX_VALUE)
         );
 
         jTabbedPane2.addTab("tab1", jPanel1);
@@ -50,12 +49,12 @@ public class TestBorder extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 371, Short.MAX_VALUE)
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 371, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 249, Short.MAX_VALUE)
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 249, Short.MAX_VALUE)
         );
 
         jTabbedPane2.addTab("tab2", jPanel2);
@@ -63,18 +62,18 @@ public class TestBorder extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTabbedPane2)
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jTabbedPane2)
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTabbedPane2)
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jTabbedPane2)
+                                .addContainerGap())
         );
 
         pack();
@@ -90,13 +89,13 @@ public class TestBorder extends javax.swing.JFrame {
         UIManager.put("TabbedPane.borderHightlightColor", Color.yellow);
         UIManager.put("TabbedPane.foreground", Color.black);
         UIManager.put("TabbedPane.opaque", true);
-        UIManager.put("TabbedPane.selected",Color.blue);
+        UIManager.put("TabbedPane.selected", Color.blue);
         UIManager.put("TabbedPane.border", BorderFactory.createLineBorder(Color.orange, 1));
         UIManager.put("TabbedPane:TabbedPaneContent.contentMargins", new Insets(0, 5, 5, 5));
         UIManager.put("TabbedPane:TabbedPaneTab.contentMargins",
-          new Insets(223, 120, 62, 102));
-        
-        
+                new Insets(223, 120, 62, 102));
+
+
         java.awt.EventQueue.invokeLater(() -> {
             new TestBorder().setVisible(true);
         });

@@ -1,6 +1,7 @@
 package cl.prezdev.xjplay.list.cellrenderer;
 
 import cl.prezdev.xjplay.artist.list.ArtistCoverArt;
+
 import java.awt.Component;
 import java.awt.Image;
 import java.util.List;
@@ -19,22 +20,22 @@ public class ArtistListCellRenderer extends DefaultListCellRenderer {
 
     @Override
     public Component getListCellRendererComponent(
-        JList list, 
-        Object value, 
-        int index,
-        boolean isSelected, 
-        boolean cellHasFocus
+            JList list,
+            Object value,
+            int index,
+            boolean isSelected,
+            boolean cellHasFocus
     ) {
         ArtistCoverArt artistCoverArt = artistCoversArt.get(index);
         Image image = artistCoverArt.getCoverArt().getImage();
 
         JLabel artistListLabel = (JLabel) super.getListCellRendererComponent(
-            list, value, index, isSelected, cellHasFocus
+                list, value, index, isSelected, cellHasFocus
         );
 
         artistListLabel.setIcon(new ImageIcon(image));
         artistListLabel.setText(artistCoverArt.getArtistName().toUpperCase());
-        
+
         artistListLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         artistListLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         artistListLabel.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);

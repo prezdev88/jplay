@@ -5,26 +5,27 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 public class Validate {
-    public static boolean isSong(File file) throws IOException{
+    public static boolean isSong(File file) throws IOException {
         String mimeType = Files.probeContentType(file.toPath());
-                    
-        if(mimeType != null){
-            if(mimeType.equalsIgnoreCase("audio/mpeg")){
+
+        if (mimeType != null) {
+            if (mimeType.equalsIgnoreCase("audio/mpeg")) {
                 return true;
             }
         }
-        
+
         return false;
     }
 
     /**
      * Esta funcion la hice para que no aparecieran las carpetas ocultas en linux
+     *
      * @param file
-     * @return 
+     * @return
      */
     public static boolean isHiddenFile(File file) {
         String nombre = file.getName();
-        
+
         return nombre.charAt(0) == '.';
     }
 }

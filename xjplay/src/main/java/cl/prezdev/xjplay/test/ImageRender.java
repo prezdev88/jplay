@@ -14,7 +14,7 @@ public class ImageRender extends DefaultListCellRenderer {
 
         JLabel label = (JLabel) super.getListCellRendererComponent(
                 list, value, index, isSelected, cellHasFocus);
-        label.setIcon(new javax.swing.ImageIcon(getClass().getResource("/test/image.jpg"))); 
+        label.setIcon(new javax.swing.ImageIcon(getClass().getResource("/test/image.jpg")));
         label.setText("Prueba");
         label.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         label.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);

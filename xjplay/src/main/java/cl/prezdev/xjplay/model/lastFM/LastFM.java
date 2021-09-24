@@ -3,6 +3,7 @@ package cl.prezdev.xjplay.model.lastFM;
 
 import cl.prezdev.xjplay.resources.Resource;
 import cl.prezdev.xjplay.rules.Rule;
+
 import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -19,13 +21,13 @@ import org.json.JSONObject;
 public class LastFM {
 
     public static Image getCoverArt(String artist, String album) throws Exception {
-        final String API_URL = 
-            "http://ws.audioscrobbler.com/2.0/?" + 
-            "method=album.getinfo&" + 
-            "api_key=" + Rule.API_KEY + "&" + 
-            "artist=" + artist + "&" + 
-            "album=" + album + "&" + 
-            "format=json";
+        final String API_URL =
+                "http://ws.audioscrobbler.com/2.0/?" +
+                        "method=album.getinfo&" +
+                        "api_key=" + Rule.API_KEY + "&" +
+                        "artist=" + artist + "&" +
+                        "album=" + album + "&" +
+                        "format=json";
 
         System.out.println(API_URL);
 
@@ -48,13 +50,14 @@ public class LastFM {
 
         try {
             return getCoverArt(coversArt.get(coversArt.size() - 1));
-        }catch(Exception ex){
+        } catch (Exception ex) {
             // Cuando la lista de covers esta vacía
             return null;
         }
     }
 
     // @TODO: Consumir API con una librería apta para ello
+
     /**
      * Transforma una URL en un String JSON
      *
@@ -92,7 +95,7 @@ public class LastFM {
      * @throws Exception
      */
     private static List<CoverArt> getCoversArt(String apiUrl, String parameter) throws Exception {
-        try{
+        try {
             String jsonText = LastFM.readUrl(apiUrl);
 
             JSONObject jsonObject = new JSONObject(jsonText);
@@ -112,7 +115,7 @@ public class LastFM {
             return covers;
 
             //https://stackoverflow.com/questions/19966672/java-json-with-gson
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return new ArrayList<>();
         }
     }

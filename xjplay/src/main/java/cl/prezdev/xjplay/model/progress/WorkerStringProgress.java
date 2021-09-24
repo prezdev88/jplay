@@ -22,22 +22,23 @@ public class WorkerStringProgress extends SwingWorker<Void, String> {
 
         initialMinute = 0;
         initialSecond = 0;
-        
+
         paused = false;
     }
-    
-    public void pause(){
+
+    public void pause() {
         paused = true;
     }
-    
-    public void resume(){
+
+    public void resume() {
         paused = false;
     }
 
     /**
      * este método se llama cuando libero el click sobre el progress bar
      * de la duracion de la canción
-     * @param percentage 
+     *
+     * @param percentage
      */
     public void changeProgressBarValue(int percentage) {
         if (percentage < 0) { // si el porcentaje es negativo, dejo los minutos y segundos en 0
@@ -58,10 +59,10 @@ public class WorkerStringProgress extends SwingWorker<Void, String> {
     protected Void doInBackground() throws Exception {
         for (initialMinute = 0; initialMinute < 60; initialMinute++) {
             for (initialSecond = 0; initialSecond < 60; initialSecond++) {
-                while(paused){
+                while (paused) {
                     Thread.sleep(500);
                 }
-                
+
                 publish(initialMinute + ":" + (initialSecond < 10 ? "0" + initialSecond : initialSecond));
                 Thread.sleep(1000);
             }
@@ -71,7 +72,7 @@ public class WorkerStringProgress extends SwingWorker<Void, String> {
 
     @Override
     protected void process(List<String> chunks) {
-        durationLabel.setText(chunks.get(0) + " - "+songDuration);
+        durationLabel.setText(chunks.get(0) + " - " + songDuration);
     }
 
     private int getTotalSeconds() {

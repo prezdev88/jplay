@@ -12,14 +12,15 @@ public class Resource {
 
     /**
      * Obtiene una lista de imagenes de una ruta en específico
+     *
      * @param rootFile
-     * @return 
+     * @return
      */
     public static List<ImageIcon> getCoversArt(File rootFile) {
         List<ImageIcon> coversArt = new ArrayList<>();
         ImageIcon coverArt;
         Image image;
-        
+
         for (File file : rootFile.getParentFile().listFiles()) {
             if (file.getName().contains(".jpg")
                     || file.getName().contains(".png")) {
@@ -35,7 +36,7 @@ public class Resource {
                 );
                  */
                 coverArt = new ImageIcon(image);
-                
+
                 coversArt.add(coverArt);
             }
         }

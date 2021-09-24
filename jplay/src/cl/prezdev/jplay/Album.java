@@ -30,6 +30,10 @@ public class Album implements Serializable {
         this(song.getAuthor(), song.getAlbum(), song.getYear());
     }
 
+    public Album(){
+        this(null, null, null);
+    }
+
     public String getYear() {
         if (year != null) {
             return year.trim();

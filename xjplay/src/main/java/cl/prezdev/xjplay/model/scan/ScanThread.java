@@ -35,12 +35,12 @@ public class ScanThread extends Thread {
             Logger.getLogger(ScanThread.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * Método que escanea las rutas de la biblioteca. Lo deje en un método
      * para llamarlo desde la app principal pero sin un hilo.
-     * 
-     * @throws IOException 
+     *
+     * @throws IOException
      */
     public void scanMusicLibraryPaths() throws IOException {
         try {
@@ -50,14 +50,14 @@ public class ScanThread extends Thread {
                 scan(file);
             }
 
-            if(!hasChanged){
+            if (!hasChanged) {
                 hasChanged = (cant != 0); // si se removió alguna cancion, hubo cambios
             }
 
             musicLibraryUiUpdate.updateMusicLibraryUI(hasChanged);
             hasChanged = false;
         } catch (ConcurrentModificationException ex) {
-            System.out.println("concurrent exception: "+ex.getMessage());
+            System.out.println("concurrent exception: " + ex.getMessage());
         }
     }
 
@@ -65,7 +65,7 @@ public class ScanThread extends Thread {
     // Definir que hace realmente (hace muchas cosas)
     // Cambiar el nombre
     private void scan(File rootFile) throws IOException {
-        if(rootFile.exists()){
+        if (rootFile.exists()) {
             if (rootFile.listFiles() != null) {
                 for (File file : rootFile.listFiles()) {
                     if (file.isDirectory()) {
@@ -81,8 +81,8 @@ public class ScanThread extends Thread {
                 musicLibrary.addSong(song);
                 hasChanged = true;
             }
-        }else{
-            if(musicLibrary.removePath(rootFile)){
+        } else {
+            if (musicLibrary.removePath(rootFile)) {
                 hasChanged = true;
             }
         }

@@ -14,6 +14,7 @@ import javax.swing.InputMap;
 import javax.swing.JFrame;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
+
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 public class SearchDialog extends javax.swing.JDialog {
@@ -22,25 +23,25 @@ public class SearchDialog extends javax.swing.JDialog {
     private InputMap inputMap;
     private final Component editorComponent;
     private final ActionMap actionMap;
-    
+
     public SearchDialog(Frame frame, boolean modal) {
         super(frame, modal);
         this.setUndecorated(true);
-        
+
         initComponents();
-        
+
         inputMap = getRootPane().getInputMap(JRootPane.WHEN_IN_FOCUSED_WINDOW);
         actionMap = getRootPane().getActionMap();
         editorComponent = searchCombobox.getEditor().getEditorComponent();
-        
+
         init();
     }
-    
+
     private void searchComboBoxKeyReleased() {
         try {
             Object editorItem = searchCombobox.getEditor().getItem();
             String searchText = editorItem.toString().toLowerCase().trim();
-            
+
             searchListener.search(searchText);
         } catch (Exception ex) {
             // @TODO: Añadir log aquí
@@ -51,7 +52,7 @@ public class SearchDialog extends javax.swing.JDialog {
         this.searchListener = searchable;
         searchable.loadSearchComboBox(searchCombobox);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -62,7 +63,7 @@ public class SearchDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         searchCombobox.setEditable(true);
-        searchCombobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "asd", "canni", "creed" }));
+        searchCombobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"", "asd", "canni", "creed"}));
         searchCombobox.setOpaque(false);
         searchCombobox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -80,17 +81,17 @@ public class SearchDialog extends javax.swing.JDialog {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(searchCombobox, 0, 338, Short.MAX_VALUE)
-                .addGap(7, 7, 7)
-                .addComponent(cancelSearchButton))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(searchCombobox, 0, 338, Short.MAX_VALUE)
+                                .addGap(7, 7, 7)
+                                .addComponent(cancelSearchButton))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(searchCombobox)
-                .addComponent(cancelSearchButton))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(searchCombobox)
+                                .addComponent(cancelSearchButton))
         );
 
         pack();
@@ -104,7 +105,7 @@ public class SearchDialog extends javax.swing.JDialog {
         try {
             Object editorItem = searchCombobox.getEditor().getItem();
             String searchText = editorItem.toString().toLowerCase().trim();
-            
+
             searchListener.search(searchText);
         } catch (Exception e) {
             // @TODO: añadir log
@@ -115,14 +116,14 @@ public class SearchDialog extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 SearchDialog searchDialog = new SearchDialog(new JFrame(), true);
-                
+
                 searchDialog.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosing(WindowEvent e) {
                         System.exit(0);
                     }
                 });
-                
+
                 searchDialog.setVisible(true);
             }
         });
@@ -147,13 +148,15 @@ public class SearchDialog extends javax.swing.JDialog {
                 SearchDialog.this.setVisible(false);
             }
         });
-        
+
         editorComponent.addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent keyEvent) {}
+            public void keyTyped(KeyEvent keyEvent) {
+            }
 
             @Override
-            public void keyPressed(KeyEvent keyEvent) {}
+            public void keyPressed(KeyEvent keyEvent) {
+            }
 
             @Override
             public void keyReleased(KeyEvent keyEvent) {
@@ -169,7 +172,7 @@ public class SearchDialog extends javax.swing.JDialog {
                 }
             }
         });
-        
+
         AutoCompleteDecorator.decorate(searchCombobox);
     }
 }
