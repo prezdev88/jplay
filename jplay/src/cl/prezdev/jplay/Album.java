@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 
 public class Album implements Serializable {
 
-    private final static Logger LOGGER = Logger.getLogger("cl.prezdev.jplay.Album");
+    private static final Logger LOGGER = Logger.getLogger("cl.prezdev.jplay.Album");
 
     private String artistName;
     private String name;
@@ -44,7 +44,7 @@ public class Album implements Serializable {
     }
 
     public void removeCoverArt(ImageIcon cover) {
-        LOGGER.log(Level.INFO, "COVER REMOVIDO: "+coversArt.remove(cover));
+        LOGGER.log(Level.INFO, "COVER REMOVED: {0}", coversArt.remove(cover));
     }
 
     public void setCoversArt(List<ImageIcon> coversArt) {
@@ -59,12 +59,12 @@ public class Album implements Serializable {
     private void setMaxSizeCovertArt() {
         boolean first = true;
 
-        for(ImageIcon coverArt : coversArt){
-            if(first){
+        for (ImageIcon coverArtImageIcon : coversArt) {
+            if (first) {
                 first = false;
-                this.setCoverArt(coverArt);
-            }else if(coverArt.getIconWidth() > this.getCoverArt().getIconWidth()){
-                this.setCoverArt(coverArt);
+                this.setCoverArt(coverArtImageIcon);
+            } else if (coverArtImageIcon.getIconWidth() > this.getCoverArt().getIconWidth()) {
+                this.setCoverArt(coverArtImageIcon);
             }
         }
     }

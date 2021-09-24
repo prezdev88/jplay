@@ -1,42 +1,44 @@
 package cl.prezdev.jplay.common;
 
 public class Util {
-    /**
-     * Este método le pasamos milisegundos y lo entrega como dias, horas,
-     * minutos, segundos como String
-     * @param milliseconds
-     * @return
-     */
+
+    private Util() {
+        throw new UnsupportedOperationException();
+    }
+
     public static String getFormattedDuration(long milliseconds) {
         long remainder = milliseconds;
 
-        long days, hours, minutes, seconds;
+        long days;
+        long hours;
+        long minutes;
+        long seconds;
 
         days = milliseconds / 86400000;
 
-        if(days != 0){
+        if (days != 0) {
             remainder = milliseconds % 86400000;
         }
 
         hours = remainder / 3600000;
 
-        if(hours != 0){
+        if (hours != 0) {
             remainder = remainder % 3600000;
         }
 
         minutes = remainder / 60000;
 
-        if(minutes != 0){
+        if (minutes != 0) {
             remainder = remainder % 60000;
         }
 
         seconds = remainder / 1000;
 
-        if(seconds != 0){
+        if (seconds != 0) {
             milliseconds = remainder % 1000;
         }
 
-        return "["+days +"d. "+hours+"h. "+minutes+"m. "+seconds+"s. "+milliseconds+" ms.] ";
+        return "[" + days + "d. " + hours + "h. " + minutes + "m. " + seconds + "s. " + milliseconds + " ms.] ";
     }
 
     public static String getFormattedYear(String year) {
@@ -49,7 +51,7 @@ public class Util {
             } catch (NumberFormatException e) {
                 return NO_YEAR;
             }
-        }else{
+        } else {
             return NO_YEAR;
         }
     }
