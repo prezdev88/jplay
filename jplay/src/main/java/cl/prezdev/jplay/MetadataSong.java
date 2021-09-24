@@ -10,14 +10,19 @@ import java.util.Map;
 
 public class MetadataSong {
 
+    private MetadataSong() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+
     private static Song song;
 
-    public static void loadMetadata(Song song){
+    public static void loadMetadata(Song song) {
         MetadataSong.song = song;
 
         try {
             song.setName(getMetaData("title", String.class));
         } catch (PropertyNotFoundException e) {
+            song.setName("");
         }
 
         try {
@@ -51,7 +56,7 @@ public class MetadataSong {
         }
     }
 
-    private static <T> T getMetaData(String key, Class<T> _class) throws PropertyNotFoundException{
+    private static <T> T getMetaData(String key, Class<T> clazz) throws PropertyNotFoundException {
         try {
             //http://www.javazoom.net/mp3spi/documents.html
             //http://www.javazoom.net/jlgui/developerguide.html
@@ -62,15 +67,17 @@ public class MetadataSong {
 
                 Object property = properties.get(key);
 
-                if(property != null){
+                if (property != null) {
                     String value = property.toString().trim();
-                    switch(_class.getSimpleName()){
+                    switch (clazz.getSimpleName()) {
                         case "Integer":
                             return (T) Integer.valueOf(value);
                         case "Long":
                             return (T) Long.valueOf(value);
                         case "String":
                             return (T) value;
+                        default:
+                            throw new UnsupportedOperationException();
                     }
                 }
             }

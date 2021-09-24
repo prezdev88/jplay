@@ -11,74 +11,74 @@ import java.util.logging.Logger;
 
 import cl.prezdev.jplay.common.Util;
 
-public class MusicLibrary implements Serializable{
+public class MusicLibrary implements Serializable {
 
-    private final static Logger LOGGER = Logger.getLogger("cl.prezdev.jplay.MusicLibrary");
+    private static final Logger LOGGER = Logger.getLogger("cl.prezdev.jplay.MusicLibrary");
 
     private List<Song> songs;
     private List<Song> favoritesSongs;
     private List<Album> albums;
     private List<File> paths; // rutas para analizar
-    
+
     private long msMusicLibrary;
     private long msMostPlayed;
     private long msFavorites;
-    
+
     private static MusicLibrary musicLibrary;
 
     private MusicLibrary() {
-        albums          = new ArrayList<>();
-        songs           = new ArrayList<>();
-        favoritesSongs  = new ArrayList<>();
-        paths           = new ArrayList<>();
-        
-        msMusicLibrary  = 0;
-        msMostPlayed    = 0;
-        msFavorites     = 0;
+        albums = new ArrayList<>();
+        songs = new ArrayList<>();
+        favoritesSongs = new ArrayList<>();
+        paths = new ArrayList<>();
+
+        msMusicLibrary = 0;
+        msMostPlayed = 0;
+        msFavorites = 0;
     }
-    
-    public static MusicLibrary getInstance(){
-        if(musicLibrary == null){
+
+    public static MusicLibrary getInstance() {
+        if (musicLibrary == null) {
             musicLibrary = new MusicLibrary();
         }
-        
+
         return musicLibrary;
     }
-    
-    public String getLibraryDuration(){
+
+    public String getLibraryDuration() {
         return "Biblioteca --> " + Util.getFormattedDuration(msMusicLibrary);
     }
-    
-    public String getFavoritesDuration(){
+
+    public String getFavoritesDuration() {
         return "Favoritos --> " + Util.getFormattedDuration(msFavorites);
     }
-    
-    public String getMostPlayedDuration(){
+
+    public String getMostPlayedDuration() {
         return "Más escuchadas --> " + Util.getFormattedDuration(msMostPlayed);
     }
-    
-    public void addFavoriteSong(Song song){
+
+    public void addFavoriteSong(Song song) {
         favoritesSongs.add(song);
-        LOGGER.log(Level.INFO, "Añadida a favoritos: "+song);
+        LOGGER.log(Level.INFO, "Add to favorites: {0}", song);
         msFavorites += song.getMilliSeconds();
     }
-    
-    public void removeFavoriteSong(Song song){
+
+    public void removeFavoriteSong(Song song) {
         favoritesSongs.remove(song);
-        LOGGER.log(Level.INFO, "Removido de favoritos: "+song);
+        LOGGER.log(Level.INFO, "Removed from favorites: {0}", song);
         msFavorites -= song.getMilliSeconds();
     }
-    
-    public boolean isFavoriteSong(Song song){
+
+    public boolean isFavoriteSong(Song song) {
         return favoritesSongs.contains(song);
     }
 
     public List<Song> getFavoritesSongs() {
         return favoritesSongs;
     }
-    
-    public void addPath(File file){
-        if(!paths.contains(file)){
+
+    public void addPath(File file) {
+        if (!paths.contains(file)) {
             paths.add(file);
         }
     }
@@ -86,11 +86,11 @@ public class MusicLibrary implements Serializable{
     public List<File> getPaths() {
         return paths;
     }
-    
-    public boolean removePath(File file){
+
+    public boolean removePath(File file) {
         return paths.remove(file);
     }
-    
+
     public void addSong(Song song) {
         if (!isSongInLibrary(song)) {
             this.songs.add(song);
@@ -108,14 +108,15 @@ public class MusicLibrary implements Serializable{
 
     /**
      * Método que elimina las canciones que no existen
-     * @return 
+     *
+     * @return
      */
     public int cleanLibrary() {
         int count = 0;
-        
+
         Iterator<Song> songsIterator = songs.iterator();
         Song song;
-        
+
         while (songsIterator.hasNext()) {
             song = songsIterator.next();
 
@@ -144,11 +145,11 @@ public class MusicLibrary implements Serializable{
         }
 
         orderSongs(topSongs);
-        
+
         return topSongs;
     }
 
-    private void orderSongs(List<Song> topSongs){
+    private void orderSongs(List<Song> topSongs) {
         Collections.sort(topSongs, (song1, song2) -> {
             if (song1.getPlayCount() > song2.getPlayCount()) {
                 return -1;
@@ -162,7 +163,7 @@ public class MusicLibrary implements Serializable{
 
     public void addSongsToAlbums() {
         for (Song song : songs) {
-            if(song != null){
+            if (song != null) {
                 addToAlbum(song);
             }
         }
@@ -170,9 +171,9 @@ public class MusicLibrary implements Serializable{
 
     private void addToAlbum(Song song) {
         boolean found = false;
-        
+
         for (Album album : albums) {
-            try{
+            try {
                 // si el album es igual que el album de la cancion
                 if (album.getName().trim().equalsIgnoreCase(song.getAlbum().trim())) {
                     // y si la cancion no existe en el album
@@ -185,15 +186,15 @@ public class MusicLibrary implements Serializable{
 
                     break;
                 }
-            }catch(NullPointerException ex){
-                System.out.println(song);
-                System.out.println(album);
+            } catch (NullPointerException ex) {
+                LOGGER.log(Level.INFO, song.toString());
+                LOGGER.log(Level.INFO, album.toString());
             }
         }
 
         if (!found) {
             Album album = new Album(song);
-            
+
             album.addSong(song);
 
             albums.add(album);
@@ -202,46 +203,44 @@ public class MusicLibrary implements Serializable{
 
     public void printAlbumsToLog() {
         for (Album album : albums) {
-            LOGGER.log(Level.INFO, album.toString());
-            LOGGER.log(Level.INFO, "Canciones: " + album.getSongs().size());
+            LOGGER.log(Level.INFO, "Album: {0}", album);
+            LOGGER.log(Level.INFO, "Songs: {0}", album.getSongs().size());
         }
     }
 
     public Album getAlbum(Song song) {
         for (Album album : albums) {
             if (album.songExist(song)) {
-                LOGGER.log(Level.INFO, "Album encontrado! : " + album);
+                LOGGER.log(Level.INFO, "Album found! {0}: ", album);
                 return album;
             }
         }
-        
+
         return null;
     }
-    
+
     public List<Album> getAlbumsByArtist(String artistName) {
         List<Album> albumsByArtist = new ArrayList<>();
-        
+
         for (Album album : albums) {
             if (album.getArtistName().equalsIgnoreCase(artistName)) {
-                LOGGER.log(Level.INFO, "Album encontrado! : " + album);
+                LOGGER.log(Level.INFO, "Album found! : {0}", album);
                 albumsByArtist.add(album);
             }
         }
-        
+
         return albumsByArtist;
     }
 
     public List<String> getArtistNames() {
         List<String> artistNames = new ArrayList<>();
         String artistName;
-        
+
         for (Album album : albums) {
             artistName = album.getArtistName().trim().toLowerCase();
 
-            if (!artistName.equals("")) {
-                if (!artistNames.contains(artistName)) {
-                    artistNames.add(artistName);
-                }
+            if (!artistName.equals("") && !artistNames.contains(artistName)) {
+                artistNames.add(artistName);
             }
         }
 

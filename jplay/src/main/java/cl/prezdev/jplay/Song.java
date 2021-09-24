@@ -8,7 +8,8 @@ import lombok.Data;
 
 @Data
 public class Song extends File {
-    private final static Logger LOGGER = Logger.getLogger("cl.prezdev.jplay.Song");
+
+    private static final Logger LOGGER = Logger.getLogger("cl.prezdev.jplay.Song");
 
     private String name;
     private String author;
@@ -20,7 +21,7 @@ public class Song extends File {
 
     public Song(String pathname) {
         super(pathname);
-        
+
         name = super.getName();
         MetadataSong.loadMetadata(this);
         playCount = 0;
@@ -31,11 +32,11 @@ public class Song extends File {
      */
     public void increasePlayCount() {
         playCount++;
-        LOGGER.log(Level.INFO, "Se ha aumentado el contador: " + playCount);
+        LOGGER.log(Level.INFO, "increase play count: {0}", playCount);
     }
 
     public Integer getMilliSeconds() {
-        if(microseconds == null){
+        if (microseconds == null) {
             return 0;
         }
 

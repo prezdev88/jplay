@@ -10,34 +10,34 @@ public class MusicPlayer {
     private final BasicPlayer basicPlayer;
     private final BasicController basicController;
     private Song currentSong;
-    
+
     private static MusicPlayer musicPlayer;
-    
-    public static MusicPlayer getInstance(){
+
+    public static MusicPlayer getInstance() {
         if (musicPlayer == null) {
             musicPlayer = new MusicPlayer();
         }
-        
+
         return musicPlayer;
     }
-    
+
     private MusicPlayer() {
         basicPlayer = new BasicPlayer();
-        basicController = (BasicController) basicPlayer;
+        basicController = basicPlayer;
     }
-    
-    public void addBasicPlayerListener(BasicPlayerListener basicPlayerListener){
+
+    public void addBasicPlayerListener(BasicPlayerListener basicPlayerListener) {
         basicPlayer.addBasicPlayerListener(basicPlayerListener);
     }
 
-    public void play(Song song) throws BasicPlayerException{
-        if(hasCurrentSong()){
+    public void play(Song song) throws BasicPlayerException {
+        if (hasCurrentSong()) {
             stop();
         }
-        
+
         this.currentSong = song;
         this.basicController.open(currentSong);
-        
+
         basicController.play();
     }
 
@@ -65,8 +65,8 @@ public class MusicPlayer {
     public Song getCurrentSong() {
         return currentSong;
     }
-    
-    public boolean hasCurrentSong(){
+
+    public boolean hasCurrentSong() {
         return this.currentSong != null;
     }
 }
