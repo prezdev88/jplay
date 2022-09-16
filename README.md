@@ -19,5 +19,5 @@ mvn install
 You must compile first
 
 ```bash
-java -jar xjplay/target/xjplay-1.0-SNAPSHOT-jar-with-dependencies.jar
+java -jar -Dawt.useSystemAAFontSettings=on -Dsun.java2d.opengl=true xjplay/target/xjplay-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
