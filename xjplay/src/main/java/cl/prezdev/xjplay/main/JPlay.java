@@ -1,7 +1,5 @@
 package cl.prezdev.xjplay.main;
 
-//iconos https://www.iconfinder.com/iconsets/snipicons
-
 import cl.prezdev.jplay.Album;
 import cl.prezdev.jplay.MusicLibrary;
 import cl.prezdev.jplay.Song;
@@ -28,10 +26,7 @@ import cl.prezdev.xjplay.save.IO;
 import cl.prezdev.xjplay.save.Save;
 import cl.prezdev.xjplay.table.model.MusicLibrarySongTableModel;
 import cl.prezdev.xjplay.table.model.SongTableModel;
-import cl.prezdev.xjplay.tree.cell.renderer.ExplorerTreeCellRenderer;
-import cl.prezdev.xjplay.tree.cell.renderer.FavoritesTreeCellRenderer;
 import cl.prezdev.xjplay.tree.cell.renderer.SongListTreeCellRenderer;
-import cl.prezdev.xjplay.tree.cell.renderer.MostPlayedSongsTreeCellRenderer;
 import cl.prezdev.xjplay.utils.Validate;
 import com.formdev.flatlaf.FlatDarkLaf;
 
@@ -88,9 +83,6 @@ import javax.swing.KeyStroke;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -222,23 +214,11 @@ public class JPlay extends JFrame implements
         initArtistCoversArt();
         initIcons();
 
-        //mainPanel.setBackground(Color.white);
-
         setBounds(0, 0, Rule.WIDTH, Rule.HEIGHT);
         setLocationRelativeTo(null);
         //@TODO: Intentar ordenar este constructor, pensar bien la forma de agrupar
-
- progressBarSong.setUI(new BasicProgressBarUI() {
-            @Override
-            protected Color getSelectionBackground() {
-                return Rule.BACKGROUND_COLOR;
-            }
-
-            @Override
-            protected Color getSelectionForeground() {
-                return Rule.FOREGROUND_COLOR;
-            }
-        });
+        
+        sliderSong.setValue(0);
     }
 
     private void initIcons() {
@@ -295,7 +275,6 @@ public class JPlay extends JFrame implements
         jPanel1 = new javax.swing.JPanel();
         jScrollPane8 = new javax.swing.JScrollPane();
         artistList = new javax.swing.JList();
-        progressBarSong = new javax.swing.JProgressBar();
         loadInfoLabel = new javax.swing.JLabel();
         cancelLoadingButton = new javax.swing.JButton();
         songNameLabel = new javax.swing.JLabel();
@@ -308,6 +287,7 @@ public class JPlay extends JFrame implements
         backSongLabel = new javax.swing.JLabel();
         playSongLabel = new javax.swing.JLabel();
         nextSongLabel = new javax.swing.JLabel();
+        sliderSong = new javax.swing.JSlider();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -327,7 +307,6 @@ public class JPlay extends JFrame implements
                 formWindowClosing(evt);
             }
         });
-        getContentPane().setLayout(new java.awt.BorderLayout());
 
         coverArtLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         coverArtLabel.setText("[cv]");
@@ -408,7 +387,7 @@ public class JPlay extends JFrame implements
         cleanLabel.setForeground(new java.awt.Color(254, 254, 254));
         cleanLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         cleanLabel.setText("Limpiar");
-        cleanLabel.setBorder(new javax.swing.border.SoftBevelBorder(0));
+        cleanLabel.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         cleanLabel.setOpaque(true);
         cleanLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -443,7 +422,7 @@ public class JPlay extends JFrame implements
         panelListaActualLayout.setVerticalGroup(
             panelListaActualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelListaActualLayout.createSequentialGroup()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(songsTableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -490,19 +469,6 @@ public class JPlay extends JFrame implements
         jPanel1.add(jScrollPane8, java.awt.BorderLayout.CENTER);
 
         mainTabbedPane.addTab("Artistas", jPanel1);
-
-        progressBarSong.setBackground(new java.awt.Color(254, 254, 254));
-        progressBarSong.setForeground(new java.awt.Color(255, 255, 255));
-        progressBarSong.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                progressBarSongMouseDragged(evt);
-            }
-        });
-        progressBarSong.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                progressBarSongMouseReleased(evt);
-            }
-        });
 
         loadInfoLabel.setBackground(new java.awt.Color(254, 254, 254));
         loadInfoLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
@@ -574,6 +540,20 @@ public class JPlay extends JFrame implements
             }
         });
 
+        sliderSong.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                sliderSongMouseDragged(evt);
+            }
+        });
+        sliderSong.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                sliderSongMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                sliderSongMouseReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -596,8 +576,8 @@ public class JPlay extends JFrame implements
                                 .addComponent(artistLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(songDurationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(progressBarSong, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(songNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(songNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(sliderSong, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(5, 5, 5))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
@@ -626,12 +606,12 @@ public class JPlay extends JFrame implements
                             .addComponent(artistLabel)
                             .addComponent(songDurationLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(progressBarSong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(playSongLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(nextSongLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(backSongLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(coverArtLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(sliderSong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(playSongLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(nextSongLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(coverArtLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(backSongLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(mainTabbedPane)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -765,17 +745,6 @@ public class JPlay extends JFrame implements
             }
         }
     }//GEN-LAST:event_treeSongMouseReleased
-
-    private void progressBarSongMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_progressBarSongMouseReleased
-        changeSongProgressBarValue((evt.getX() * 100) / progressBarSong.getWidth(), true);
-        setVolume(volumeSlider.getValue());
-        printProgressBarSong = true;
-    }//GEN-LAST:event_progressBarSongMouseReleased
-
-    private void progressBarSongMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_progressBarSongMouseDragged
-        changeSongProgressBarValue((evt.getX() * 100) / progressBarSong.getWidth(), false);
-        printProgressBarSong = false;
-    }//GEN-LAST:event_progressBarSongMouseDragged
 
     private void cleanLabelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cleanLabelMouseReleased
         // @TODO: Colocar color donde estan todos los colores
@@ -1029,6 +998,36 @@ public class JPlay extends JFrame implements
         }
     }//GEN-LAST:event_artistListMouseReleased
 
+    private void sliderSongMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sliderSongMouseReleased
+        
+    }//GEN-LAST:event_sliderSongMouseReleased
+
+    private void sliderSongMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sliderSongMousePressed
+        int value = sliderSong.getValue();
+        int maximum = sliderSong.getMaximum();
+        int percentage = ((value * 100) / maximum);
+
+        System.out.println("value: " + value);
+        System.out.println("maximum: " + maximum);
+        System.out.println("percentage: " + percentage);
+        
+        changeSongProgressBarValue(percentage, true);
+        setVolume(volumeSlider.getValue());
+    }//GEN-LAST:event_sliderSongMousePressed
+
+    private void sliderSongMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sliderSongMouseDragged
+        int value = sliderSong.getValue();
+        int maximum = sliderSong.getMaximum();
+        int percentage = ((value * 100) / maximum);
+
+        System.out.println("value: " + value);
+        System.out.println("maximum: " + maximum);
+        System.out.println("percentage: " + percentage);
+        
+        changeSongProgressBarValue(percentage, true);
+        setVolume(volumeSlider.getValue());
+    }//GEN-LAST:event_sliderSongMouseDragged
+
     private void loadSave() {
         if (new File(Path.SAVE).exists()) {
             try {
@@ -1202,9 +1201,9 @@ public class JPlay extends JFrame implements
     private javax.swing.JPanel panelListaActual;
     private javax.swing.JPanel panelMasEscuchadas;
     private javax.swing.JLabel playSongLabel;
-    private javax.swing.JProgressBar progressBarSong;
     private javax.swing.JCheckBox repeatSongCheckbox;
     private javax.swing.JCheckBox shuffleCheckbox;
+    private javax.swing.JSlider sliderSong;
     private javax.swing.JLabel songDurationLabel;
     private javax.swing.JLabel songNameLabel;
     private javax.swing.JTable songsTable;
@@ -1215,12 +1214,12 @@ public class JPlay extends JFrame implements
 
     private void setProgressBarSongMaxValue(int totalBytes) {
         this.totalBytes = totalBytes;
-        progressBarSong.setMaximum(totalBytes);
+        sliderSong.setMaximum(totalBytes);
     }
 
     private void setProgressBarSongValue(int readedBytes) {
         if (printProgressBarSong) {
-            progressBarSong.setValue(readedBytes);
+            sliderSong.setValue(readedBytes);
         }
     }
 
@@ -1286,9 +1285,6 @@ public class JPlay extends JFrame implements
             case BasicPlayerEvent.OPENED:
                 setProgressBarSongMaxValue((int) musicPlayer.getCurrentSong().length());
                 break;
-
-            default:
-                throw new UnsupportedOperationException();
         }
     }
 
@@ -1807,9 +1803,8 @@ public class JPlay extends JFrame implements
     }
 
     private void changeSongProgressBarValue(int percentage, boolean seek) {
-
         final float VALUE = totalBytes * ((float) percentage / (float) 100);
-        progressBarSong.setValue((int) VALUE);
+        sliderSong.setValue((int) VALUE);
 
         if (seek) {
             try {
@@ -2165,20 +2160,6 @@ public class JPlay extends JFrame implements
         shuffleCheckbox.setForeground(Rule.FOREGROUND_COLOR);
         loadInfoLabel.setForeground(Rule.FOREGROUND_COLOR);
         songDurationLabel.setForeground(Rule.FOREGROUND_COLOR);
-
-        progressBarSong.setUI(new BasicProgressBarUI() {
-            @Override
-            protected Color getSelectionBackground() {
-                return Rule.BACKGROUND_COLOR;
-            }
-
-            @Override
-            protected Color getSelectionForeground() {
-                return Rule.FOREGROUND_COLOR;
-            }
-        });
-
-        progressBarSong.setForeground(new Color(76, 175, 80));
 
         Color color = Rule.BACKGROUND_COLOR.darker().darker();
         mainTabbedPane.setBackground(color);

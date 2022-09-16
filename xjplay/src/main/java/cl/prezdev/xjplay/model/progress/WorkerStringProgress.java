@@ -36,7 +36,7 @@ public class WorkerStringProgress extends SwingWorker<Void, String> {
 
     /**
      * este método se llama cuando libero el click sobre el progress bar
-     * de la duracion de la canción
+     * de la duración de la canción
      *
      * @param percentage
      */
@@ -51,7 +51,6 @@ public class WorkerStringProgress extends SwingWorker<Void, String> {
             initialSecond = (percentage * totalSeconds) / 100;
             initialMinute = initialSecond / 60;
             initialSecond = initialSecond - (initialMinute * 60);
-
         }
     }
 

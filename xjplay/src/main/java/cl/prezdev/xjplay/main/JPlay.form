@@ -90,8 +90,8 @@
                                       <EmptySpace max="32767" attributes="0"/>
                                       <Component id="songDurationLabel" min="-2" pref="79" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="progressBarSong" max="32767" attributes="0"/>
                                   <Component id="songNameLabel" max="32767" attributes="0"/>
+                                  <Component id="sliderSong" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -127,14 +127,14 @@
                                   <Component id="songDurationLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="progressBarSong" min="-2" max="-2" attributes="0"/>
+                              <Component id="sliderSong" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="playSongLabel" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
-                              <Component id="nextSongLabel" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
-                              <Component id="backSongLabel" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
-                              <Component id="coverArtLabel" min="-2" pref="59" max="-2" attributes="0"/>
+                          <Component id="playSongLabel" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
+                          <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                              <Component id="nextSongLabel" alignment="3" min="-2" pref="59" max="-2" attributes="0"/>
+                              <Component id="coverArtLabel" alignment="3" min="-2" pref="59" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="backSongLabel" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="mainTabbedPane" max="32767" attributes="0"/>
@@ -248,7 +248,7 @@
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jScrollPane4" pref="375" max="32767" attributes="0"/>
+                              <Component id="jScrollPane4" pref="371" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="songsTableScrollPane" min="-2" pref="116" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -429,20 +429,6 @@
                 </Container>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JProgressBar" name="progressBarSong">
-              <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="fe" green="fe" red="fe" type="rgb"/>
-                </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                </Property>
-              </Properties>
-              <Events>
-                <EventHandler event="mouseDragged" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="progressBarSongMouseDragged"/>
-                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="progressBarSongMouseReleased"/>
-              </Events>
-            </Component>
             <Component class="javax.swing.JLabel" name="loadInfoLabel">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -539,6 +525,13 @@
               </Properties>
               <Events>
                 <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="nextSongLabelMouseReleased"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JSlider" name="sliderSong">
+              <Events>
+                <EventHandler event="mouseDragged" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="sliderSongMouseDragged"/>
+                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="sliderSongMousePressed"/>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="sliderSongMouseReleased"/>
               </Events>
             </Component>
           </SubComponents>
