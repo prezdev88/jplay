@@ -279,7 +279,6 @@ public class JPlay extends JFrame implements
         jPanel1 = new javax.swing.JPanel();
         jScrollPane8 = new javax.swing.JScrollPane();
         artistList = new javax.swing.JList();
-        progressBarSong = new javax.swing.JProgressBar();
         loadInfoLabel = new javax.swing.JLabel();
         cancelLoadingButton = new javax.swing.JButton();
         songNameLabel = new javax.swing.JLabel();
@@ -292,6 +291,7 @@ public class JPlay extends JFrame implements
         backSongLabel = new javax.swing.JLabel();
         playSongLabel = new javax.swing.JLabel();
         nextSongLabel = new javax.swing.JLabel();
+        slideSong = new javax.swing.JSlider();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -420,13 +420,13 @@ public class JPlay extends JFrame implements
         panelListaActualLayout.setHorizontalGroup(
             panelListaActualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(cleanLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(songsTableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 769, Short.MAX_VALUE)
+            .addComponent(songsTableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 771, Short.MAX_VALUE)
             .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         panelListaActualLayout.setVerticalGroup(
             panelListaActualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelListaActualLayout.createSequentialGroup()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(songsTableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -473,19 +473,6 @@ public class JPlay extends JFrame implements
         jPanel1.add(jScrollPane8, java.awt.BorderLayout.CENTER);
 
         mainTabbedPane.addTab("Artistas", jPanel1);
-
-        progressBarSong.setBackground(new java.awt.Color(254, 254, 254));
-        progressBarSong.setForeground(new java.awt.Color(255, 255, 255));
-        progressBarSong.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                progressBarSongMouseDragged(evt);
-            }
-        });
-        progressBarSong.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                progressBarSongMouseReleased(evt);
-            }
-        });
 
         loadInfoLabel.setBackground(new java.awt.Color(254, 254, 254));
         loadInfoLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
@@ -557,6 +544,12 @@ public class JPlay extends JFrame implements
             }
         });
 
+        slideSong.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                slideSongMouseReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -579,8 +572,8 @@ public class JPlay extends JFrame implements
                                 .addComponent(artistLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(songDurationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(progressBarSong, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(songNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(songNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(slideSong, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(5, 5, 5))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
@@ -608,8 +601,8 @@ public class JPlay extends JFrame implements
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(artistLabel)
                             .addComponent(songDurationLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(progressBarSong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(9, 9, 9)
+                        .addComponent(slideSong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(playSongLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(nextSongLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -748,17 +741,6 @@ public class JPlay extends JFrame implements
             }
         }
     }//GEN-LAST:event_treeSongMouseReleased
-
-    private void progressBarSongMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_progressBarSongMouseReleased
-        changeSongProgressBarValue((evt.getX() * 100) / progressBarSong.getWidth(), true);
-        setVolume(volumeSlider.getValue());
-        printProgressBarSong = true;
-    }//GEN-LAST:event_progressBarSongMouseReleased
-
-    private void progressBarSongMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_progressBarSongMouseDragged
-        changeSongProgressBarValue((evt.getX() * 100) / progressBarSong.getWidth(), false);
-        printProgressBarSong = false;
-    }//GEN-LAST:event_progressBarSongMouseDragged
 
     private void cleanLabelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cleanLabelMouseReleased
         // @TODO: Colocar color donde estan todos los colores
@@ -1012,6 +994,10 @@ public class JPlay extends JFrame implements
         }
     }//GEN-LAST:event_artistListMouseReleased
 
+    private void slideSongMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_slideSongMouseReleased
+        changeSongProgressBarValue(slideSong.getValue());
+    }//GEN-LAST:event_slideSongMouseReleased
+
     private void loadSave() {
         if (new File(Path.SAVE).exists()) {
             try {
@@ -1185,9 +1171,9 @@ public class JPlay extends JFrame implements
     private javax.swing.JPanel panelListaActual;
     private javax.swing.JPanel panelMasEscuchadas;
     private javax.swing.JLabel playSongLabel;
-    private javax.swing.JProgressBar progressBarSong;
     private javax.swing.JCheckBox repeatSongCheckbox;
     private javax.swing.JCheckBox shuffleCheckbox;
+    private javax.swing.JSlider slideSong;
     private javax.swing.JLabel songDurationLabel;
     private javax.swing.JLabel songNameLabel;
     private javax.swing.JTable songsTable;
@@ -1198,12 +1184,12 @@ public class JPlay extends JFrame implements
 
     private void setProgressBarSongMaxValue(int totalBytes) {
         this.totalBytes = totalBytes;
-        progressBarSong.setMaximum(totalBytes);
+        slideSong.setMaximum(totalBytes);
     }
 
     private void setProgressBarSongValue(int readedBytes) {
         if (printProgressBarSong) {
-            progressBarSong.setValue(readedBytes);
+            slideSong.setValue(readedBytes);
         }
     }
 
@@ -1785,18 +1771,13 @@ public class JPlay extends JFrame implements
         return albums;
     }
 
-    private void changeSongProgressBarValue(int percentage, boolean seek) {
-
-        final float VALUE = totalBytes * ((float) percentage / (float) 100);
-        progressBarSong.setValue((int) VALUE);
-
-        if (seek) {
-            try {
-                this.workerStringProgress.changeProgressBarValue(percentage);
-                musicPlayer.seek((long) VALUE);
-            } catch (BasicPlayerException ex) {
-                Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
-            }
+    private void changeSongProgressBarValue(int value) {
+        try {
+            musicPlayer.seek((long) value);
+            slideSong.setValue(value);
+            setVolume(volumeSlider.getValue());
+        } catch (BasicPlayerException ex) {
+            Logger.getLogger(JPlay.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
