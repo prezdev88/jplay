@@ -33,6 +33,8 @@ import cl.prezdev.xjplay.tree.cell.renderer.FavoritesTreeCellRenderer;
 import cl.prezdev.xjplay.tree.cell.renderer.SongListTreeCellRenderer;
 import cl.prezdev.xjplay.tree.cell.renderer.MostPlayedSongsTreeCellRenderer;
 import cl.prezdev.xjplay.utils.Validate;
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -87,6 +89,8 @@ import javax.swing.KeyStroke;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -1175,7 +1179,8 @@ public class JPlay extends JFrame implements
         }
     }
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws UnsupportedLookAndFeelException {
+        UIManager.setLookAndFeel(new FlatDarkLaf());
         invokeLater(() -> new JPlay().setVisible(true));
     }
 
