@@ -27,19 +27,10 @@ public class ExplorerTreeCellRenderer extends JLabel implements TreeCellRenderer
             JTree tree, Object value, boolean selected, boolean expanded,
             boolean leaf, int row, boolean hasFocus
     ) {
-//        try {
-        this.setOpaque(true);
-
-//            Font fuente = Font.createFont(Font.TRUETYPE_FONT, Recurso.FUENTE_ROBOTO);
-//            fuente = fuente.deriveFont(Font.PLAIN, Rule.FONT_SIZE_EXPLORER);
-
-
         DefaultMutableTreeNode defaultMutableTreeNode = (DefaultMutableTreeNode) value;
         Object userObject = defaultMutableTreeNode.getUserObject();
-        if (userObject instanceof File) {
-//                this.setFont(fuente);
-            File file = (File) userObject;
-
+        
+        if (userObject instanceof File file) {
             this.setText(file.toString());
 
             if (file.isDirectory()) {
@@ -48,23 +39,6 @@ public class ExplorerTreeCellRenderer extends JLabel implements TreeCellRenderer
                 setIcon(this.musicIcon);
             }
         }
-
-        if (selected) {
-            this.setForeground(Color.white);
-            // @TODO: Almacenar color en alguna clasem hasta ahora se
-            // almacena en Util
-            this.setBackground(new Color(51, 153, 255));
-        } else {
-            this.setForeground(Color.black);
-            this.setBackground(Color.white);
-        }
-
-//            
-//        } catch (FontFormatException ex) {
-//            Logger.getLogger(CellRenderExplorer.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (IOException ex) {
-//            Logger.getLogger(CellRenderExplorer.class.getName()).log(Level.SEVERE, null, ex);
-//        } 
 
         return this;
     }
